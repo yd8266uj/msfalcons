@@ -9,6 +9,15 @@
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<style>
+		body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
 			#tiles li {
 				opacity:0;
 			}
@@ -16,60 +25,309 @@
 			.modal.bottom-sheet {
 				max-height: 67vh;
 			}
+			.tab label {
+				padding:0 !important;
+			}
+			.tabs .tab {
+				min-width: 0;
+			}
 			
+			.sub-tabs {
+				display:flex;
+				flex-wrap:wrap;
+				justify-content:flex-start;
+				
+			}
+			
+			.tabs {
+				height: initial;
+			}
+			
+			.tabs .tab {
+				text-transform:none;
+			}
+			
+			.tabs .tab {
+				width: initial;
+				-webkit-flex-grow:0;
+				flex-grow:0;
+			}
+			
+			ul.tabs li.tab a,ul.tabs li.tab label {
+				padding: 0 8px !important;
+			}
+			
+			.tabs .tab .active {
+				color: red;
+			
+			}
+			.tabs .indicator {
+				display:none;
+			}
+
+			.tabs input {
+				display:none;
+			}
+			.tabs input:checked ~ label {
+				color:red;
+			}
+			
+			.tabs input ~ label:before, .tabs input ~ label:after {
+				display: none;
+			}
+			
+			.collapsible {
+				box-shadow:none;
+			}
+			
+			.collapsible, .collapsible-body, .collapsible-header {
+				border: none;
+			}
+			
+			.stagger {
+				overflow: visible;
+			}
+			.collapsible-header {
+				background-color: transparent;
+			}
+			
+			
+			header, main, footer {
+      padding-left: 300px;
+    }
+
+    @media only screen and (max-width : 992px) {
+      header, main, footer {
+        padding-left: 0;
+      }
+    }
 	
+	.side-nav li {
+		line-height: initial;
+	}
+	
+	.side-nav .collapsible-header,.side-nav.fixed .collapsible-header {
+		padding: 0;
+	}
+	
+	.side-nav .collapsible-body {
+		padding: 0 32px;
+	}
+	
+	.side-nav.fixed .collapsible-body {
+		padding: 0 16px;
+	}
 		</style>
 	<head>
-	<body class="indigo lighten-5">
-		<div class="container" >
-<div class="row">
-    <div class="col l4 s12">
-      <ul class="tabs">
-        <li class="tab"><a href="#test1">a</a></li>
-        <li class="tab"><a href="#test2">l</a></li>
-        <li class="tab"><a href="#test3">a</a></li>
-        <li class="tab"><a href="#test4">r</a></li>
-        <li class="tab"><a href="#test5">m</a></li>
+	<body class="">
+<!-- display -->
+<!-- load -->
+<!-- config -->		
+			<ul id="slide-out" class="side-nav fixed">
+				<li>
+					<ul class="collapsible">
+						<li>
+							<div class="collapsible-header active">
+								<a href="#!">Basic Options</a>
+							</div>
+							<!-- __solution -->	
+							<div class="collapsible-body">			
+								<div class="input-field">
+									<input placeholder="Chrysanthimum" id="first_name" type="text" class="validate">
+									<label for="first_name">Puzzle Solution</label>
+								</div>
+								<!-- __language -->
+								<div class="input-field">
+									<select>
+										<option value="" disabled selected>Choose your option</option>
+										<option value="english">English</option>
+										<option value="telugu">Telugu</option>
+										<option value="spanish">Spanish</option>
+									</select>
+									<label>Language</label>
+								</div>			
+							</div>	
+						</li>
+						<!-- __image -->
+						<li>
+							<div class="collapsible-header">
+								<a href="#!">Image Options</a>
+							</div>						
+							<div class="collapsible-body">
+								<input name="config__image" type="radio" id="config__image_radio--none" checked />
+								<label for="config__image_radio--none">None</label>						
+								<br>
 
-      </ul>
-    </div>
-</div>
-<div class="row">
-    <div id="test1" class="col l4 s12">
-		<ul class="stagger collapsible collection white">
-			<li>
-				<a class="collapsible-header collection-item"><h5 style='display:inline'>aardvark</h5></a>
-				<div class="collapsible-body">
-					<p></p>
-				</div>
-			</li>
-			<li>
-				<a class="collapsible-header collection-item"><h5 style='display:inline'>avocado</h5></a>
-				<div class="collapsible-body">
-					<p></p>
-				</div>
-			</li>
-			<li>
-				<a class="collapsible-header collection-item"><h5 style='display:inline'>art</h5></a>
-				<div class="collapsible-body">
-					<ul>
-						<li><input name="group1" type="radio" id="rtest1" />
-      <label for="rtest1"><h5 style='display:inline'>drawing</h5></label></li>
-						<li><input name="group1" type="radio" id="rtest2" />
-      <label for="rtest2"><h5 style='display:inline'>painting</h5></label></li>
-						<li><input name="group1" type="radio" id="rtest3" />
-      <label for="rtest3"><h5 style='display:inline'>sculpture</h5></label></li>
+								<input name="config__image" type="radio" id="config__image_radio--url" />
+								<label for="config__image_radio--url">Url</label>
+
+								<div class="input-field">
+									<input placeholder="" id="first_name" type="text" class="validate" disabled>
+								</div>
+								<input name="config__image" type="radio" id="config__image_radio--upload" />
+								<label for="config__image_radio--upload">Upload</label>
+
+								<div class="file-field input-field">
+									<div class="btn" style="float:none" disabled>
+										<span>File</span>
+										<input type="file">
+									</div>
+									<div class="file-path-wrapper hide">
+										<input class="file-path validate" type="text" >
+									</div>
+								</div>
+								<div class="config__image_img hide">
+									<img class="responsive-img" src="cool_pic.jpg">			
+								</div>
+							</div>
+						</li>
+						<!-- __format -->
+						<li>
+							<div class="collapsible-header">
+								<a href="#!">Format Options</a>
+							</div>						
+							<div class="collapsible-body">		
+								<div>
+									<h6 class="grey-text">Column preference</h6>
+								</div>
+								<div class="col s4">
+									<div class="input-field">
+										<select>
+											<option value="0">Random</option>
+											<option value="1" selected>1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+										</select>
+									</div>
+								</div>
+								<div>
+									<h6 class="grey-text">Align Characters</h6>
+								</div>
+								<div>
+									<input name="puzzle-format" type="radio" id="config__format_radio--align" />
+									<label for="config__format_radio--align">Align</label>
+									<br>
+									<input name="puzzle-format" type="radio" id="config__format_radio--justify" checked />
+									<label for="config__format_radio--justify">Justify</label>
+								</div>
+								<!-- __difficulty -->
+
+								<div>
+									<h6 class="grey-text">Number of characters</h6>
+								</div>
+								<div class="col s6">
+									<div class="input-field">
+										<select>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+										</select>
+										<label>Minimum</label>
+									</div>
+								</div>
+								<div class="col s6">
+									<div class="input-field">
+										<select>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+										</select>
+										<label>Maximum</label>
+									</div>
+								</div>
+							
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header">
+								<a href="#!">Choose Solutions</a>
+							</div>						
+							<div class="collapsible-body">
+								<ul id="tabs1" class="tabs">
+									
+									<li class="tab"><a href="#t-2">l</a></li>
+									<li class="tab"><a href="#t-3">a</a></li>
+									<li class="tab"><a href="#t-4">r</a></li>
+									<li class="tab"><a href="#t-5">m</a></li>
+								</ul>
+								<div id="t-1" class=""></div>
+								<div id="t-2" class="">
+									<ul id="tabs2" class="tabs sub-tabs stagger">
+										<li class="tab"><a href="#t-2-1">art</a></li>
+										<li class="tab"><a href="#t-2-2">acme</a></li>
+										<li class="tab"><a href="#t-2-3">adroit</a></li>
+									</ul>
+									<div id="t-2-1" class=""></div>
+									<div id="t-2-2" class="">
+										<ul class="tabs sub-tabs stagger">
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest5" />
+												<label for="rtest5">Red</label>
+											</li>
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest6" />
+												<label for="rtest6">Red</label>
+											</li>
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest7" />
+												<label for="rtest7">Red</label>
+											</li>
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest8" />
+												<label for="rtest8">Red</label>
+											</li>
+											
+										</ul>
+									</div>
+									<div id="t-2-3" class="">
+										<ul class="tabs sub-tabs stagger">
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest9" />
+												<label for="rtest9">Red</label>
+											</li>
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest10" />
+												<label for="rtest10">Red</label>
+											</li>
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest11" />
+												<label for="rtest11">Red</label>
+											</li>
+											<li class="tab">
+												<input name="group1" type="radio" id="rtest12" />
+												<label for="rtest12">Red</label>
+											</li>
+											
+										</ul>
+									</div>
+								</div>	
+								<div id="t-3" class="col s12">Test 3</div>
+								<div id="t-4" class="col s12">Test 4</div>
+								<div id="t-5" class="col s12">Test 5</div>
+							</div>
+						</li>
+						<li>
+							<a href="#!" class="btn white-text" style="">Update</a>
+						</li>
 					</ul>
-				</div>
-			</li>
-		</ul>
-	</div>
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test3" class="col s12">Test 3</div>
-    <div id="test4" class="col s12">Test 4</div>
-  </div>
-			<a href="#lookup" class="btn-flat modal-trigger">Rules</a>
-		</div>
+				</li>
+			</ul>
+			<!-- Done -->
+			
+			<main class="indigo lighten-5">
+			<div class="col s12">
+				
+			</div>			
+
+
+
+    
+
+		<a href="#lookup" class="btn-flat modal-trigger">lookup</a>
 		<div id="lookup" class="modal bottom-sheet">
 			<div class="modal-content container">
 				<ul class="collection with-header">
@@ -79,20 +337,85 @@
 			</div>
 			<div class="modal-footer"></div>
 		</div>
+		</main>
 		<!--Import jQuery before materialize.js-->
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="js/materialize.min.js"></script>
 		<script src="js/http.js"></script>
-		<script>				
+		<script>
+			var solutions = { 
+				"a": {
+						"apple": {
+							"red" : {},
+							"fruit" : {},
+							"tree" : {}
+						},
+						"animal": {
+							"snake" : {},
+							"aardvark" : {}
+							
+						},
+						"aardvark": {
+							"mammal" : {},
+							"animal" : {},
+						},
+						"asp": {
+							"snake" : {},
+							"lizard" : {},
+							"reptile" : {},
+							"animal" : {}
+						},
+				},
+				"l": {
+				
+				},
+				"a": {
+						"apple": {
+							"red" : {},
+							"fruit" : {},
+							"tree" : {}
+						},
+						"animal": {
+							"snake" : {},
+							"aardvark" : {}
+							
+						},
+						"aardvark": {
+							"mammal" : {},
+							"animal" : {},
+						},
+						"asp": {
+							"snake" : {},
+							"lizard" : {},
+							"reptile" : {},
+							"animal" : {}
+						},
+				},
+				"r": {
+				
+				},
+				"m": {
+				
+				},
+			};
+			
+
+		
 			$( document ).ready(function() {
 				$('.modal-trigger').leanModal();
 				$('ul.tabs').tabs({onShow: function(t) {
 					var list = $(t).children("ul.stagger");
+					$(t).find(".tab a.active").removeClass("active");
+					$(t).find(".tabs ~ > .tabs").parent().hide();
 					list.children("li").css("opacity","0");
 					Materialize.showStaggeredList(list);
 				}
 				});
+				$('.button-collapse').sideNav();
+				$('select').material_select();
+				$('.collapsible').collapsible();
+				$('#tabs2').tabs();
 				$('input.autocomplete').autocomplete({
 					data: {
 						"Apple": null,
