@@ -1,6 +1,6 @@
 <?php
 
-class pair {
+class pair implements i_pair {
 
   function __construct() {
   

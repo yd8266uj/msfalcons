@@ -1,6 +1,6 @@
 <?php
 
-class word {
+class word implements i_word {
 
   function __construct() {
   

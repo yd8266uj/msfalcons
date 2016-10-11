@@ -1,6 +1,6 @@
 <?php
 
-class puzzle {
+class puzzle implements i_puzzle {
 
   function __construct() {
   

@@ -1,6 +1,6 @@
 <?php
 
-class language {
+class language implements i_language {
 
   function __construct() {
   
@@ -29,7 +29,7 @@ class language {
    * 
    * @return self initialized instance of self
    */
-  public static function getInstance() : self {
+  public static function getInstance() : i_singleton {
     if( is_null( self::$instance ) ) {
       new self();
     }
