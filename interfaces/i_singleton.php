@@ -6,7 +6,7 @@ interface i_singleton {
    * 
    * @return self initialized instance of self
    */
-  public static function getInstance() : i_singleton;
+  public static function get_instance();
 }
 
 ?>

@@ -29,7 +29,7 @@ class word implements i_word {
    *
    * @param self $instance
    */
-  public static function create( self $instance, valid_language $language ) : void {
+  public static function create( i_table $instance, valid_language $language ) : void {
   
   }
 
@@ -49,7 +49,7 @@ class word implements i_word {
    *
    * @return Puzzle the specified Puzzle object
    */
-  public static function read_show( valid_int $id ) : self {
+  public static function read_show( valid_int $id ) : i_table {
   
   }
   

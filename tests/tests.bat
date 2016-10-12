@@ -1,0 +1,1 @@
+cmd /k for %%f in (*Test.php) do phpunit --bootstrap ..\www\autoload.php %%f

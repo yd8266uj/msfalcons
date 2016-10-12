@@ -28,11 +28,14 @@ class pair implements i_pair {
    * Insert a new entry into database from and instance of self
    *
    * @param self $instance
+   *
+   * @throws invalidTypeException on invalid parameter type, ie. not type pair
+   * @throws PDOException something bad happened with insertion
    */
-  public static function create( self $instance, valid_language $language ) : void {
+  public static function create( i_table $instance, valid_language $language ) : void {
   
   }
-
+  
   /**
    * List all available self in database
    *
@@ -49,7 +52,7 @@ class pair implements i_pair {
    *
    * @return Puzzle the specified Puzzle object
    */
-  public static function read_show( valid_int $id ) : self {
+  public static function read_show( valid_int $id ) : i_table {
   
   }
   

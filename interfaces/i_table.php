@@ -22,7 +22,7 @@ interface i_table {
    *
    * @return Puzzle the specified Puzzle object
    */
-  public static function read_show( valid_int $id ) : self;
+  public static function read_show( valid_int $id ) : i_table;
 }
 
 ?>

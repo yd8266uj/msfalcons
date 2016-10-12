@@ -2,9 +2,25 @@
 
 class language implements i_language {
 
-  function __construct() {
+  private static $instance;
+
+  /**
+   * Restrict access to __construct() to prevent creating new objects
+   */
+  private function __construct() {
   
   }
+  
+  /**
+   * Restrict access to clone() to prevent copying of object
+   */
+	private function __clone() {}
+  
+  /**
+   * Restrict access to wakeup() to prevent deserializing object
+   */
+	private function __wakeup() {}
+  
   
   /**
    * Returns object as an html formatted string
@@ -29,7 +45,7 @@ class language implements i_language {
    * 
    * @return self initialized instance of self
    */
-  public static function getInstance() : i_singleton {
+  public static function get_instance() : i_singleton {
     if( is_null( self::$instance ) ) {
       new self();
     }
@@ -44,6 +60,7 @@ class language implements i_language {
   public function validate( valid_string $localize ) : valid_laguage {
   
   }
+  
 }
 
 ?>

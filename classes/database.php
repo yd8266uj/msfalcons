@@ -1,26 +1,33 @@
 <?php
 
-class database extends PDO implements i_database {
+class database implements i_database {
 
   private static $instance;
   
-	function __construct() {
-		parent::__construct( Strings::DATABASE_CLASS__DATABASE_INFO, Strings::DATABASE_CLASS__DATABASE_USER, Strings::DATABASE_CLASS__DATABASE_PASSWORD );
-		$this->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		self::$instance = $this;
+  /**
+   * Restrict access to __construct() to prevent creating new objects
+   */
+	private function __construct() {
+		self::$instance = new PDO( Strings::DATABASE_CLASS__DATABASE_INFO, Strings::DATABASE_CLASS__DATABASE_USER, Strings::DATABASE_CLASS__DATABASE_PASSWORD );
+		self::$instance->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	}
   
   /**
-   * Restrict access to clone()
+   * Restrict access to clone() to prevent copying of object
    */
 	private function __clone() {}
+  
+  /**
+   * Restrict access to wakeup() to prevent deserializing object
+   */
+	private function __wakeup() {}
   
   /**
    * Singleton access to object.
    * 
    * @return self initialized instance of self
    */
-  public static function getInstance() : i_singleton {
+  public static function get_instance() {
     if( is_null( self::$instance ) ) {
       new self();
     }
