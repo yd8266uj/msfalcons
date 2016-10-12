@@ -94,10 +94,11 @@
 			}
 			
 			
-			header, main, footer {
+		nav, main, footer {
       padding-left: 300px;
     }
-
+  
+ 
     @media only screen and (max-width : 992px) {
       header, main, footer {
         padding-left: 0;
@@ -107,6 +108,10 @@
 	.side-nav li {
 		line-height: initial;
 	}
+  
+  .side-nav {
+    margin-top:64px;
+  }
 	
 	.side-nav .collapsible-header,.side-nav.fixed .collapsible-header {
 		padding: 0;
@@ -123,8 +128,19 @@
 	<head>
 	<body class="">
 <!-- display -->
+      <header>
+      <nav>
+    <div class="nav-wrapper container">
+      <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Synonyms</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#lookup" class="modal-trigger"><i class="material-icons">search</i></a></li>
+        <li><a href="#!"><i class="material-icons">print</i></a></li>
+      </ul>
+    </div>
+  </nav>
+      </header>
 <!-- load -->
-<!-- config -->		
+<!-- config -->
 			<ul id="slide-out" class="side-nav fixed">
 				<li>
 					<ul class="collapsible">
@@ -321,16 +337,31 @@
 			<!-- Done -->
 			
 			<main class="indigo lighten-5">
-			<div class="col s12">
-				
-			</div>			
-
-
-
+        <div class="container section">
+          <div class="white z-depth-1">
+            <div class="row">
+              <div class="col s12">
+                <h3 class="center">Puzzle Title</h3>
+              </div>
+              <div class="col s12 m4 l5">
+                <img class="responsive-img" src="img/silcHeader.png" style="height:100%">
+              </div>
+              <div class="col s12 m8 l7">
+                <ul id="solution" style="font-family: monospace;position:relative">
+                  <li style="position:relative;left:38px"><h4>s<span class="red-text">t</span>udy</h4></li>
+                  <li style="position:relative;left:19px"><h4>th<span class="red-text">i</span>ngs</h4></li>
+                  <li style="position:relative;left:57px"><h4><span class="red-text">t</span>opic</h4></li>
+                  <li style="position:relative;left:0"><h4>sel<span class="red-text">l</span></h4></li>
+                  <li style="position:relative;left:38px"><h4>k<span class="red-text">e</span>y</h4></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+			</main>
     
-
-		<a href="#lookup" class="btn-flat modal-trigger">lookup</a>
-		<div id="lookup" class="modal bottom-sheet">
+    
+    <div id="lookup" class="modal bottom-sheet">
 			<div class="modal-content container">
 				<ul class="collection with-header">
 					<li class="collection-header"><h6 class="blue-grey-text text-lighten-2">17 matches</h6></li>
@@ -339,7 +370,8 @@
 			</div>
 			<div class="modal-footer"></div>
 		</div>
-		</main>
+    
+    <footer></footer>
 		<!--Import jQuery before materialize.js-->
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<!-- Compiled and minified JavaScript -->
@@ -406,6 +438,7 @@
 		
 			$( document ).ready(function() {
 				$('.modal-trigger').leanModal();
+        Materialize.showStaggeredList('#solution');
 				$('ul.tabs').tabs({onShow: function(t) {
 					var list = $(t).children("ul.stagger");
 					$(t).find(".tab a.active").removeClass("active");
