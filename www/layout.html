@@ -337,27 +337,7 @@
 			<!-- Done -->
 			
 			<main class="indigo lighten-5">
-        <div class="container section">
-          <div class="white z-depth-1">
-            <div class="row">
-              <div class="col s12">
-                <h3 class="center">Puzzle Title</h3>
-              </div>
-              <div class="col s12 m4 l5">
-                <img class="responsive-img" src="img/silcHeader.png" style="height:100%">
-              </div>
-              <div class="col s12 m8 l7">
-                <ul id="solution" style="font-family: monospace;position:relative">
-                  <li style="position:relative;left:38px"><h4>s<span class="red-text">t</span>udy</h4></li>
-                  <li style="position:relative;left:19px"><h4>th<span class="red-text">i</span>ngs</h4></li>
-                  <li style="position:relative;left:57px"><h4><span class="red-text">t</span>opic</h4></li>
-                  <li style="position:relative;left:0"><h4>sel<span class="red-text">l</span></h4></li>
-                  <li style="position:relative;left:38px"><h4>k<span class="red-text">e</span>y</h4></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+
 			</main>
     
     
@@ -377,88 +357,59 @@
 		<!-- Compiled and minified JavaScript -->
 		<script src="js/materialize.min.js"></script>
 		<script src="js/http.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
 		<script>
-			var solutions = { 
-				"a": {
-						"apple": {
-							"red" : {},
-							"fruit" : {},
-							"tree" : {}
-						},
-						"animal": {
-							"snake" : {},
-							"aardvark" : {}
-							
-						},
-						"aardvark": {
-							"mammal" : {},
-							"animal" : {},
-						},
-						"asp": {
-							"snake" : {},
-							"lizard" : {},
-							"reptile" : {},
-							"animal" : {}
-						},
-				},
-				"l": {
-				
-				},
-				"a": {
-						"apple": {
-							"red" : {},
-							"fruit" : {},
-							"tree" : {}
-						},
-						"animal": {
-							"snake" : {},
-							"aardvark" : {}
-							
-						},
-						"aardvark": {
-							"mammal" : {},
-							"animal" : {},
-						},
-						"asp": {
-							"snake" : {},
-							"lizard" : {},
-							"reptile" : {},
-							"animal" : {}
-						},
-				},
-				"r": {
-				
-				},
-				"m": {
-				
-				},
-			};
-			
+      var dispatch = d3.dispatch("load", "statechange");
+      
+      var options = [
+        {"id":"1","value":[0,3,6,7,3]},
+        {"id":"2","value":[10,11,19]},
+        {"id":"3","value":[20,29,26,24]}
+      ];
 
+      var synBySol = d3.map();
+      options.forEach( function(d) { synBySol.set(d.id,d.value); });
+      
+      
+      
+
+    	dispatch.on("load.config", function(synBySol) {
+        var select = d3.select("main")
+          .append("div")
+          .append("select")
+          .on("change", function() { dispatch.call("statechange", this, synBySol.get(this.value)); });
+          
+        select.selectAll("option")
+          .data(synBySol.values())
+          .enter().append("option")
+          .attr("value", function(d) { return d.id; })
+          .text(function(d) { return d.id; });
+        
+        dispatch.on("statechange.config", function(state) {          
+          console.log(state);
+          select.property("value", state[0]);
+        });
+      });
+			dispatch.on("load.display", function(synBySol) {
+        dispatch.on("statechange.display", function() {});
+      });
+			dispatch.on("load.data", function(synBySol) {
+      
+        dispatch.on("statechange.data", function() {});
+      });
+      
+			
+			
+      
+      
 		
 			$( document ).ready(function() {
+        dispatch.call("load", this, synBySol);
+        dispatch.call("statechange", this, synBySol.get("1"));
 				$('.modal-trigger').leanModal();
-        Materialize.showStaggeredList('#solution');
-				$('ul.tabs').tabs({onShow: function(t) {
-					var list = $(t).children("ul.stagger");
-					$(t).find(".tab a.active").removeClass("active");
-					$(t).find(".tabs ~ > .tabs").parent().hide();
-					list.children("li").css("opacity","0");
-					Materialize.showStaggeredList(list);
-				}
-				});
-				$('.button-collapse').sideNav();
 				$('select').material_select();
-				$('.collapsible').collapsible();
-				$('#tabs2').tabs();
-				$('input.autocomplete').autocomplete({
-					data: {
-						"Apple": null,
-						"Microsoft": null,
-						"Google": 'http://placehold.it/250x250'
-					}
-				});	
-				
+				$('.collapsible').collapsible();			
+
 			});			
 		</script>
 	</body>
