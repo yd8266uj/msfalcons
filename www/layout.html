@@ -4,6 +4,7 @@
 		<!--Import Google Icon Font-->
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="css/nouislider.min.css">
 		<link rel="stylesheet" href="css/materialize.css">
 		<link rel="stylesheet" href="css/default.css">
 		<!--Let browser know website is optimized for mobile-->
@@ -20,63 +21,19 @@
   main {
     flex: 1 0 auto;
   }
-			#tiles li {
-				opacity:0;
-			}
+
 			
 			.modal.bottom-sheet {
 				max-height: 67vh;
 			}
-			.tab label {
-				padding:0 !important;
-			}
-			.tabs .tab {
-				min-width: 0;
-			}
-			
-			.sub-tabs {
-				display:flex;
-				flex-wrap:wrap;
-				justify-content:flex-start;
-				
-			}
-			
-			.tabs {
-				height: initial;
-			}
-			
-			.tabs .tab {
-				text-transform:none;
-			}
-			
-			.tabs .tab {
-				width: initial;
-				-webkit-flex-grow:0;
-				flex-grow:0;
-			}
-			
-			ul.tabs li.tab a,ul.tabs li.tab label {
-				padding: 0 8px !important;
-			}
-			
-			.tabs .tab .active {
-				color: red;
-			
-			}
-			.tabs .indicator {
-				display:none;
-			}
 
-			.tabs input {
-				display:none;
-			}
-			.tabs input:checked ~ label {
-				color:red;
-			}
-			
-			.tabs input ~ label:before, .tabs input ~ label:after {
-				display: none;
-			}
+      .tabs .tab {
+        min-width: initial;
+      }
+      
+      .side-nav .collapsible-body li a, .side-nav.fixed .collapsible-body li a {
+        padding: initial;
+      }
 			
 			.collapsible {
 				box-shadow:none;
@@ -85,13 +42,7 @@
 			.collapsible, .collapsible-body, .collapsible-header {
 				border: none;
 			}
-			
-			.stagger {
-				overflow: visible;
-			}
-			.collapsible-header {
-				background-color: transparent;
-			}
+
 			
 			
 		nav, main, footer {
@@ -125,221 +76,144 @@
 		padding: 16px;
 	}
 		</style>
-	<head>
+  <head>
 	<body class="">
-<!-- display -->
-      <header>
+    <!-- display -->
+    <header>
       <nav>
-    <div class="nav-wrapper container">
-      <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Synonyms</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#lookup" class="modal-trigger"><i class="material-icons">search</i></a></li>
-        <li><a href="#!"><i class="material-icons">print</i></a></li>
-      </ul>
-    </div>
-  </nav>
-      </header>
-<!-- load -->
-<!-- config -->
-			<ul id="slide-out" class="side-nav fixed">
-				<li>
-					<ul class="collapsible">
-						<li>
-							<div class="collapsible-header active">
-								<a href="#!">Basic Options</a>
-							</div>
-							<!-- __solution -->	
-							<div class="collapsible-body">			
-								<div class="input-field">
-									<input placeholder="Chrysanthimum" id="first_name" type="text" class="validate">
-									<label for="first_name">Puzzle Solution</label>
-								</div>
-								<!-- __language -->
-								<div class="input-field">
-									<select>
-										<option value="" disabled selected>Choose your option</option>
-										<option value="english">English</option>
-										<option value="telugu">Telugu</option>
-										<option value="spanish">Spanish</option>
-									</select>
-									<label>Language</label>
-								</div>			
-							</div>	
-						</li>
-						<!-- __image -->
-						<li>
-							<div class="collapsible-header">
-								<a href="#!">Image Options</a>
-							</div>						
-							<div class="collapsible-body">
-								<input name="config__image" type="radio" id="config__image_radio--none" checked />
-								<label for="config__image_radio--none">None</label>						
-								<br>
-
-								<input name="config__image" type="radio" id="config__image_radio--url" />
-								<label for="config__image_radio--url">Url</label>
-
-								<div class="input-field">
-									<input placeholder="" id="first_name" type="text" class="validate" disabled>
-								</div>
-								<input name="config__image" type="radio" id="config__image_radio--upload" />
-								<label for="config__image_radio--upload">Upload</label>
-
-								<div class="file-field input-field">
-									<div class="btn" style="float:none" disabled>
-										<span>File</span>
-										<input type="file">
-									</div>
-									<div class="file-path-wrapper hide">
-										<input class="file-path validate" type="text" >
-									</div>
-								</div>
-								<div class="config__image_img hide">
-									<img class="responsive-img" src="cool_pic.jpg">			
-								</div>
-							</div>
-						</li>
-						<!-- __format -->
-						<li>
-							<div class="collapsible-header">
-								<a href="#!">Format Options</a>
-							</div>						
-							<div class="collapsible-body">		
-								<div>
-									<h6 class="grey-text">Column preference</h6>
-								</div>
-								<div class="col s4">
-									<div class="input-field">
-										<select>
-											<option value="0">Random</option>
-											<option value="1" selected>1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-										</select>
-									</div>
-								</div>
-								<div>
-									<h6 class="grey-text">Align Characters</h6>
-								</div>
-								<div>
-									<input name="puzzle-format" type="radio" id="config__format_radio--align" />
-									<label for="config__format_radio--align">Align</label>
-									<br>
-									<input name="puzzle-format" type="radio" id="config__format_radio--justify" checked />
-									<label for="config__format_radio--justify">Justify</label>
-								</div>
-								<!-- __difficulty -->
-
-								<div>
-									<h6 class="grey-text">Number of characters</h6>
-								</div>
-								<div class="col s6">
-									<div class="input-field">
-										<select>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
-										<label>Minimum</label>
-									</div>
-								</div>
-								<div class="col s6">
-									<div class="input-field">
-										<select>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-										</select>
-										<label>Maximum</label>
-									</div>
-								</div>
-							
-							</div>
-						</li>
-						<li>
-							<div class="collapsible-header">
-								<a href="#!">Choose Solutions</a>
-							</div>						
-							<div class="collapsible-body">
-								<ul id="tabs1" class="tabs">
-									
-									<li class="tab"><a href="#t-2">l</a></li>
-									<li class="tab"><a href="#t-3">a</a></li>
-									<li class="tab"><a href="#t-4">r</a></li>
-									<li class="tab"><a href="#t-5">m</a></li>
-								</ul>
-								<div id="t-1" class=""></div>
-								<div id="t-2" class="">
-									<ul id="tabs2" class="tabs sub-tabs stagger">
-										<li class="tab"><a href="#t-2-1">art</a></li>
-										<li class="tab"><a href="#t-2-2">acme</a></li>
-										<li class="tab"><a href="#t-2-3">adroit</a></li>
-									</ul>
-									<div id="t-2-1" class=""></div>
-									<div id="t-2-2" class="">
-										<ul class="tabs sub-tabs stagger">
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest5" />
-												<label for="rtest5">Red</label>
-											</li>
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest6" />
-												<label for="rtest6">Red</label>
-											</li>
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest7" />
-												<label for="rtest7">Red</label>
-											</li>
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest8" />
-												<label for="rtest8">Red</label>
-											</li>
-											
-										</ul>
-									</div>
-									<div id="t-2-3" class="">
-										<ul class="tabs sub-tabs stagger">
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest9" />
-												<label for="rtest9">Red</label>
-											</li>
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest10" />
-												<label for="rtest10">Red</label>
-											</li>
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest11" />
-												<label for="rtest11">Red</label>
-											</li>
-											<li class="tab">
-												<input name="group1" type="radio" id="rtest12" />
-												<label for="rtest12">Red</label>
-											</li>
-											
-										</ul>
-									</div>
-								</div>	
-								<div id="t-3" class="col s12">Test 3</div>
-								<div id="t-4" class="col s12">Test 4</div>
-								<div id="t-5" class="col s12">Test 5</div>
-							</div>
-						</li>
-						<li>
-							<a href="#!" class="btn white-text" style="">Update</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
-			<!-- Done -->
-			
-			<main class="indigo lighten-5">
-
-			</main>
+        <div class="nav-wrapper container">
+          <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Synonyms</a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#lookup" class="modal-trigger"><i class="material-icons">search</i></a></li>
+            <li><a href="#!"><i class="material-icons">print</i></a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- load -->
     
+    <!-- config -->
+    <ul id="slide-out" class="side-nav fixed">
+      <li>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header active">
+              <a href="#!">Basic Options</a>
+            </div>
+            <!-- __solution -->	
+            <div class="collapsible-body">			
+              <div class="input-field">
+                <input placeholder="Chrysanthimum" id="" type="text" class="validate config__solution">
+                <label for="first_name">Puzzle Solution</label>
+              </div>
+              <!-- __language -->
+              <select name="language" class="config__language browser-default">
+                <option value="" disabled selected>Choose your option</option>
+                <option value="english">English</option>
+                <option value="telugu">Telugu</option>
+                <option value="spanish">Spanish</option>
+              </select>									
+        
+            </div>	
+          </li>
+          <!-- __image -->
+          <li>
+            <div class="collapsible-header">
+              <a href="#!">Image Options</a>
+            </div>						
+            <div class="collapsible-body">
+              <input name="config__image" type="radio" id="config__image_radio--none" checked />
+              <label for="config__image_radio--none">None</label>						
+              <br>
+
+              <input name="config__image" type="radio" id="config__image_radio--url" />
+              <label for="config__image_radio--url">Url</label>
+
+              <div class="input-field">
+                <input placeholder="" id="first_name" type="text" class="validate" disabled>
+              </div>
+              <input name="config__image" type="radio" id="config__image_radio--upload" />
+              <label for="config__image_radio--upload">Upload</label>
+
+              <div class="file-field input-field">
+                <div class="btn" style="float:none" disabled>
+                  <span>File</span>
+                  <input type="file">
+                </div>
+                <div class="file-path-wrapper hide">
+                  <input class="file-path validate" type="text" >
+                </div>
+              </div>
+              <div class="config__image_img hide">
+                <img class="responsive-img" src="cool_pic.jpg">			
+              </div>
+            </div>
+          </li>
+          <!-- __format -->
+          <li>
+            <div class="collapsible-header">
+              <a href="#!">Format Options</a>
+            </div>						
+            <div class="collapsible-body">		
+              
+              <div>
+                <h6 class="grey-text">Align Characters</h6>
+              </div>
+              <div>
+                <input name="puzzle-format" type="radio" id="config__format_radio--align" />
+                <label for="config__format_radio--align">Align</label>
+                <br>
+                <input name="puzzle-format" type="radio" id="config__format_radio--justify" checked />
+                <label for="config__format_radio--justify">Justify</label>
+              </div>
+              <!-- __difficulty -->
+
+              <div>
+                <h6 class="grey-text">Number of characters</h6>
+              </div>
+              <div class="input-field ">
+                <p class="range-field">
+                  <div id="config__number_of_characters"></div>
+                </p>
+              </div>
+              
+              <div>
+                <h6 class="grey-text">Column preference</h6>
+              </div>
+              <div class="input-field ">
+                <p class="range-field">
+                  <div id="config__column_preference"></div>
+                </p>
+              </div>
+
+                  
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header">
+              <a href="#!">Choose Solutions</a>
+            </div>						
+            <div class="collapsible-body config__tabs">
+              <ul class="tabs">									
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#!" class="btn white-text" style="">Update</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    
+    <!-- Done -->			
+    <main class="indigo lighten-5">
+      <div class="display">
+        <div class="display__solution">
+        </div>
+        <div class="display__language">
+        </div>
+      </div>
+    </main>   
     
     <div id="lookup" class="modal bottom-sheet">
 			<div class="modal-content container">
@@ -352,65 +226,117 @@
 		</div>
     
     <footer></footer>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
 		<!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="js/nouislider.min.js"></script>
+    <script type="text/javascript" src="js/wNumb.js"></script>
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="js/materialize.min.js"></script>
 		<script src="js/http.js"></script>
-    <script src="http://d3js.org/d3.v4.min.js"></script>
+
 		<script>
-      var dispatch = d3.dispatch("load", "statechange");
+      var dispatch = d3.dispatch("load","config__solution","config__language");
       
-      var options = [
-        {"id":"1","value":[0,3,6,7,3]},
-        {"id":"2","value":[10,11,19]},
-        {"id":"3","value":[20,29,26,24]}
-      ];
+      var puzzle = {
+        "solution":"",
+        "language":"",
+        "image":""
+      };
+      
+      var pair = {
+        "column":"",
+        "clue":"",
+        "synonym":""
+      }
+      
+      var pairs = [];
 
-      var synBySol = d3.map();
-      options.forEach( function(d) { synBySol.set(d.id,d.value); });
+    	dispatch.on("load.config", function(puzzle) {
+        d3.select(".config__solution")
+          .on("input", function() { dispatch.call("config__solution", this, this.value); });
+        d3.select(".config__language")
+          .on("change", function() { dispatch.call("config__language", this, this.value); });
+      });
       
-      
-      
-
-    	dispatch.on("load.config", function(synBySol) {
-        var select = d3.select("main")
-          .append("div")
-          .append("select")
-          .on("change", function() { dispatch.call("statechange", this, synBySol.get(this.value)); });
-          
-        select.selectAll("option")
-          .data(synBySol.values())
-          .enter().append("option")
-          .attr("value", function(d) { return d.id; })
-          .text(function(d) { return d.id; });
+      dispatch.on("config__solution", function() {
+        var state = d3.select(".config__solution").property("value");
+        d3.select(".display__solution")
+          .text(state);
+        d3.selectAll(".config__tabs .tabs .tab").remove();
+        d3.selectAll(".config__tabs div").remove();
+        state.split("").forEach( function(c,i) { 
+          console.log(c);
+          var li = d3.select(".config__tabs .tabs")
+            .append("li")
+              .attr("class","tab");
+          li.append("a")
+            .attr("href","#tab-"+i)
+            .text(c);
+          var tab = d3.selectAll(".config__tabs")
+            .append("div")
+              .attr("id","tab-"+i)
+              .attr("style","display: none;")
+          tab.append("select")
+            .attr("class","browser-default");
+          tab.append("select")
+            .attr("class","browser-default");
+        });        
         
-        dispatch.on("statechange.config", function(state) {          
-          console.log(state);
-          select.property("value", state[0]);
-        });
-      });
-			dispatch.on("load.display", function(synBySol) {
-        dispatch.on("statechange.display", function() {});
-      });
-			dispatch.on("load.data", function(synBySol) {
+        $('.config__tabs .tabs').tabs();
+        $('select').material_select();
+      });      
       
-        dispatch.on("statechange.data", function() {});
+      dispatch.on("config__language", function(state) {
+        d3.select(".display__language")
+          .text(state);
       });
       
-			
-			
-      
-      
-		
 			$( document ).ready(function() {
-        dispatch.call("load", this, synBySol);
-        dispatch.call("statechange", this, synBySol.get("1"));
 				$('.modal-trigger').leanModal();
-				$('select').material_select();
-				$('.collapsible').collapsible();			
+				$('.collapsible').collapsible();
+        dispatch.call("load", this, puzzle);
+			});
 
-			});			
+      var slider_number_of_characters = document.getElementById('config__number_of_characters');
+      var slider_column_preference = document.getElementById('config__column_preference');
+      noUiSlider.create(slider_number_of_characters, {
+        start: [3, 12],
+        connect: true,
+        margin: 1,
+        step: 1,
+        tooltips:true,
+        format: wNumb({
+          decimals: 0
+        }),
+        range: {
+          'min': 3,
+          'max': 12
+        },
+      });	
+
+      noUiSlider.create(slider_column_preference, {
+        start: 5,
+        tooltips:true,
+        step: 1,
+        format: wNumb({
+          decimals: 0
+        }),
+        range: {
+          'min': 3,
+          'max': 12
+        },
+      });
+    
+      slider_number_of_characters.noUiSlider.on('update', function(values,handle) {
+        slider_column_preference.noUiSlider.updateOptions({
+          range: {
+            'min': parseInt(values[0]),
+            'max': parseInt(values[1])
+          }
+        });
+        dispatch.call("config__solution", this, this.value);
+      });
 		</script>
 	</body>
 </html>

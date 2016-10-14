@@ -5,7 +5,7 @@ class valid_string implements i_valid {
   private $data;
   
   function __construct( string $data ) {
-    
+    $this->data = $data;
   }
   
   /**
