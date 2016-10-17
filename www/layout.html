@@ -85,7 +85,7 @@
           <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Synonyms</a>
           <ul class="right hide-on-med-and-down">
             <li><a href="#lookup" class="modal-trigger"><i class="material-icons">search</i></a></li>
-            <li><a href="#!"><i class="material-icons">print</i></a></li>
+            <li><a href="#!" onclick="window.print()"><i class="material-icons">print</i></a></li>
           </ul>
         </div>
       </nav>
@@ -122,17 +122,17 @@
               <a href="#!">Image Options</a>
             </div>						
             <div class="collapsible-body">
-              <input name="config__image" type="radio" id="config__image_radio--none" checked />
+              <input name="config__image" type="radio" id="config__image_radio--none" checked value="0"/>
               <label for="config__image_radio--none">None</label>						
               <br>
 
-              <input name="config__image" type="radio" id="config__image_radio--url" />
+              <input name="config__image" type="radio" id="config__image_radio--url" value="1"/>
               <label for="config__image_radio--url">Url</label>
 
               <div class="input-field">
                 <input placeholder="" id="first_name" type="text" class="validate" disabled>
               </div>
-              <input name="config__image" type="radio" id="config__image_radio--upload" />
+              <input name="config__image" type="radio" id="config__image_radio--upload" value="2"/>
               <label for="config__image_radio--upload">Upload</label>
 
               <div class="file-field input-field">
@@ -180,6 +180,15 @@
               <div>
                 <h6 class="grey-text">Column preference</h6>
               </div>
+ 
+              <div class="switch config__toggle_column">
+                <label>
+                  random
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                  choose
+                </label>
+              </div>
               <div class="input-field ">
                 <p class="range-field">
                   <div id="config__column_preference"></div>
@@ -194,7 +203,7 @@
               <a href="#!">Choose Solutions</a>
             </div>						
             <div class="collapsible-body config__tabs">
-              <ul class="tabs">									
+              <ul class="tabs">
               </ul>
             </div>
           </li>
@@ -236,7 +245,7 @@
 		<script src="js/http.js"></script>
 
 		<script>
-      var dispatch = d3.dispatch("load","config__solution","config__language");
+      var dispatch = d3.dispatch("load","config__solution","config__language","config__image","config__toggle_column");
       
       var puzzle = {
         "solution":"",
@@ -253,10 +262,17 @@
       var pairs = [];
 
     	dispatch.on("load.config", function(puzzle) {
+        d3.select('#config__column_preference')
+          .style('opacity', '.5')
+          .attr('disabled', 'disabled');
         d3.select(".config__solution")
           .on("input", function() { dispatch.call("config__solution", this, this.value); });
         d3.select(".config__language")
           .on("change", function() { dispatch.call("config__language", this, this.value); });
+        d3.selectAll('.config__toggle_column input')
+          .on("change", function() { dispatch.call("config__toggle_column", this, this.value); });
+        d3.selectAll('input[name="config__image"]')
+          .on("change", function() { dispatch.call("config__image", this, this.value); });
       });
       
       dispatch.on("config__solution", function() {
@@ -292,6 +308,45 @@
           .text(state);
       });
       
+      dispatch.on("config__toggle_column", function(state) {
+        e = d3.select('#config__column_preference');
+        if ( this.checked ) {
+          e.attr('disabled', null)
+            .style('opacity', '1');
+        } else {
+          e.attr('disabled', 'disabled')
+            .style('opacity', '.5');
+        }
+      });
+      dispatch.on("config__image", function(state) {        
+        switch (state) {
+          case '0':
+            d3.select('#config__image_radio--upload ~ .input-field .btn')
+              .attr('disabled', 'disabled')
+              .attr('required', null);
+            d3.select('#config__image_radio--url ~ .input-field input')
+              .attr('disabled', 'disabled')
+              .attr('required', null);
+            break;
+          case '1':
+            d3.select('#config__image_radio--upload ~ .input-field .btn')
+              .attr('disabled', 'disabled')
+              .attr('required', null);
+            d3.select('#config__image_radio--url ~ .input-field input')
+              .attr('disabled', null)
+              .attr('required', 'required');
+            break;
+          case '2':
+            d3.select('#config__image_radio--upload ~ .input-field .btn')
+              .attr('disabled', null)
+              .attr('required', 'required');
+            d3.select('#config__image_radio--url ~ .input-field input')
+              .attr('disabled', 'disabled')
+              .attr('required', null);
+            break;
+        }
+      });
+      
 			$( document ).ready(function() {
 				$('.modal-trigger').leanModal();
 				$('.collapsible').collapsible();
@@ -300,6 +355,7 @@
 
       var slider_number_of_characters = document.getElementById('config__number_of_characters');
       var slider_column_preference = document.getElementById('config__column_preference');
+      
       noUiSlider.create(slider_number_of_characters, {
         start: [3, 12],
         connect: true,
@@ -312,7 +368,7 @@
         range: {
           'min': 3,
           'max': 12
-        },
+        }
       });	
 
       noUiSlider.create(slider_column_preference, {
@@ -325,7 +381,7 @@
         range: {
           'min': 3,
           'max': 12
-        },
+        }
       });
     
       slider_number_of_characters.noUiSlider.on('update', function(values,handle) {
