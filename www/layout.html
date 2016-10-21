@@ -45,8 +45,8 @@
 
 			
 			
-		nav, main, footer {
-      padding-left: 300px;
+		header, main, footer {
+      margin-left: 300px;
     }
   
  
@@ -60,10 +60,7 @@
 		line-height: initial;
 	}
   
-  .side-nav {
-    margin-top:64px;
-  }
-	
+
 	.side-nav .collapsible-header,.side-nav.fixed .collapsible-header {
 		padding: 0;
 	}
@@ -82,7 +79,7 @@
     <header>
       <nav>
         <div class="nav-wrapper container">
-          <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Synonyms</a>
+          <a href="#!" class="brand-logo">Name in Synonym</a>
           <ul class="right hide-on-med-and-down">
             <li><a href="#lookup" class="modal-trigger"><i class="material-icons">search</i></a></li>
             <li><a href="#!" onclick="window.print()"><i class="material-icons">print</i></a></li>
@@ -94,6 +91,11 @@
     
     <!-- config -->
     <ul id="slide-out" class="side-nav fixed">
+      <li class='logo'>
+        <a id="logo-container" href="#!" class="brand-logo" style='height:64px'>
+          <img class="responsive-img" src="img/silcHeader.png" style="max-height:100%">
+        </a>
+      </li>
       <li>
         <ul class="collapsible">
           <li>
@@ -130,7 +132,7 @@
               <label for="config__image_radio--url">Url</label>
 
               <div class="input-field">
-                <input placeholder="" id="first_name" type="text" class="validate" disabled>
+                <input placeholder="" type="url" class="validate" disabled>
               </div>
               <input name="config__image" type="radio" id="config__image_radio--upload" value="2"/>
               <label for="config__image_radio--upload">Upload</label>
@@ -221,6 +223,8 @@
         </div>
         <div class="display__language">
         </div>
+        <div class="display__image">
+        </div>
       </div>
     </main>   
     
@@ -245,7 +249,7 @@
 		<script src="js/http.js"></script>
 
 		<script>
-      var dispatch = d3.dispatch("load","config__solution","config__language","config__image","config__toggle_column");
+      var dispatch = d3.dispatch("load","config__image_load","config__solution","config__language","config__image","config__toggle_column");
       
       var puzzle = {
         "solution":"",
@@ -273,6 +277,10 @@
           .on("change", function() { dispatch.call("config__toggle_column", this, this.value); });
         d3.selectAll('input[name="config__image"]')
           .on("change", function() { dispatch.call("config__image", this, this.value); });
+        d3.select('#config__image_radio--url ~ .input-field input')
+          .on("change", function() { dispatch.call("config__image_load", this, this.value); });
+        d3.select('#config__image_radio--upload ~ .input-field input')
+          .on("change", function() { dispatch.call("config__image_load", this, window.URL.createObjectURL($('#config__image_radio--upload ~ .input-field input').get(0).files[0]));});
       });
       
       dispatch.on("config__solution", function() {
@@ -318,7 +326,17 @@
             .style('opacity', '.5');
         }
       });
-      dispatch.on("config__image", function(state) {        
+      dispatch.on("config__image_load", function(state) {
+        d3.select('.display__image img')
+          .remove();
+        d3.select('.display__image') 
+          .append("img")
+          .attr("src",state);
+      });
+      
+      dispatch.on("config__image", function(state) {    
+        d3.select('.display__image img')
+          .remove()      
         switch (state) {
           case '0':
             d3.select('#config__image_radio--upload ~ .input-field .btn')
@@ -335,6 +353,7 @@
             d3.select('#config__image_radio--url ~ .input-field input')
               .attr('disabled', null)
               .attr('required', 'required');
+            dispatch.call("config__image_load", this, d3.select('#config__image_radio--url ~ .input-field input').property("value"));
             break;
           case '2':
             d3.select('#config__image_radio--upload ~ .input-field .btn')
@@ -343,6 +362,7 @@
             d3.select('#config__image_radio--url ~ .input-field input')
               .attr('disabled', 'disabled')
               .attr('required', null);
+            dispatch.call("config__image_load", this, window.URL.createObjectURL($('#config__image_radio--upload ~ .input-field input').get(0).files[0]));
             break;
         }
       });
