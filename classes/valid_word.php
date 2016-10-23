@@ -1,10 +1,11 @@
 <?php
 
-class valid_string implements i_valid {
+class valid_word implements i_valid {
   
   private $data;
   
   function __construct( string $data ) {
+    if (!preg_match('/^(\p{Telugu}+|\p{Latin}+)$/u',$data)) throw new invalidArgumentException();
     $this->data = $data;
   }
   
@@ -14,7 +15,8 @@ class valid_string implements i_valid {
    * @return 	validated data
    */
   public function get() {
-    return $data;
+    return $this->data;
   }
-  
 }
+
+?>
