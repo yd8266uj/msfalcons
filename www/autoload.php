@@ -1,5 +1,7 @@
 <?php
 
+require_once '../classes/word_processor.php';
+
 spl_autoload_register(function ($name) {
 	$class_name = strtolower($name);
   if( preg_match('/^i_*/',$name)) include "../interfaces/$name.php";

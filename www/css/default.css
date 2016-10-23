@@ -1,3 +1,62 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  
 
 
-/*# sourceMappingURL=default.css.map */
+  main {
+    flex: 1 0 auto;
+  }
+
+			
+			.modal.bottom-sheet {
+				max-height: 67vh;
+			}
+
+      .tabs .tab {
+        min-width: initial;
+      }
+      
+      .side-nav .collapsible-body li a, .side-nav.fixed .collapsible-body li a {
+        padding: initial;
+      }
+			
+			.collapsible {
+				box-shadow:none;
+			}
+			
+			.collapsible, .collapsible-body, .collapsible-header {
+				border: none;
+			}
+
+			
+			
+		header, main, footer {
+      margin-left: 300px;
+    }
+  
+ 
+    @media only screen and (max-width : 992px) {
+      header, main, footer {
+        padding-left: 0;
+      }
+    }
+	
+	.side-nav li {
+		line-height: initial;
+	}
+  
+
+	.side-nav .collapsible-header,.side-nav.fixed .collapsible-header {
+		padding: 0;
+	}
+	
+	.side-nav .collapsible-body {
+		padding: 16px 32px;
+	}
+	
+	.side-nav.fixed .collapsible-body {
+		padding: 16px;
+	}
