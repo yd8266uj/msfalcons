@@ -1,27 +1,63 @@
-var dispatch = d3.dispatch("load","config__image_load","config__solution","config__language","config__image","config__toggle_column");
-      
-      var puzzle = {
-        "solution":"",
-        "language":"",
-        "image":""
-      };
-      
-      var pair = {
-        "column":"",
-        "clue":"",
-        "synonym":""
-      }
-      
-      var pairs = [];
+var dispatch = d3.dispatch(
+  "load",
+  "config__solution",
+  "config__language",
+  "config__image_load",
+  "config__image",
+  "config__clue",
+  "config__synonym",
+  "config__toggle_column");
 
-    	dispatch.on("load.config", function(puzzle) {
+      
+var sample = {
+"a": ["accurate","after","agent","alert","ago","aardvark"],
+"b": ["bag","banker","behave","biodiversity","beyond"],
+"c": [],
+"d": [],
+"e": [],
+"f": [],
+"g": [],
+"h": [],
+"i": [],
+"j": [],
+"k": [],
+"l": [],
+"m": [],
+"n": [],
+"o": [],
+"p": [],
+"q": [],
+"r": ["rarely","radiation","recycle","release","rhyme"],
+"s": ["scale","search","shadow","space","ship"],
+"t": [],
+"u": [],
+"v": [],
+"w": [],
+"x": [],
+"y": [],
+"z": [],
+};
+
+function shuffle (array) {
+  var i = 0
+    , j = 0
+    , temp = null
+
+  for (i = array.length - 1; i > 0; i -= 1) {
+    j = Math.floor(Math.random() * (i + 1))
+    temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+}
+    	dispatch.on("load", function(puzzle) {
         d3.select('#config__column_preference')
           .style('opacity', '.5')
           .attr('disabled', 'disabled');
         d3.select(".config__solution")
           .on("input", function() { dispatch.call("config__solution", this, this.value); });
         d3.select(".config__language")
-          .on("change", function() { dispatch.call("config__language", this, this.value); });
+          .on("change", function() { d3.select(".display__language").text(this.value); });
         d3.selectAll('.config__toggle_column input')
           .on("change", function() { dispatch.call("config__toggle_column", this, this.value); });
         d3.selectAll('input[name="config__image"]')
@@ -38,32 +74,76 @@ var dispatch = d3.dispatch("load","config__image_load","config__solution","confi
           .text(state);
         d3.selectAll(".config__tabs .tabs .tab").remove();
         d3.selectAll(".config__tabs div").remove();
-        state.split("").forEach( function(c,i) { 
-          console.log(c);
+        var puzzle_lines = d3.select(".display__puzzle-lines");
+        puzzle_lines.selectAll("li").remove();
+        state.split("").forEach( function(c,i) {
+          var puzzle_line = puzzle_lines.append("li")
+            .attr("class","display__puzzle-line puzzle-line puzzle-line--tab-"+i);
+          puzzle_line.append("div")
+            .attr("class","puzzle-line__clue");
+          puzzle_line.append("div")
+            .attr("class","puzzle-line__synonym");
+          
           var li = d3.select(".config__tabs .tabs")
             .append("li")
-              .attr("class","tab");
+            .attr("class","tab");
           li.append("a")
             .attr("href","#tab-"+i)
             .text(c);
           var tab = d3.selectAll(".config__tabs")
             .append("div")
-              .attr("id","tab-"+i)
-              .attr("style","display: none;")
-          tab.append("select")
-            .attr("class","browser-default");
-          tab.append("select")
-            .attr("class","browser-default");
+            .attr("id","tab-"+i)
+            .attr("style","display: none;");          
+          if(sample[c].length) {
+          var select_1 = tab.append("select")
+            .attr("class","browser-default")
+            .on("change", function() { dispatch.call("config__synonym", this, this.value); });//
+            shuffle(sample[c]);
+            sample[c].forEach( function(a,i) {
+              select_1.append("option") 
+                .attr("value",a)
+                .text(a);
+            });   
+            select_1.select("option")
+              .attr("selected");
+            dispatch.call("config__synonym", this, select_1.property("value"));
+          } else {
+            tab.append("p").text("no results");
+          }
+          
         });        
         
         $('.config__tabs .tabs').tabs();
         $('select').material_select();
       });      
       
-      dispatch.on("config__language", function(state) {
-        d3.select(".display__language")
-          .text(state);
+      dispatch.on("config__synonym", function(state) {
+        tab = d3.select(this.parentNode);
+        tab.select("select:nth-of-type(2)").remove();
+        tab.selectAll("p").remove();
+        var asample = sample[state.charAt(1)];
+        if(asample.length) {
+            shuffle(asample);
+            var select = tab.append("select")
+              .attr("class","browser-default")
+              .on("change", function() { 
+                d3.select(".puzzle-line--"+tab.attr("id")+" .puzzle-line__clue")
+                  .text(select.property("value"));
+                d3.select(".puzzle-line--"+tab.attr("id")+" .puzzle-line__synonym")
+                  .text(tab.select("select").property("value"));
+              });
+            asample.forEach( function(a,i) {
+              select.append("option") 
+                .attr("value",a)
+                .text(a);
+            });                         
+          } else {
+            tab.append("p")
+              .text("no solution");
+          }  
+        
       });
+      
       
       dispatch.on("config__toggle_column", function(state) {
         e = d3.select('#config__column_preference');
@@ -119,7 +199,7 @@ var dispatch = d3.dispatch("load","config__image_load","config__solution","confi
 			$( document ).ready(function() {
 				$('.modal-trigger').leanModal();
 				$('.collapsible').collapsible();
-        dispatch.call("load", this, puzzle);
+        dispatch.call("load", this, this);
 			});
 
       var slider_number_of_characters = document.getElementById('config__number_of_characters');
