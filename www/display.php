@@ -1,38 +1,15 @@
-<main class="indigo lighten-5">
-  <div class="display">
-    <div class="display__solution">
+<main class="indigo lighten-5" style="padding-top: 64px">
+  <div class="display row container section white z-depth-1 show-on-print" style="min-height:60vh">
+    <h4 class="display__solution col s12"></h4>
+    <div class="display__image responsive-img valign-wrapper col l5 s12" style="padding:2em"></div>
+
+    <div class="row flow-text col l7 s12">
+      <div class="col s6">clue</div>
+      <div class="col s6">synonym</div>
     </div>
-    <div class="display__language">
-    </div>
-    <div class="display__image">
-    </div>
-    
-    <ul class="display__puzzle-lines">
+    <ul class="display__puzzle-lines flow-text col l7 s12" style="height: 100%">
     <!-- li for each $puzzle_lines -->
-      <li class="display__puzzle-line puzzle-line puzzle-line--tab-0">
-        <!-- should be replaced by $pair->to_html() -->
-        <div class="puzzle-line__clue">
-        
-        </div>
-        <div class="puzzle-line__synonym puzzle-line__synonym--offset-0">
-        </div>
-      </li>
-      <li class="display__puzzle-line puzzle-line puzzle-line--tab-1">
-        <!-- should be replaced by $pair->to_html() -->
-        <div class="puzzle-line__clue">
-        
-        </div>
-        <div class="puzzle-line__synonym puzzle-line__synonym--offset-0">
-        </div>
-      </li>
-      <li class="display__puzzle-line puzzle-line puzzle-line--tab-2">
-        <!-- should be replaced by $pair->to_html() -->
-        <div class="puzzle-line__clue">
-        
-        </div>
-        <div class="puzzle-line__synonym puzzle-line__synonym--offset-0">
-        </div>
-      </li>
+      
     </ul>
   </div>
 </main>   

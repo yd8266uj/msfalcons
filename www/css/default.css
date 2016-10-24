@@ -2,9 +2,27 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    counter-reset: clue;
   }
   
+.display__solution::before {
+  color: gray;
+  content: "Puzzle Solution: ";
+  
+}
 
+.display__image {
+  display:none;
+}
+.puzzle-line {
+  position: relative
+}
+.puzzle-line__clue::before {
+  counter-increment: clue;
+  color: gray;
+  opacity: 1;
+  content: counter(clue) "   ";
+}
 
   main {
     flex: 1 0 auto;
@@ -40,7 +58,7 @@ body {
  
     @media only screen and (max-width : 992px) {
       header, main, footer {
-        padding-left: 0;
+        margin-left: 0;
       }
     }
 	
@@ -60,3 +78,19 @@ body {
 	.side-nav.fixed .collapsible-body {
 		padding: 16px;
 	}
+  
+  
+  @media print {
+    .show-on-print {
+      position:absolute;
+      left:0;
+      right:0;
+      top:0;
+      box-shadow:none;
+    }
+    
+    .side-nav,header {
+      display:none;
+    }
+    
+  }
