@@ -1,3 +1,96 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    counter-reset: clue;
+  }
+  
+.display__solution::before {
+  color: gray;
+  content: "Puzzle Solution: ";
+  
+}
 
+.display__image {
+  display:none;
+}
+.puzzle-line {
+  position: relative
+}
+.puzzle-line__clue::before {
+  counter-increment: clue;
+  color: gray;
+  opacity: 1;
+  content: counter(clue) "   ";
+}
 
-/*# sourceMappingURL=default.css.map */
+  main {
+    flex: 1 0 auto;
+  }
+
+			
+			.modal.bottom-sheet {
+				max-height: 67vh;
+			}
+
+      .tabs .tab {
+        min-width: initial;
+      }
+      
+      .side-nav .collapsible-body li a, .side-nav.fixed .collapsible-body li a {
+        padding: initial;
+      }
+			
+			.collapsible {
+				box-shadow:none;
+			}
+			
+			.collapsible, .collapsible-body, .collapsible-header {
+				border: none;
+			}
+
+			
+			
+		header, main, footer {
+      margin-left: 300px;
+    }
+  
+ 
+    @media only screen and (max-width : 992px) {
+      header, main, footer {
+        margin-left: 0;
+      }
+    }
+	
+	.side-nav li {
+		line-height: initial;
+	}
+  
+
+	.side-nav .collapsible-header,.side-nav.fixed .collapsible-header {
+		padding: 0;
+	}
+	
+	.side-nav .collapsible-body {
+		padding: 16px 32px;
+	}
+	
+	.side-nav.fixed .collapsible-body {
+		padding: 16px;
+	}
+  
+  
+  @media print {
+    .show-on-print {
+      position:absolute;
+      left:0;
+      right:0;
+      top:0;
+      box-shadow:none;
+    }
+    
+    .side-nav,header {
+      display:none;
+    }
+    
+  }
