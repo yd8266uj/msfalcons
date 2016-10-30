@@ -6,12 +6,17 @@ CREATE DATABASE name_in_synonym
 
 USE name_in_synonym;
 
+CREATE TABLE languages(
+	language_id INT AUTO_INCREMENT PRIMARY KEY ,
+	language_name VARCHAR(255) UNIQUE
+) ENGINE = INNODB;
+
 CREATE table words(
 	word_id INT AUTO_INCREMENT PRIMARY KEY,
 	word VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-	language ENUM('english', 'hindi', 'telugu') NOT NULL,
-	UNIQUE (word, language),
-	occurance INT UNSIGNED DEFAULT 0
+	language_id INT NOT NULL,
+	UNIQUE (word, language_id),
+	FOREIGN KEY (language_id) REFERENCES languages(language_id)
 ) ENGINE = INNODB;
 
 CREATE TABLE pair (
@@ -29,7 +34,8 @@ CREATE VIEW pairs AS
 		w1.word_id AS key_id,
 		w2.word AS value_name,
 		w2.word_id AS value_id,
-		w1.language,0 AS flip
+		w1.language_id,
+		0 AS flip
 	FROM pair p
 		INNER JOIN words w1 ON p.word_1 = w1.word_id
 		INNER JOIN words w2 ON p.word_2 = w2.word_id
@@ -39,12 +45,13 @@ CREATE VIEW pairs AS
 		w2.word_id,
 		w1.word,
 		w1.word_id,
-		w1.language,1
+		w1.language_id,
+		1 AS flip
 	FROM pair p
 		INNER JOIN words w1 ON p.word_1 = w1.word_id
 		INNER JOIN words w2 ON p.word_2 = w2.word_id;
 
-CREATE TABLE image(
+CREATE TABLE images(
 	image_id INT AUTO_INCREMENT PRIMARY KEY,
 	image_type INT NOT NULL,
 	image_uri TEXT NOT NULL
@@ -55,7 +62,7 @@ CREATE TABLE puzzle (
 	puzzle_solution VARCHAR(255) NOT NULL,
 	puzzle_appearance INT NOT NULL,
 	image_id INT,
-	FOREIGN KEY (image_id) REFERENCES image(image_id)
+	FOREIGN KEY (image_id) REFERENCES images(image_id)
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle_line (
@@ -71,6 +78,6 @@ CREATE TABLE caption (
 	caption_id int AUTO_INCREMENT PRIMARY KEY,
 	image_id int,
 	word VARCHAR(255),
-	FOREIGN KEY (image_id) REFERENCES image(image_id),
+	FOREIGN KEY (image_id) REFERENCES images(image_id),
 	FOREIGN KEY (word) REFERENCES words(word)
 ) ENGINE=INNODB;
