@@ -1,4 +1,4 @@
-USE name_in_synonym;
+USE ics499fa160124;
 
 INSERT INTO languages(language_name) VALUE ('english');
 INSERT INTO languages(language_name) VALUE ('telugu');
