@@ -68,12 +68,12 @@ function shuffle (array) {
             .attr("class","puzzle-line__clue col s12 m6");
           puzzle_line.append("div")
             .attr("class","puzzle-line__synonym col s12 m6");
-          var url = 'http://localhost/msfalcons/api.php?format=html&type=word&char='+c+'&pos='+(slider_column_preference.noUiSlider.get()-1);         
+          var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=word&char='+c+'&pos='+(slider_column_preference.noUiSlider.get()-1);         
           d3.html(url,function(data) {          
             d3.select(data);              
             tab.node().appendChild(data);  
             var select = d3.select("#tab-"+i+" select:nth-of-type(1)").on("change", function() {
-              var url = 'http://localhost/msfalcons/api.php?format=html&type=pair&id='+this.value;
+              var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=pair&id='+this.value;
               d3.html(url,function(data) {
                 d3.select("#tab-"+i+" select:nth-of-type(2)").remove();
                 d3.select(data);              
