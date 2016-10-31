@@ -11,7 +11,7 @@ class pair implements i_pair {
    * 
    * @return string html formatted string
    */
-  public static function to_html( array $print_array ) : string {
+  public static function to_html( array $print_array ) {
     shuffle($print_array);
     $out = "<select class='browser-default'>";
     foreach( $print_array as $row ) {
@@ -26,7 +26,7 @@ class pair implements i_pair {
    * 
    * @return string json formatted string
    */
-  public static function to_json( array $print_array ) : string {
+  public static function to_json( array $print_array ) {
     shuffle($print_array);
     return json_encode($print_array,JSON_PRETTY_PRINT);
   }
@@ -39,7 +39,7 @@ class pair implements i_pair {
    * @throws invalidTypeException on invalid parameter type, ie. not type pair
    * @throws PDOException something bad happened with insertion
    */
-  public static function create( i_table $instance, string $language ) : void {
+  public static function create( i_table $instance, string $language ) {
   
   }
   
@@ -48,7 +48,7 @@ class pair implements i_pair {
    *
    * @return self[] array of instantiated self objects
    */
-  public static function read_list( string $language ) : array {
+  public static function read_list( string $language ) {
   
   }
 
@@ -59,7 +59,7 @@ class pair implements i_pair {
    *
    * @return Puzzle the specified Puzzle object
    */
-  public static function read_show( int $id ) : i_table {
+  public static function read_show( int $id ) {
   
   }
   
@@ -71,7 +71,7 @@ class pair implements i_pair {
    * 
    * @return Pair[] array containing matched Pairs
    */
-  public static function read_find( int $id ) : array {
+  public static function read_find( $id ) {
     $query = database::get_instance()->prepare("SELECT value_name,pair_id,flip
       FROM pairs AS p
       WHERE key_id = :id");

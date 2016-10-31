@@ -11,7 +11,7 @@ class word implements i_word {
    * 
    * @return string html formatted string
    */
-  public static function to_html( array $print_array ) : string {
+  public static function to_html( array $print_array ) {
     shuffle($print_array);
     $out = "<select class='browser-default'>";
     foreach( $print_array as $row ) {
@@ -26,7 +26,7 @@ class word implements i_word {
    * 
    * @return string json formatted string
    */
-  public static function to_json( array $print_array ) : string {
+  public static function to_json( array $print_array ) {
     shuffle($print_array);
     return json_encode($print_array,JSON_PRETTY_PRINT);
   }
@@ -36,7 +36,7 @@ class word implements i_word {
    *
    * @param self $instance
    */
-  public static function create( i_table $instance, string $language ) : void {
+  public static function create( i_table $instance, string $language ) {
     $query = database::get_instance()->prepare("INSERT INTO words (word,language_id) VALUES (:word,(SELECT language_id FROM languages WHERE language_name=:language))");
     $query->bindValue(':word',$word);
     $query->bindValue(':language',$language);
@@ -48,7 +48,7 @@ class word implements i_word {
    *
    * @return self[] array of instantiated self objects
    */
-  public static function read_list( string $language ) : array {
+  public static function read_list( string $language ) {
   }
 
   /**
@@ -58,7 +58,7 @@ class word implements i_word {
    *
    * @return Puzzle the specified Puzzle object
    */
-  public static function read_show( int $id ) : i_table {
+  public static function read_show( int $id ) {
   }
   
   /**
@@ -69,7 +69,7 @@ class word implements i_word {
    * 
    * @return word[] array containing matched Pairs
    */
-  public static function read_find( int $position = null, string $match, string $language ) : array {
+  public static function read_find( int $position = null, $match, $language ) {
     if( is_null($position) ) {
       $query = database::get_instance()->prepare("SELECT *
           FROM words w
