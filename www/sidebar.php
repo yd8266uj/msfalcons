@@ -9,7 +9,7 @@
     <ul class="collapsible">
       <li>
         <div class="collapsible-header active">
-          <a href="#!">Basic Options</a>
+          <a href="#!">Basic Options<i class="material-icons hide red-text text-lighten-2 right tooltipped" data-position="top" data-delay="50" data-tooltip="Editing these values will clear chosen solutions">report_problem</i></a>
         </div>
         <!-- __solution -->	
         <div class="collapsible-body">			
@@ -19,8 +19,8 @@
           </div>
           <!-- __language -->
           <select name="language" class="config__language browser-default">
-            <option value="" disabled selected>Choose your option</option>
-            <option value="english">English</option>
+            <option value="" disabled>Choose a language</option>
+            <option value="english" selected>English</option>
             <option value="telugu">Telugu</option>
           </select>									
     
@@ -60,10 +60,11 @@
       <!-- __format -->
       <li>
         <div class="collapsible-header">
-          <a href="#!">Format Options</a>
-        </div>						
-        <div class="collapsible-body">		
+          <a href="#!">Format Options<i class="material-icons hide red-text text-lighten-2 right tooltipped" data-position="top" data-delay="50" data-tooltip="Editing these values will clear chosen solutions">report_problem</i></a>
           
+        </div>
+        <div class="collapsible-body">		
+         
           <div>
             <h6 class="grey-text">Align Characters</h6>
           </div>
