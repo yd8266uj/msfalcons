@@ -9,7 +9,7 @@ interface i_pair extends i_print, i_table {
    * 
    * @return Pair[] array containing matched Pairs
    */
-  public static function read_find( valid_int $position, valid_string $match, valid_language $language ) : array;
+  public static function read_find( $id );
 }
 
 ?>

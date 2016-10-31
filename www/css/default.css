@@ -15,7 +15,8 @@ body {
   display:none;
 }
 .puzzle-line {
-  position: relative
+  position: relative;
+  
 }
 .puzzle-line__clue::before {
   counter-increment: clue;
@@ -24,6 +25,9 @@ body {
   content: counter(clue) "   ";
 }
 
+.puzzle-line__synonym {
+  font-family: 'Roboto Mono', monospace;
+}
   main {
     flex: 1 0 auto;
   }

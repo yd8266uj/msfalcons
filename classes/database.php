@@ -8,7 +8,7 @@ class database implements i_database {
    * Restrict access to __construct() to prevent creating new objects
    */
 	private function __construct() {
-		self::$instance = new PDO( Strings::DATABASE_CLASS__DATABASE_INFO, Strings::DATABASE_CLASS__DATABASE_USER, Strings::DATABASE_CLASS__DATABASE_PASSWORD );
+		self::$instance = new PDO( strings::DATABASE_CLASS__DATABASE_INFO, strings::DATABASE_CLASS__DATABASE_USER, strings::DATABASE_CLASS__DATABASE_PASSWORD );
 		self::$instance->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	}
   

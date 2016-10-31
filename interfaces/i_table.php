@@ -6,14 +6,14 @@ interface i_table {
    *
    * @param self $instance
    */
-  public static function create( self $instance, valid_language $language ) : void;
+  public static function create( self $instance, string $language );
 
   /**
    * List all available self in database
    *
    * @return self[] array of instantiated self objects
    */
-  public static function read_list( valid_language $language ) : array;
+  public static function read_list( string $language );
 
   /**
    * Show instance of self in database specified by $puzzle_id
@@ -22,7 +22,7 @@ interface i_table {
    *
    * @return Puzzle the specified Puzzle object
    */
-  public static function read_show( valid_int $id ) : i_table;
+  public static function read_show( int $id );
 }
 
 ?>

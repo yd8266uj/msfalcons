@@ -6,14 +6,14 @@ interface i_print {
    * 
    * @return string html formatted string
    */
-  public function to_html() : string;
+  public static function to_html( array $print_array );
 
   /**
    * Returns object as json formatted string
    * 
    * @return string json formatted string
    */
-  public function to_json() : string;
+  public static function to_json( array $print_array );
 }
 
 ?>

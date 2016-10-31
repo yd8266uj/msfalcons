@@ -9,7 +9,7 @@
     </div>
     <ul class="display__puzzle-lines flow-text col l7 s12" style="height: 100%">
     <!-- li for each $puzzle_lines -->
-      
+    
     </ul>
   </div>
 </main>   

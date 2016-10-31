@@ -9,34 +9,6 @@ var dispatch = d3.dispatch(
   "config__toggle_column");
 
       
-var sample = {
-"a": ["accurate","after","agent","alert","ago","aardvark"],
-"b": ["bag","banker","behave","biodiversity","beyond"],
-"c": ["cookie","cat"],
-"d": ["dog","dragon"],
-"e": ["eel","exhausted"],
-"f": ["frame","floating"],
-"g": ["gorilla","grapes"],
-"h": ["helium","hydrophobic"],
-"i": ["intense","iguana"],
-"j": ["jump","jar"],
-"k": ["koala","kite"],
-"l": ["lemon","lead"],
-"m": ["melon","monkey"],
-"n": ["narwhal","nickle"],
-"o": ["ocelot","origami"],
-"p": ["pencil","push"],
-"q": ["quay","query"],
-"r": ["rarely","radiation","recycle","release","rhyme"],
-"s": ["scale","search","shadow","space","ship"],
-"t": ["tackle","taco"],
-"u": ["unary","update"],
-"v": ["value","vendor"],
-"w": ["watch","while","window"],
-"x": ["xylophone"],
-"y": ["yelp","yaw","year"],
-"z": ["zero","zoo"],
-};
 
 function shuffle (array) {
   var i = 0
@@ -55,7 +27,7 @@ function shuffle (array) {
           .style('opacity', '.5')
           .attr('disabled', 'disabled');
         d3.select(".config__solution")
-          .on("input", function() { dispatch.call("config__solution", this, this.value); });
+          .on("input", debounce( function() { dispatch.call("config__solution", this, this.value) },1000 ));
         d3.select(".config__language")
           .on("change", function() { d3.select(".display__language").text(this.value); });
         d3.selectAll('.config__toggle_column input')
@@ -69,6 +41,7 @@ function shuffle (array) {
       });
       
       dispatch.on("config__solution", function() {
+        
         var state = d3.select(".config__solution").property("value");
         d3.select(".display__solution")
           .text(state);
@@ -88,31 +61,42 @@ function shuffle (array) {
             .append("div")
             .attr("id","tab-"+i)
             .attr("style","display: none;");          
-          if(sample[c].length) {
-          var select_1 = tab.append("select")
-            .attr("class","browser-default")
-            .on("change", function() { dispatch.call("config__synonym", this, this.value); });//
-            shuffle(sample[c]);
-            select_1.append("option") 
-              .attr("disabled","disabled")
-              .text("select word");
-            sample[c].forEach( function(a,i) {
-              select_1.append("option") 
-                .attr("value",a)
-                .text(a);
-            });   
-            dispatch.call("config__synonym", this, select_1.property("value"));
-          } else {
-            tab.append("p").text("no results");
-          }
-          
+            
           var puzzle_line = puzzle_lines.append("li")
             .attr("class","display__puzzle-line row puzzle-line puzzle-line--tab-"+i);
           puzzle_line.append("div")
             .attr("class","puzzle-line__clue col s12 m6");
           puzzle_line.append("div")
             .attr("class","puzzle-line__synonym col s12 m6");
-          
+          var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=word&char='+c+'&pos='+(slider_column_preference.noUiSlider.get()-1);         
+          d3.html(url,function(data) {          
+            d3.select(data);              
+            tab.node().appendChild(data);  
+            var select = d3.select("#tab-"+i+" select:nth-of-type(1)").on("change", function() {
+              var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=pair&id='+this.value;
+              d3.html(url,function(data) {
+                d3.select("#tab-"+i+" select:nth-of-type(2)").remove();
+                d3.select(data);              
+                tab.node().appendChild(data);  
+                var select = d3.select("#tab-"+i+" select:nth-of-type(2)").on("change", function() {                    
+                  d3.selectAll(".tooltipped").classed("hide",false);
+                  d3.select(".puzzle-line--"+tab.attr("id")+" .puzzle-line__clue")
+                    .style("opacity","0")
+                    .text(d3.select("select option[value='"+d3.select(this).property("value")+"']").text())
+                    .transition()
+                    .style("opacity","1");
+                    console.log();
+                  d3.select(".puzzle-line--"+tab.attr("id")+" .puzzle-line__synonym")
+                    .style("opacity","0")
+                    .text(tab.select("select option[value='"+tab.select("select").property("value")+"']").text())
+                    .transition()
+                    .style("opacity","1");
+                })
+                select.dispatch("change");
+              });
+            })
+            select.dispatch("change");
+          });
         });        
         
         $('.config__tabs .tabs').tabs();
@@ -123,13 +107,10 @@ function shuffle (array) {
       });      
       
       dispatch.on("config__synonym", function(state) {
+        
         tab = d3.select(this.parentNode);
         tab.select("select:nth-of-type(2)").remove();
-        tab.selectAll("p").remove();
-        
-        var asample = sample[state.charAt(1)];
-        if(asample.length) {
-          shuffle(asample);
+
           var select = tab.append("select")
             .attr("class","browser-default")
             .on("change", function() { 
@@ -152,10 +133,7 @@ function shuffle (array) {
               .attr("value",a)
               .text(a);
           });
-        } else {
-          tab.append("p")
-            .text("no solution");
-        }          
+       
       });      
       
       dispatch.on("config__toggle_column", function(state) {
@@ -250,17 +228,33 @@ function shuffle (array) {
           decimals: 0
         }),
         range: {
-          'min': 3,
+          'min': 1,
           'max': 12
         }
       });
-    
+      
+      slider_column_preference.noUiSlider.on('update', debounce(function() {dispatch.call("config__solution", this, this.value);},1000))
       slider_number_of_characters.noUiSlider.on('update', function(values,handle) {
         slider_column_preference.noUiSlider.updateOptions({
           range: {
-            'min': parseInt(values[0]),
+            'min': 1,
             'max': parseInt(values[1])
           }
         });
-        dispatch.call("config__solution", this, this.value);
       });
+      
+      function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      };
+      

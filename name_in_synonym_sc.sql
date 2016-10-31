@@ -1,10 +1,4 @@
-DROP DATABASE IF EXISTS name_in_synonym;
-
-CREATE DATABASE name_in_synonym
-	DEFAULT CHARACTER SET utf8
-	DEFAULT COLLATE utf8_unicode_ci;
-
-USE name_in_synonym;
+USE ics499fa160124;
 
 CREATE TABLE languages(
 	language_id INT AUTO_INCREMENT PRIMARY KEY,
