@@ -69,7 +69,7 @@ class word implements i_word {
    * 
    * @return word[] array containing matched Pairs
    */
-  public static function read_find( int $position = null, $match, $language ) {
+  public static function read_find( $position = null, $match, $language ) {
     if( is_null($position) ) {
       $query = database::get_instance()->prepare("SELECT *
           FROM words w
