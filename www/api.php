@@ -2,8 +2,7 @@
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
-  include 'autoload.php';
-  
+  include 'autoload.php';  
   
   switch(@$_POST['type']) {
     case 'word':  
@@ -32,11 +31,8 @@
       break;
   }
   
-  if (@$_GET['format']=='html') {
-  } else {
-    header('Content-Type:application/json;charset=utf-8');
-  }
-  
+  header('Content-Type:application/json;charset=utf-8');
+
   switch(@$_GET['type']) {
     case 'word':
       $position = @$_GET['pos'];
