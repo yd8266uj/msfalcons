@@ -52,6 +52,7 @@ function shuffle (array) {
         var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?type=split&word='+state;         
         
         d3.json(url,function(data) {
+          console.log(data);
           data.forEach( function(c,i) {
             var li = d3.select(".config__tabs .tabs")
               .append("li")
@@ -223,7 +224,7 @@ function shuffle (array) {
       });	
 
       noUiSlider.create(slider_column_preference, {
-        start: 5,
+        start: 1,
         tooltips:true,
         step: 1,
         format: wNumb({

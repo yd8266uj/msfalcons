@@ -93,7 +93,7 @@
           <div class="switch config__toggle_column">
             <label>
               random
-              <input type="checkbox">
+              <input type="checkbox" checked disabled>
               <span class="lever"></span>
               choose
             </label>
