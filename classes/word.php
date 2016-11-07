@@ -67,8 +67,8 @@ class word implements i_word {
   
   public function get_chars() {
     $chars = (new wordProcessor($this->word,$this->language))->getLogicalChars();
-    var_dump(implode('',json_encode($chars,JSON_UNESCAPED_UNICODE)));
-    return implode('',json_encode($chars,JSON_UNESCAPED_UNICODE));
+    var_dump(implode($chars));
+    return implode(json_encode($chars,JSON_UNESCAPED_UNICODE));
   }
 
   /**
