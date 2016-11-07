@@ -111,70 +111,65 @@ CREATE VIEW puzzles AS
 		INNER JOIN images AS i ON pz.image_id = i.image_id
 		INNER JOIN languages AS l1 ON w1.language_id = l1.language_id
 		INNER JOIN languages AS l2 ON w2.language_id = l2.language_id;
-
+		
 DELIMITER //
-CREATE PROCEDURE lookup (IN in_position INT, IN in_character VARCHAR(5), IN in_language_name VARCHAR(255))
-	BEGIN
-		SELECT pair_id,key_name,key_id,value_name,value_id,flip
-		FROM (SELECT *
-					FROM pairs
-					WHERE key_name LIKE CONCAT(REPEAT( '_', in_position ), in_character, '%')
-				 ) AS p
-			INNER JOIN
-			languages l ON l.language_name = in_language_name;
-	END //
 
-CREATE PROCEDURE add_word(IN in_chars VARCHAR(255), IN in_language VAR_CHAR(255))
-this:BEGIN
-  SELECT count(*) INTO @exists WHERE word_name = REPLACE(in_chars,';','') AND language_id = (SELECT language_id FROM languages WHERE language_name=in_language);
-  IF @exists > 0 THEN
-    LEAVE this;
+DROP FUNCTION IF EXISTS SPLIT_STRING//
+CREATE FUNCTION SPLIT_STRING ( s VARCHAR(1024) charset utf8, i INT)
+RETURNS VARCHAR(1024) charset utf8
+DETERMINISTIC
+BEGIN
+  DECLARE n INT ;
+  SET n = LENGTH(s) - LENGTH(REPLACE(s, ';', '')) + 1;
+  IF i > n THEN
+    RETURN NULL ;
+  ELSE
+    RETURN SUBSTRING_INDEX(SUBSTRING_INDEX(s, ';', i) , ';' , -1 ) ;        
   END IF;
-  DECLARE @count INT DEFAULT 0;
-  SELECT UUID_SHORT() INTO @uuid;
-  SELECT LEN(in_chars) - LEN(REPLACE(in_chars, ';', '')) + 1 INTO @count_max; 
-  START TRANSACTION;
-  INSERT INTO word VALUES (@uuid,(SELECT language_id FROM languages WHERE language_name=in_language));
-  WHILE @count < @count_max DO
-    INSERT INTO word_char VALUES (@uuid,@count,SPLIT_STRING(in_chars,@count));
-    SET @count = @count + 1;
-  END WHILE;
-    COMMIT;
 END //
-/*
-	add pair
-*/
 
-CREATE PROCEDURE add_pair (IN in_word_1 VARCHAR(255), IN in_word_2 VARCHAR(255), IN in_language_id INT)
-/*
-	FIXME add into word list, checking for duplicate words, check for duplicate pairs in both directions
-*/
-	BEGIN
-		INSERT IGNORE INTO words (word, language_id)
-			VALUE (in_word_1, in_language_id);
+DROP PROCEDURE IF EXISTS add_word//
+CREATE PROCEDURE add_word(IN in_chars VARCHAR(255) charset utf8, IN in_language VARCHAR(255), OUT out_word_id INT)
+label:BEGIN
+  DECLARE l_exists INT DEFAULT 0;
+  DECLARE l_count INT DEFAULT 0;
+  DECLARE l_count_max INT DEFAULT 0;  
+  DECLARE l_index INT DEFAULT 0;  
+  SELECT count(*),word_id INTO l_exists,out_word_id FROM words WHERE word_name = (SELECT REPLACE(in_chars,';','')) AND language_id = (SELECT language_id FROM languages WHERE language_name=in_language);
+  IF l_exists > 0 THEN 
+    LEAVE label;  
+  END IF;  
+  SELECT LENGTH(in_chars) - LENGTH(REPLACE(in_chars, ';', '')) + 1 INTO l_count_max;
+  SELECT max(word_id) + 1 INTO l_index FROM word;
+  SET out_word_id = l_index;
+  START TRANSACTION;
+    INSERT INTO word VALUES (l_index,(SELECT language_id FROM languages WHERE language_name=in_language));
+    WHILE l_count < l_count_max DO
+      INSERT INTO word_char VALUES (l_index,l_count,SPLIT_STRING(in_chars,l_count+1));
+      SET l_count = l_count + 1;
+    END WHILE;
+  COMMIT;
+END label//
 
-		INSERT IGNORE INTO words (word, language_id)
-			VALUE (in_word_2, in_language_id);
+DROP PROCEDURE IF EXISTS add_pair//
+CREATE PROCEDURE add_pair(IN in_word_1 VARCHAR(1024) charset utf8,IN in_word_2 VARCHAR(1024) charset utf8, IN in_language VARCHAR(255))
+BEGIN
+  DECLARE l_word_1_id INT DEFAULT 0;
+  DECLARE l_word_2_id INT DEFAULT 0;
+  CALL add_word(in_word_1,in_language,l_word_1_id);
+  CALL add_word(in_word_2,in_language,l_word_2_id);
+  INSERT INTO pair (word_1,word_2) VALUES (l_word_1_id,l_word_2_id);  
+END //
 
-		INSERT IGNORE INTO pair (word_1, word_2)
-			VALUE ((SELECT words.word_id FROM words WHERE words.word = in_word_1),
-						 (SELECT words.word_id FROM words WHERE words.word = in_word_1));
-	END //
+DROP PROCEDURE IF EXISTS find_word//
+CREATE PROCEDURE find_word(IN in_char_name VARCHAR(5) charset utf8,IN in_char_index INT, IN in_language VARCHAR(255))
+BEGIN
+  SELECT w.word_id,word_name FROM (SELECT wc.word_id
+  FROM word_char wc
+  WHERE wc.char_name = in_char_name AND wc.char_index = in_char_index) AS wid
+  JOIN words w on w.word_id = wid.word_id AND w.language_id = (SELECT language_id FROM languages WHERE language_name = in_language);
+END //
 
-DROP FUNCTION IF EXISTS SPLIT_STRING;
-CREATE FUNCTION 
-   SPLIT_STRING ( s VARCHAR(1024), i INT)
-   RETURNS VARCHAR(1024)
-   DETERMINISTIC
-    BEGIN
-        DECLARE n INT ;
-        SET n = LENGTH(s) - LENGTH(REPLACE(s, ';', '')) + 1;
-        IF i > n THEN
-            RETURN NULL ;
-        ELSE
-            RETURN SUBSTRING_INDEX(SUBSTRING_INDEX(s, ';', i) , ';' , -1 ) ;        
-        END IF;
-    END
-//
 DELIMITER ;
+		
 
