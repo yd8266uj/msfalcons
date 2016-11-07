@@ -1,24 +1,20 @@
 USE ics499fa160124;
-
 CREATE TABLE languages(
   language_id INT AUTO_INCREMENT PRIMARY KEY,
   language_name VARCHAR(255) UNIQUE
 ) ENGINE = INNODB;
-
 CREATE table word(
   word_id INT AUTO_INCREMENT PRIMARY KEY,
   language_id INT NOT NULL,
   FOREIGN KEY (language_id) REFERENCES languages(language_id)
 ) ENGINE = INNODB;
-
 CREATE TABLE word_char(
   word_id INT,
   char_index INT,
   char_name VARCHAR(5),
   PRIMARY KEY (word_id,char_index),
   FOREIGN KEY (word_id) REFERENCES word(word_id)
-) ENGINE = INNODB
-
+) ENGINE = INNODB;
 CREATE TABLE pair (
   pair_id int AUTO_INCREMENT PRIMARY KEY,
   word_1 INT,
@@ -27,14 +23,11 @@ CREATE TABLE pair (
   FOREIGN KEY (word_1) REFERENCES words(word_id),
   FOREIGN KEY (word_2) REFERENCES words(word_id)	
 ) ENGINE = INNODB;
-
 CREATE VIEW words AS
   SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.language_id,count(*) AS length FROM word w
   JOIN word_char wc on wc.word_id = w.word_id
   JOIN languages l on w.language_id = l.language_id
   GROUP BY w.word_id,l.language_id;
-
-
 CREATE VIEW pairs AS
   SELECT p.pair_id,w1.word AS key_name,w1.word_id AS key_id,w2.word AS value_name,w2.word_id AS value_id,w1.language_id AS language_id
   FROM pair p
@@ -45,7 +38,6 @@ CREATE VIEW pairs AS
   FROM pair p
   INNER JOIN words w1 ON p.word_1 = w1.word_id
   INNER JOIN words w2 ON p.word_2 = w2.word_id;
-
 /*
 CREATE TABLE images(
   #FIXME need to varify image is unique to avoid multiple entries but TEXT cannot be in primary key spec.
