@@ -29,10 +29,11 @@ CREATE TABLE pair (
 ) ENGINE = INNODB;
 
 CREATE VIEW words AS
-  SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.word_language,count(*) AS length FROM word w
-  JOIN word_char wc on wc.word_id = wid.word_id
-  JOIN language l on w.language_id = l.language_id
-  GROUP BY w.word_id,l.word_language;
+  SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.language_id,count(*) AS length FROM word w
+  JOIN word_char wc on wc.word_id = w.word_id
+  JOIN languages l on w.language_id = l.language_id
+  GROUP BY w.word_id,l.language_id;
+
 
 CREATE VIEW pairs AS
   SELECT p.pair_id,w1.word AS key_name,w1.word_id AS key_id,w2.word AS value_name,w2.word_id AS value_id,w1.language_id AS language_id
