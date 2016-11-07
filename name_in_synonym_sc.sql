@@ -5,19 +5,25 @@ CREATE TABLE languages(
 	language_name VARCHAR(255) UNIQUE
 ) ENGINE = INNODB;
 
-CREATE table words(
+CREATE table word(
 	word_id INT AUTO_INCREMENT PRIMARY KEY,
 	language_id INT NOT NULL,
 	FOREIGN KEY (language_id) REFERENCES languages(language_id)
 ) ENGINE = INNODB;
 
-CREATE TABLE words_char(
+CREATE TABLE word_char(
   word_id INT,
   char_index INT,
   char_name VARCHAR(5),
   PRIMARY KEY (word_id,char_index),
-  FOREIGN KEY (word_id) REFERENCES words(word_id)
+  FOREIGN KEY (word_id) REFERENCES word(word_id)
 ) ENGINE = INNODB
+
+CREATE VIEW words AS
+  SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.word_language FROM word w
+  JOIN word_char wc on wc.word_id = wid.word_id
+  JOIN language l on w.language_id = l.language_id
+  GROUP BY w.word_id,l.word_language;
 
 CREATE TABLE pair (
 	pair_id int AUTO_INCREMENT PRIMARY KEY,
@@ -107,7 +113,7 @@ CREATE VIEW puzzles AS
 		INNER JOIN languages AS l2 ON w2.language_id = l2.language_id;
 
 DELIMITER //
-CREATE PROCEDURE lookup (IN in_position INT, IN in_character CHAR(1), IN in_language_name VARCHAR(255))
+CREATE PROCEDURE lookup (IN in_position INT, IN in_character VARCHAR(5), IN in_language_name VARCHAR(255))
 	BEGIN
 		SELECT pair_id,key_name,key_id,value_name,value_id,flip
 		FROM (SELECT *
@@ -117,12 +123,28 @@ CREATE PROCEDURE lookup (IN in_position INT, IN in_character CHAR(1), IN in_lang
 			INNER JOIN
 			languages l ON l.language_name = in_language_name;
 	END //
-DELIMITER ;
 
+CREATE PROCEDURE add_word(IN in_chars VARCHAR(255), IN in_language VAR_CHAR(255))
+this:BEGIN
+  SELECT count(*) INTO @exists WHERE word_name = REPLACE(in_chars,';','') AND language_id = (SELECT language_id FROM languages WHERE language_name=in_language);
+  IF @exists > 0 THEN
+    LEAVE this;
+  END IF;
+  DECLARE @count INT DEFAULT 0;
+  SELECT UUID_SHORT() INTO @uuid;
+  SELECT LEN(in_chars) - LEN(REPLACE(in_chars, ';', '')) + 1 INTO @count_max; 
+  START TRANSACTION;
+  INSERT INTO word VALUES (@uuid,(SELECT language_id FROM languages WHERE language_name=in_language));
+  WHILE @count < @count_max DO
+    INSERT INTO word_char VALUES (@uuid,@count,SPLIT_STRING(in_chars,@count));
+    SET @count = @count + 1;
+  END WHILE;
+    COMMIT;
+END //
 /*
 	add pair
 */
-DELIMITER //
+
 CREATE PROCEDURE add_pair (IN in_word_1 VARCHAR(255), IN in_word_2 VARCHAR(255), IN in_language_id INT)
 /*
 	FIXME add into word list, checking for duplicate words, check for duplicate pairs in both directions
@@ -138,5 +160,21 @@ CREATE PROCEDURE add_pair (IN in_word_1 VARCHAR(255), IN in_word_2 VARCHAR(255),
 			VALUE ((SELECT words.word_id FROM words WHERE words.word = in_word_1),
 						 (SELECT words.word_id FROM words WHERE words.word = in_word_1));
 	END //
+
+DROP FUNCTION IF EXISTS SPLIT_STRING;
+CREATE FUNCTION 
+   SPLIT_STRING ( s VARCHAR(1024), i INT)
+   RETURNS VARCHAR(1024)
+   DETERMINISTIC
+    BEGIN
+        DECLARE n INT ;
+        SET n = LENGTH(s) - LENGTH(REPLACE(s, ';', '')) + 1;
+        IF i > n THEN
+            RETURN NULL ;
+        ELSE
+            RETURN SUBSTRING_INDEX(SUBSTRING_INDEX(s, ';', i) , ';' , -1 ) ;        
+        END IF;
+    END
+//
 DELIMITER ;
 
