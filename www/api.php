@@ -25,7 +25,7 @@
       } catch (Exception $e) {
         echo $e->getMessage();
       } finally {
-        header('Location: index.php',301);
+        //header('Location: index.php',301);
         die();
       }
       break;
