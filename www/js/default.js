@@ -51,7 +51,7 @@ function shuffle (array) {
         puzzle_lines.selectAll("li.puzzle-line").remove();
         var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?type=split&word='+state;         
         
-        d3.json(url,function(data) {
+        d3.html(url,function(data) {
           console.log(data);
           data.forEach( function(c,i) {
             var li = d3.select(".config__tabs .tabs")
