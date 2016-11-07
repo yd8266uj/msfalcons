@@ -31,7 +31,7 @@ class word implements i_word {
     shuffle($print_array);
     $out = "<select class='browser-default'>";
     foreach( $print_array as $row ) {
-      $out .= sprintf("<option value='%s'>%s</option>",$row['word_id'],$row['word']);
+      $out .= sprintf("<option value='%s'>%s</option>",$row['word_id'],$row['word_name']);
     }
     $out .= "</select>";
     return $out;
