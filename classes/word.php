@@ -108,7 +108,7 @@ JOIN word w on w.word_id = wid.word_id
 GROUP BY w.word_id,w.word_language
 HAVING count(*)>:min AND count(*)<:max
    */
-  public static function read_find( $char_name, $char_index = 0, $language = 'english' ) {
+  public static function read_find(  $char_index = 0, $char_name, $language = 'english' ) {
     $query = database::get_instance()->prepare("CALL find_word(:char_name,:char_index,:language)");
     $query->bindValue(':char_name',$char_name);
     $query->bindValue(':char_index',$char_index,PDO::PARAM_INT);  
