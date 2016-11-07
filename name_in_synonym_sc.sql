@@ -115,14 +115,13 @@ label:BEGIN
     LEAVE label;  
   END IF;  
   SELECT LENGTH(in_chars) - LENGTH(REPLACE(in_chars, ';', '')) + 1 INTO l_count_max;
-  SELECT max(word_id) + 1 INTO l_index FROM word;
-  SET out_word_id = l_index;
   START TRANSACTION;
-    INSERT INTO word VALUES (l_index,(SELECT language_id FROM languages WHERE language_name=in_language));
+    INSERT INTO word (language_id) VALUES ((SELECT language_id FROM languages WHERE language_name=in_language));
+    SET out_word_id = LAST_INSERT_ID();
     WHILE l_count < l_count_max DO
-      INSERT INTO word_char VALUES (l_index,l_count,SPLIT_STRING(in_chars,l_count+1));
+      INSERT INTO word_char VALUES (out_word_id,l_count,SPLIT_STRING(in_chars,l_count+1));
       SET l_count = l_count + 1;
-    END WHILE;
+    END WHILE;    
   COMMIT;
 END label//
 
