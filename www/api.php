@@ -6,7 +6,7 @@
   
   switch(@$_POST['type']) {
     case 'word':  
-      $word = @$_POST['word'];
+      $word = @urldecode($_POST['word']);
       $language = @$_POST['language'];
       try {
         (new word($word,$language))->create();
@@ -17,8 +17,8 @@
       }
       break;
     case 'pair':
-      $word_1 = @$_POST['word_1'];
-      $word_2 = @$_POST['word_2'];
+      $word_1 = @urldecode($_POST['word_1']);
+      $word_2 = @urldecode($_POST['word_2']);
       $language = @$_POST['language'];
       try {
         (new pair(new word($word_1,$language),new word($word_2,$language)))->create();
@@ -36,7 +36,7 @@
   switch(@$_GET['type']) {
     case 'word':
       $position = @$_GET['pos'];
-      $character = @$_GET['char'];
+      $character = @urldecode($_GET['char']);
       $language = @$_GET['lang']?$_GET['lang']:'english';
       echo @$_GET['format']=='html'?word::to_html(word::read_find($position,$character,$language)):word::to_json(word::read_find($position,$character,$language));      
       break;
