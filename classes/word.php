@@ -5,7 +5,6 @@ class word implements i_word {
   private $language;
 
   function __construct( $word, $language ) {
-    var_dump($word);
     $this->word = $word;
     $this->language = $language;
   }
@@ -67,7 +66,8 @@ class word implements i_word {
   }
   
   public function get_chars() {
-    return implode(';',(new wordProcessor($this->word,$this->language))->getLogicalChars());
+    $chars = (new wordProcessor($this->word,$this->language))->getLogicalChars();
+    return implode(';',json_encode($chars,JSON_UNESCAPED_UNICODE));
   }
 
   /**
