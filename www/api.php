@@ -52,7 +52,7 @@
       $word = @$_GET['word'];
       $language = @$_GET['lang'];
       $chars = (new wordProcessor($word,$language))->getLogicalChars();
-      echo json_encode($chars,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+      echo json_encode($chars,JSON_UNESCAPED_UNICODE);
       switch(@$_GET['lang']) {
         case 'telugu':
           $pattern = "/(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}](?!\pL))|(?:[\x{0c05}-\x{0c14}][\x{0c01}-\x{0c03}]?)|(?:(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}])*[\x{0c15}-\x{0c39}\x{200c}][\x{0c3e}-\x{0c4c}]?[\x{0c01}-\x{0c03}]?[\x{200c}]?)/u";
