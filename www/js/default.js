@@ -50,7 +50,7 @@ function shuffle (array) {
         var puzzle_lines = d3.select(".display__puzzle-lines");
         puzzle_lines.selectAll("li.puzzle-line").remove();
         var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?type=split&word='+state;         
-        
+        console.log(state);
         d3.json(url,function(data) {
           console.log(data);
           data.forEach( function(c,i) {
