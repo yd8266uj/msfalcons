@@ -7,11 +7,17 @@ CREATE TABLE languages(
 
 CREATE table words(
 	word_id INT AUTO_INCREMENT PRIMARY KEY,
-	word VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
 	language_id INT NOT NULL,
-	UNIQUE (word, language_id),
 	FOREIGN KEY (language_id) REFERENCES languages(language_id)
 ) ENGINE = INNODB;
+
+CREATE TABLE words_char(
+  word_id INT,
+  char_index INT,
+  char_name VARCHAR(5),
+  PRIMARY KEY (word_id,char_index),
+  FOREIGN KEY (word_id) REFERENCES words(word_id)
+) ENGINE = INNODB
 
 CREATE TABLE pair (
 	pair_id int AUTO_INCREMENT PRIMARY KEY,
