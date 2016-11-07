@@ -1,14 +1,14 @@
 USE ics499fa160124;
 
 CREATE TABLE languages(
-	language_id INT AUTO_INCREMENT PRIMARY KEY,
-	language_name VARCHAR(255) UNIQUE
+  language_id INT AUTO_INCREMENT PRIMARY KEY,
+  language_name VARCHAR(255) UNIQUE
 ) ENGINE = INNODB;
 
 CREATE table word(
-	word_id INT AUTO_INCREMENT PRIMARY KEY,
-	language_id INT NOT NULL,
-	FOREIGN KEY (language_id) REFERENCES languages(language_id)
+  word_id INT AUTO_INCREMENT PRIMARY KEY,
+  language_id INT NOT NULL,
+  FOREIGN KEY (language_id) REFERENCES languages(language_id)
 ) ENGINE = INNODB;
 
 CREATE TABLE word_char(
