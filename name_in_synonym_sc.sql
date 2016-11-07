@@ -20,8 +20,8 @@ CREATE TABLE pair (
   word_1 INT,
   word_2 INT,
   UNIQUE (word_1, word_2),
-  FOREIGN KEY (word_1) REFERENCES words(word_id),
-  FOREIGN KEY (word_2) REFERENCES words(word_id)	
+  FOREIGN KEY (word_1) REFERENCES word(word_id),
+  FOREIGN KEY (word_2) REFERENCES word(word_id)	
 ) ENGINE = INNODB;
 CREATE VIEW words AS
   SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.language_id,count(*) AS length FROM word w
@@ -29,12 +29,12 @@ CREATE VIEW words AS
   JOIN languages l on w.language_id = l.language_id
   GROUP BY w.word_id,l.language_id;
 CREATE VIEW pairs AS
-  SELECT p.pair_id,w1.word AS key_name,w1.word_id AS key_id,w2.word AS value_name,w2.word_id AS value_id,w1.language_id AS language_id
+  SELECT p.pair_id,w1.word_name AS key_name,w1.word_id AS key_id,w2.word_name AS value_name,w2.word_id AS value_id,w1.language_id AS language_id
   FROM pair p
   INNER JOIN words w1 ON p.word_1 = w1.word_id
   INNER JOIN words w2 ON p.word_2 = w2.word_id
     UNION
-  SELECT p.pair_id,w2.word,w2.word_id,w1.word,w1.word_id,w1.language_id
+  SELECT p.pair_id,w2.word_name,w2.word_id,w1.word_name,w1.word_id,w1.language_id
   FROM pair p
   INNER JOIN words w1 ON p.word_1 = w1.word_id
   INNER JOIN words w2 ON p.word_2 = w2.word_id;
