@@ -82,7 +82,7 @@ class pair implements i_pair {
    * @return Pair[] array containing matched Pairs
    */
   public static function read_find( $id ) {
-    $query = database::get_instance()->prepare("SELECT value_name,pair_id,flip
+    $query = database::get_instance()->prepare("SELECT *
       FROM pairs AS p
       WHERE key_id = :id");
     $query->bindValue(':id',$id,PDO::PARAM_INT);  
