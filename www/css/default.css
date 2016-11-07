@@ -11,6 +11,12 @@ body {
   
 }
 
+.display {
+  width: 8.5in;
+  height: calc(11in - 64px);
+  padding: 1in;
+}
+
 .display__image {
   display:none;
 }
@@ -97,4 +103,15 @@ body {
       display:none;
     }
     
+    #solution-toggle, #solution-toggle + label {
+      display:none;
+    }
+    
+    #solution-toggle:not(:checked) ~ .display__solution {
+      display:none;
+    }
+
+    #solution-toggle:not(:checked) ~ .display__puzzle-lines .puzzle-line__synonym {
+      display:none;
+    }
   }

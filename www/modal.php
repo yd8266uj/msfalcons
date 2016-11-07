@@ -1,9 +1,27 @@
 <div id="lookup" class="modal bottom-sheet">
   <div class="modal-content container">
-    <ul class="collection with-header">
-      <li class="collection-header"><h6 class="blue-grey-text text-lighten-2">17 matches</h6></li>
-      <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">new</i></a></div></li>
-    </ul>
+  </div>
+  <div class="modal-footer"></div>
+</div>
+
+<div id="pair" class="modal">
+  <div class="modal-content container" style="padding-top:64px">
+    
+    <form method='post' action='api.php?type=pair'>
+      <div class="row">
+        <select class="col s4" name='language'>
+          <option value='english'>English</option>
+          <option value='telugu'>Telugu</option>
+        </select>
+      </div>
+      <div class="row">
+        <input class="col s5 validate" name='word_1' type='text' placeholder='word' pattern="^[\S]+$">
+        <input class="col s5 offset-s2 validate" name='word_2' type='text' placeholder='synonym' pattern="^[\S]+$">
+      </div>
+      <input name='type' value='pair' type='hidden'>
+      <a href="#!" class="btn-flat right modal-action modal-close">Cancel</a>
+      <input class='btn right' type='submit'>      
+    </form>
   </div>
   <div class="modal-footer"></div>
 </div>

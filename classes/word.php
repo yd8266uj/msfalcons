@@ -1,9 +1,20 @@
 <?php
 
 class word implements i_word {
+  private $word;
+  private $language;
 
-  function __construct() {
+  function __construct( $word, $language ) {
+    $this->word = $word;
+    $this->language = $language;
+  }
   
+  function get_language() {
+    return $this->language;
+  }
+  
+  function get_word() {
+    return $this->word;
   }
   
   /**
@@ -12,6 +23,11 @@ class word implements i_word {
    * @return string html formatted string
    */
   public static function to_html( array $print_array ) {
+    /*
+    array_map($print_array, function($o) {
+      if(!($o instanceof word)) throw new Exception();
+    });
+    */
     shuffle($print_array);
     $out = "<select class='browser-default'>";
     foreach( $print_array as $row ) {
@@ -27,6 +43,11 @@ class word implements i_word {
    * @return string json formatted string
    */
   public static function to_json( array $print_array ) {
+    /*
+    array_map($print_array, function($o) {
+      if(!($o instanceof word)) throw new Exception();
+    });
+    */
     shuffle($print_array);
     return json_encode($print_array,JSON_PRETTY_PRINT);
   }
@@ -36,11 +57,16 @@ class word implements i_word {
    *
    * @param self $instance
    */
-  public static function create( i_table $instance, string $language ) {
-    $query = database::get_instance()->prepare("INSERT INTO words (word,language_id) VALUES (:word,(SELECT language_id FROM languages WHERE language_name=:language))");
-    $query->bindValue(':word',$word);
-    $query->bindValue(':language',$language);
+  public function create() {
+    $chars = $this->get_chars();
+    $query = database::get_instance()->prepare("CALL add_word(:word,:language,@void)");
+    $query->bindValue(':word',$chars);
+    $query->bindValue(':language',$this->language);
     $query->execute();
+  }
+  
+  public function get_chars() {
+    return implode(';',(new wordProcessor($this->word,$this->language))->getLogicalChars());
   }
 
   /**
@@ -69,23 +95,24 @@ class word implements i_word {
    * 
    * @return word[] array containing matched Pairs
    */
-  public static function read_find( $position = null, $match, $language ) {
-    if( is_null($position) ) {
-      $query = database::get_instance()->prepare("SELECT *
-          FROM words w
-          INNER JOIN languages l ON w.language_id = l.language_id AND l.language_name = :language
-          WHERE word LIKE CONCAT( '%', :match, '%' )
-          ");
-    } else {
-      $query = database::get_instance()->prepare("SELECT * 
-          FROM words w
-          INNER JOIN languages l ON w.language_id = l.language_id AND l.language_name = :language
-          WHERE word LIKE CONCAT( REPEAT( '_', :position ), :match, '%' )");
-      $query->bindValue(':position',$position,PDO::PARAM_INT);    
-    }
-    $query->bindValue(':match',$match);
-    $query->bindValue(':language',$language);
-    
+   
+   /*
+SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_language,w.word_language 
+FROM (
+  SELECT wc.word_id
+  FROM word_char wc
+  WHERE wc.char_name = :match AND wc.char_index = :position
+  ) AS wid
+JOIN word_char wc on wc.word_id = wid.word_id
+JOIN word w on w.word_id = wid.word_id
+GROUP BY w.word_id,w.word_language
+HAVING count(*)>:min AND count(*)<:max
+   */
+  public static function read_find( $char_name, $char_index = 0, $language = 'english' ) {
+    $query = database::get_instance()->prepare("CALL find_word(:char_name,:char_index,:language)");
+    $query->bindValue(':char_name',$char_name);
+    $query->bindValue(':char_index',$char_index,PDO::PARAM_INT);  
+    $query->bindValue(':language',$language);    
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);      
   }

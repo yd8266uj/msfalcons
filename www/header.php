@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
+    <title>SILC - Name in Synonym</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/silc.ico" />
 		<!--Import Google Icon Font-->
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">

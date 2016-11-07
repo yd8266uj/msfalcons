@@ -2,8 +2,12 @@
 
 class pair implements i_pair {
 
-  function __construct() {
-  
+  private $word_1;
+  private $word_2;  
+
+  function __construct( $word_1, $word_2 ) {
+    $this->word_1 = $word_1;
+    $this->word_2 = $word_2;
   }
   
   /**
@@ -39,8 +43,14 @@ class pair implements i_pair {
    * @throws invalidTypeException on invalid parameter type, ie. not type pair
    * @throws PDOException something bad happened with insertion
    */
-  public static function create( i_table $instance, string $language ) {
-  
+  public function create() {
+    var_dump($this->word_1->get_chars());
+    var_dump($this->word_2->get_chars());
+    $query = database::get_instance()->prepare("CALL add_pair(:word_1,:word_2,:language)");
+    $query->bindValue(':word_1',$this->word_1->get_chars());
+    $query->bindValue(':word_2',$this->word_2->get_chars());
+    $query->bindValue(':language',$this->word_1->get_language());
+    $query->execute();
   }
   
   /**

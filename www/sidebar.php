@@ -112,6 +112,7 @@
           <a href="#!">Choose Solutions</a>
         </div>						
         <div class="collapsible-body config__tabs">
+          <a href="#pair" class="modal-trigger right"><i class="material-icons">add</i></a>
           <ul class="tabs">
           </ul>
         </div>

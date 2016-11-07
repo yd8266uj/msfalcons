@@ -6,7 +6,7 @@ interface i_table {
    *
    * @param self $instance
    */
-  public static function create( self $instance, string $language );
+  public function create();
 
   /**
    * List all available self in database
