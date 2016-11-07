@@ -19,50 +19,39 @@ CREATE TABLE word_char(
   FOREIGN KEY (word_id) REFERENCES word(word_id)
 ) ENGINE = INNODB
 
+CREATE TABLE pair (
+  pair_id int AUTO_INCREMENT PRIMARY KEY,
+  word_1 INT,
+  word_2 INT,
+  UNIQUE (word_1, word_2),
+  FOREIGN KEY (word_1) REFERENCES words(word_id),
+  FOREIGN KEY (word_2) REFERENCES words(word_id)	
+) ENGINE = INNODB;
+
 CREATE VIEW words AS
   SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.word_language FROM word w
   JOIN word_char wc on wc.word_id = wid.word_id
   JOIN language l on w.language_id = l.language_id
   GROUP BY w.word_id,l.word_language;
 
-CREATE TABLE pair (
-	pair_id int AUTO_INCREMENT PRIMARY KEY,
-	word_1 INT,
-	word_2 INT,
-	UNIQUE (word_1, word_2),
-	FOREIGN KEY (word_1) REFERENCES words(word_id),
-	FOREIGN KEY (word_2) REFERENCES words(word_id)	
-) ENGINE = INNODB;
-
 CREATE VIEW pairs AS
-	SELECT p.pair_id,
-		w1.word AS key_name,
-		w1.word_id AS key_id,
-		w2.word AS value_name,
-		w2.word_id AS value_id,
-		w1.language_id,
-		0 AS flip
-	FROM pair p
-		INNER JOIN words w1 ON p.word_1 = w1.word_id
-		INNER JOIN words w2 ON p.word_2 = w2.word_id
-	UNION
-	SELECT p.pair_id,
-		w2.word,
-		w2.word_id,
-		w1.word,
-		w1.word_id,
-		w1.language_id,
-		1 AS flip
-	FROM pair p
-		INNER JOIN words w1 ON p.word_1 = w1.word_id
-		INNER JOIN words w2 ON p.word_2 = w2.word_id;
+  SELECT p.pair_id,w1.word AS key_name,w1.word_id AS key_id,w2.word AS value_name,w2.word_id AS value_id,w1.language_id AS language_id
+  FROM pair p
+  INNER JOIN words w1 ON p.word_1 = w1.word_id
+  INNER JOIN words w2 ON p.word_2 = w2.word_id
+    UNION
+  SELECT p.pair_id,w2.word,w2.word_id,w1.word,w1.word_id,w1.language_id
+  FROM pair p
+  INNER JOIN words w1 ON p.word_1 = w1.word_id
+  INNER JOIN words w2 ON p.word_2 = w2.word_id;
 
+/*
 CREATE TABLE images(
-#FIXME need to varify image is unique to avoid multiple entries but TEXT cannot be in primary key spec.
-	image_id INT AUTO_INCREMENT PRIMARY KEY,
-	image_type INT NOT NULL,
-	image_url VARCHAR(255) NOT NULL,
-	UNIQUE (image_type, image_url)
+  #FIXME need to varify image is unique to avoid multiple entries but TEXT cannot be in primary key spec.
+  image_id INT AUTO_INCREMENT PRIMARY KEY,
+  image_type INT NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  UNIQUE (image_type, image_url)
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle (
@@ -84,14 +73,6 @@ CREATE TABLE puzzle_line (
 	FOREIGN KEY (puzzle_id) REFERENCES puzzle(puzzle_id)
 ) ENGINE=INNODB;
 
-CREATE TABLE caption (
-	caption_id int AUTO_INCREMENT PRIMARY KEY,
-	image_id int,
-	word VARCHAR(255),
-	FOREIGN KEY (image_id) REFERENCES images(image_id),
-	FOREIGN KEY (word) REFERENCES words(word)
-) ENGINE=INNODB;
-
 CREATE VIEW puzzles AS
   SELECT
 		pz.puzzle_id,
@@ -111,7 +92,8 @@ CREATE VIEW puzzles AS
 		INNER JOIN images AS i ON pz.image_id = i.image_id
 		INNER JOIN languages AS l1 ON w1.language_id = l1.language_id
 		INNER JOIN languages AS l2 ON w2.language_id = l2.language_id;
-		
+*/
+
 DELIMITER //
 
 DROP FUNCTION IF EXISTS SPLIT_STRING//
@@ -156,9 +138,13 @@ CREATE PROCEDURE add_pair(IN in_word_1 VARCHAR(1024) charset utf8,IN in_word_2 V
 BEGIN
   DECLARE l_word_1_id INT DEFAULT 0;
   DECLARE l_word_2_id INT DEFAULT 0;
+  DECLARE auto_increment_increment_old INT DEFAULT 1;
   CALL add_word(in_word_1,in_language,l_word_1_id);
   CALL add_word(in_word_2,in_language,l_word_2_id);
+  SET auto_increment_increment_old=@@auto_increment_increment;
+  SET @@auto_increment_increment=2;
   INSERT INTO pair (word_1,word_2) VALUES (l_word_1_id,l_word_2_id);  
+  SET @@auto_increment_increment=auto_increment_increment_old;
 END //
 
 DROP PROCEDURE IF EXISTS find_word//
