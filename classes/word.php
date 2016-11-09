@@ -66,6 +66,7 @@ class word implements i_word {
   }
   
   public function get_chars() {
+    /*
     switch($this->language) {
       case 'telugu':
         $pattern = "/(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}](?!\pL))|(?:[\x{0c05}-\x{0c14}][\x{0c01}-\x{0c03}]?)|(?:(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}])*[\x{0c15}-\x{0c39}\x{200c}][\x{0c3e}-\x{0c4c}]?[\x{0c01}-\x{0c03}]?[\x{200c}]?)/u";
@@ -75,9 +76,9 @@ class word implements i_word {
         $pattern = "/\p{Latin}/u";
     }
     preg_match_all($pattern,$this->word,$matches);
-    var_dump($matches);
-    var_dump((new wordProcessor($this->word,$this->language))->getLogicalChars());
-    return implode(';',$matches[0]);
+    */
+    $chars = (new wordProcessor($this->word,$this->language))->getLogicalChars();
+    return str_replace('["','',str_replace('"]','',str_replace('","',';',json_encode($chars,JSON_UNESCAPED_UNICODE))));
   }
 
   /**

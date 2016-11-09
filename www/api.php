@@ -19,14 +19,10 @@
       }
       break;
     case 'pair':
-      $word_1 = @$_GET['word_1'];
-      $word_2 = @$_GET['word_2'];
-      $language = @$_GET['language'];
-      
-      echo $word_1;
-      echo $word_2;
+      $word_1 = new word($_GET['word_1'],$_GET['language']);
+      $word_2 = new word($_GET['word_2'],$_GET['language']);      
       try {
-        (new pair(new word($word_1,$language),new word($word_2,$language)))->create();
+        (new pair($word_1,$word_2))->create();
       } catch (Exception $e) {
         echo $e->getMessage();
       } finally {
