@@ -76,7 +76,7 @@ class word implements i_word {
     }
     preg_match_all($pattern,$this->word,$matches);
     var_dump($pattern);
-    var_dump(mb_detect_encoding($this->word));
+    var_dump(mb_convert_encoding($this->word,'UTF-8'));
     var_dump($matches);
     return implode(';',$matches[0]);
   }
