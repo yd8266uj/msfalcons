@@ -68,8 +68,8 @@ class word implements i_word {
   public function get_chars() {
     $wp = new wordProcessor($this->word,'telugu');
     $chars = $wp->getLogicalChars();
+    var_dump(mb_detect_encoding ( $chars[0] ) );
     var_dump($chars);
-    var_dump(json_decode(json_encode($chars,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)));
     die();
     return implode(';',$chars);
   }
