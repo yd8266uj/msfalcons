@@ -45,6 +45,9 @@ class pair implements i_pair {
    */
   public function create() {
     $query = database::get_instance()->prepare("CALL add_pair(:word_1,:word_2,:language)");
+    echo $this->word_1->get_chars();
+    echo $this->word_2->get_chars();
+    
     $query->bindValue(':word_1',$this->word_1->get_chars());
     $query->bindValue(':word_2',$this->word_2->get_chars());
     $query->bindValue(':language',$this->word_1->get_language());

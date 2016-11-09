@@ -6,7 +6,6 @@ class word implements i_word {
 
   function __construct( $word, $language ) {
     $this->word = $word;
-    var_dump($word);
     $this->language = $language;
   }
   
@@ -68,7 +67,6 @@ class word implements i_word {
   
   public function get_chars() {
     $chars = (new wordProcessor($this->word,'telugu'))->getLogicalChars();
-    var_dump($chars);
     return implode(';',$chars);
   }
 
