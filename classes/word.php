@@ -75,7 +75,9 @@ class word implements i_word {
         $pattern = "/\p{Latin}/u";
     }
     preg_match_all($pattern,$this->word,$matches);
-    var_dump($matches[0]);
+    var_dump($pattern);
+    var_dump($this->word);
+    var_dump($matches);
     return implode(';',$matches[0]);
   }
 
