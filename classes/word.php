@@ -69,7 +69,7 @@ class word implements i_word {
     $wp = new wordProcessor($this->word,'telugu');
     $chars = $wp->getLogicalChars();
     var_dump($chars);
-    var_dump(json_encode($chars,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+    var_dump(json_decode(json_encode($chars,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)));
     die();
     return implode(';',$chars);
   }
