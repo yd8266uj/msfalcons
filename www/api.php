@@ -6,7 +6,7 @@
   include 'autoload.php';  
   
   
-  switch(@$_POST['type']) {
+  switch(@$_GET['type']) {
     case 'word':  
       $word = @$_POST['word'];
       $language = @$_POST['language'];
@@ -19,9 +19,9 @@
       }
       break;
     case 'pair':
-      $word_1 = json_decode(json_encode($_POST['word_1']));
-      $word_2 = mb_convert_encoding(rawurldecode($_POST['word_2']),'UTF-8');
-      $language = @$_POST['language'];
+      $word_1 = @$_GET['word_1'];
+      $word_2 = @$_GET['word_2'];
+      $language = @$_GET['language'];
       
       echo $word_1;
       echo $word_2;

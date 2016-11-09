@@ -75,7 +75,6 @@ class word implements i_word {
         $pattern = "/\p{Latin}/u";
     }
     preg_match_all($pattern,$this->word,$matches);
-    var_dump($pattern);
     var_dump($matches);
     var_dump((new wordProcessor($this->word,$this->language))->getLogicalChars());
     return implode(';',$matches[0]);
