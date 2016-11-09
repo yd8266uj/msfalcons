@@ -19,8 +19,8 @@
       }
       break;
     case 'pair':
-      $word_1 = mb_convert_encoding(urldecode($_POST['word_1']),'UTF-8');
-      $word_2 = mb_convert_encoding(urldecode($_POST['word_2']),'UTF-8');
+      $word_1 = rawurldecode($_POST['word_1']);
+      $word_2 = mb_convert_encoding(rawurldecode($_POST['word_2']),'UTF-8');
       $language = @$_POST['language'];
       
       echo $word_1;
