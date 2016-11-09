@@ -17,8 +17,8 @@
       }
       break;
     case 'pair':
-      $word_1 = @urldecode($_POST['word_1']);
-      $word_2 = @urldecode($_POST['word_2']);
+      $word_1 = @$_POST['word_1'];
+      $word_2 = @$_POST['word_2'];
       $language = @$_POST['language'];
       try {
         (new pair(new word($word_1,$language),new word($word_2,$language)))->create();

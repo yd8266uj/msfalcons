@@ -6,6 +6,7 @@ class word implements i_word {
 
   function __construct( $word, $language ) {
     $this->word = $word;
+    var_dump($word);
     $this->language = $language;
   }
   
