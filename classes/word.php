@@ -6,6 +6,9 @@ class word implements i_word {
 
   function __construct( $word, $language ) {
     echo mb_detect_encoding($word);
+    echo $word;
+    $word = mb_convert_encoding($word,'UTF-8');
+    echo $word;
     $this->word = $word;
     $this->language = $language;
   }
