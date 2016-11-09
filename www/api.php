@@ -21,6 +21,9 @@
       $word_1 = @$_POST['word_1'];
       $word_2 = @$_POST['word_2'];
       $language = @$_POST['language'];
+      
+      echo $word_1;
+      echo $word_2;
       try {
         (new pair(new word($word_1,$language),new word($word_2,$language)))->create();
       } catch (Exception $e) {
