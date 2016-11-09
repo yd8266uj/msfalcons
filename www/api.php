@@ -19,7 +19,7 @@
       }
       break;
     case 'pair':
-      $word_1 = rawurldecode($_POST['word_1']);
+      $word_1 = json_decode(json_encode($_POST['word_1']));
       $word_2 = mb_convert_encoding(rawurldecode($_POST['word_2']),'UTF-8');
       $language = @$_POST['language'];
       
