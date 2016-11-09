@@ -8,6 +8,7 @@ class word implements i_word {
     echo mb_detect_encoding($word);
     echo $word;
     $word = mb_convert_encoding($word,'UTF-8');
+    echo mb_detect_encoding($word);
     echo $word;
     $this->word = $word;
     $this->language = $language;
@@ -82,6 +83,7 @@ class word implements i_word {
     preg_match_all($pattern,$this->word,$matches);
     */
     $chars = (new wordProcessor($this->word,$this->language))->getLogicalChars();
+    var_dump($chars);
     return str_replace('["','',str_replace('"]','',str_replace('","',';',json_encode($chars,JSON_UNESCAPED_UNICODE))));
   }
 
