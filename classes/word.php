@@ -5,6 +5,7 @@ class word implements i_word {
   private $language;
 
   function __construct( $word, $language ) {
+    var_dump(mb_list_encodings());
     echo mb_detect_encoding($word);
     echo $word;
     $word = iconv(mb_detect_encoding($word),'UTF-8',$word);
