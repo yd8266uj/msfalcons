@@ -68,7 +68,7 @@ class word implements i_word {
   public function get_chars() {
     switch($this->language) {
       case 'telugu':
-        $pattern = "/(*UTF8)(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}](?!\pL))|(?:[\x{0c05}-\x{0c14}][\x{0c01}-\x{0c03}]?)|(?:(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}])*[\x{0c15}-\x{0c39}\x{200c}][\x{0c3e}-\x{0c4c}]?[\x{0c01}-\x{0c03}]?[\x{200c}]?)/u";
+        $pattern = "/(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}](?!\pL))|(?:[\x{0c05}-\x{0c14}][\x{0c01}-\x{0c03}]?)|(?:(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}])*[\x{0c15}-\x{0c39}\x{200c}][\x{0c3e}-\x{0c4c}]?[\x{0c01}-\x{0c03}]?[\x{200c}]?)/u";
         break;
       case 'english':
       default:
@@ -76,7 +76,7 @@ class word implements i_word {
     }
     preg_match_all($pattern,$this->word,$matches);
     var_dump($pattern);
-    var_dump($this->word);
+    var_dump(mb_detect_encoding($this->word));
     var_dump($matches);
     return implode(';',$matches[0]);
   }
