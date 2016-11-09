@@ -5,6 +5,7 @@
   
   include 'autoload.php';  
   
+  
   switch(@$_POST['type']) {
     case 'word':  
       $word = @$_POST['word'];
@@ -18,8 +19,8 @@
       }
       break;
     case 'pair':
-      $word_1 = @urldecode($_POST['word_1']);
-      $word_2 = @urldecode($_POST['word_2']);
+      $word_1 = 'పరీక్ష';
+      $word_2 = 'ప్రయోగం';
       $language = @$_POST['language'];
       
       echo $word_1;
