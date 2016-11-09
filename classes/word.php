@@ -78,6 +78,7 @@ class word implements i_word {
     var_dump($pattern);
     var_dump(mb_convert_encoding($this->word,'UTF-8'));
     var_dump($matches);
+    var_dump((new wordProcessor($this->word,$this->language))->getLogicalChars());
     return implode(';',$matches[0]);
   }
 
