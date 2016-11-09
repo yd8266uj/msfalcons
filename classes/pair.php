@@ -44,8 +44,6 @@ class pair implements i_pair {
    * @throws PDOException something bad happened with insertion
    */
   public function create() {
-    var_dump($this->word_1->get_chars());
-    var_dump($this->word_2->get_chars());
     $query = database::get_instance()->prepare("CALL add_pair(:word_1,:word_2,:language)");
     $query->bindValue(':word_1',$this->word_1->get_chars());
     $query->bindValue(':word_2',$this->word_2->get_chars());

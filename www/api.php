@@ -36,7 +36,7 @@
   switch(@$_GET['type']) {
     case 'word':
       $position = @$_GET['pos'];
-      $character = @urldecode($_GET['char']);
+      $character = @$_GET['char'];
       $language = @$_GET['lang']?$_GET['lang']:'english';
       echo @$_GET['format']=='html'?word::to_html(word::read_find($position,$character,$language)):word::to_json(word::read_find($position,$character,$language));      
       break;

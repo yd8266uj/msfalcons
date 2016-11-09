@@ -50,7 +50,7 @@ class word implements i_word {
     });
     */
     shuffle($print_array);
-    return json_encode($print_array,JSON_PRETTY_PRINT);
+    return json_encode($print_array,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
   }
   
   /**
