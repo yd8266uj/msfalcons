@@ -5,6 +5,7 @@ class word implements i_word {
   private $language;
 
   function __construct( $word, $language ) {
+    echo mb_detect_encoding($word);
     $this->word = $word;
     $this->language = $language;
   }
