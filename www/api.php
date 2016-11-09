@@ -19,8 +19,8 @@
       }
       break;
     case 'pair':
-      $word_1 = 'పరీక్ష';
-      $word_2 = 'ప్రయోగం';
+      $word_1 = urldecode($_POST['word_1']);
+      $word_2 = urldecode($_POST['word_2']);
       $language = @$_POST['language'];
       
       echo $word_1;
