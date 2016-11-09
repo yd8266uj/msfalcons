@@ -66,12 +66,17 @@ class word implements i_word {
   }
   
   public function get_chars() {
-    $wp = new wordProcessor($this->word,'telugu');
-    $chars = $wp->getLogicalChars();
-    var_dump(mb_detect_encoding ( $chars[0] ) );
-    var_dump($chars);
-    die();
-    return implode(';',$chars);
+    switch($this->language) {
+      case 'telugu':
+        $pattern = "/(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}](?!\pL))|(?:[\x{0c05}-\x{0c14}][\x{0c01}-\x{0c03}]?)|(?:(?:[\x{0c15}-\x{0c39}\x{200c}][\x{0c4d}])*[\x{0c15}-\x{0c39}\x{200c}][\x{0c3e}-\x{0c4c}]?[\x{0c01}-\x{0c03}]?[\x{200c}]?)/u";
+        break;
+      case 'english':
+      default:
+        $pattern = "/\p{Latin}/u";
+    }
+    preg_match_all($pattern,$this->word,$matches);
+    var_dump($matches[0]);
+    return implode(';',$matches[0]);
   }
 
   /**
