@@ -3,14 +3,11 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
   
-  ini_set('default_charset','UTF-8');
-  ini_set('mbstring.internal_encoding','UTF-8');
-  
   include 'autoload.php';  
   
   switch(@$_POST['type']) {
     case 'word':  
-      $word = @urldecode($_POST['word']);
+      $word = @$_POST['word'];
       $language = @$_POST['language'];
       try {
         (new word($word,$language))->create();
