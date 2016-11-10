@@ -83,7 +83,6 @@ class word implements i_word {
     preg_match_all($pattern,$this->word,$matches);
     */
     $chars = (new wordProcessor($this->word,$this->language))->getLogicalChars();
-    var_dump($chars);
     return str_replace('["','',str_replace('"]','',str_replace('","',';',json_encode($chars,JSON_UNESCAPED_UNICODE))));
   }
 
