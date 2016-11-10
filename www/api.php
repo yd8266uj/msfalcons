@@ -8,7 +8,7 @@
   mb_internal_encoding("UTF-8");
   
   
-  switch(@$_GET['type']) {
+  switch(@$_POST['type']) {
     case 'word':  
       $word = @html_entity_decode($_POST['word']);
       $language = @$_POST['language'];
@@ -21,8 +21,8 @@
       }
       break;
     case 'pair':
-      $word_1 = new word(html_entity_decode($_GET['word_1']),$_GET['language']);
-      $word_2 = new word(html_entity_decode($_GET['word_2']),$_GET['language']);      
+      $word_1 = new word(html_entity_decode($_POST['word_1']),$_POST['language']);
+      $word_2 = new word(html_entity_decode($_POST['word_2']),$_POST['language']);      
       try {
         (new pair($word_1,$word_2))->create();
       } catch (Exception $e) {

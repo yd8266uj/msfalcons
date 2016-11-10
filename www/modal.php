@@ -7,7 +7,7 @@
 <div id="pair" class="modal">
   <div class="modal-content container" style="padding-top:64px">
     
-    <form method='get' action='api.php?type=pair'>
+    <form method='post' action='api.php?type=pair'>
       <div class="row">
         <select class="col s4" name='language'>
           <option value='english'>English</option>
