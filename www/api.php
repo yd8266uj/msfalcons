@@ -48,7 +48,7 @@
       echo @$_GET['format']=='html'?pair::to_html(pair::read_find($id)):pair::to_json(pair::read_find($id));
       break;
     case 'split':
-      $word = @urldecode($_GET['word']);
+      $word = @html_entity_decode(urldecode($_GET['word']));
       $language = @$_GET['lang'];
       $chars = (new wordProcessor($word,$language))->getLogicalChars();
       echo json_encode($chars,JSON_UNESCAPED_UNICODE);
