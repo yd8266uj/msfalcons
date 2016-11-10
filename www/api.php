@@ -5,6 +5,9 @@
   
   include 'autoload.php';  
   
+  mb_internal_encoding("UTF-8");
+  echo mb_internal_encoding();
+  
   
   switch(@$_GET['type']) {
     case 'word':  
