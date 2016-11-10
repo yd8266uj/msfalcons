@@ -39,7 +39,7 @@
   switch(@$_GET['type']) {
     case 'word':
       $position = @$_GET['pos'];
-      $character = @$_GET['char'];
+      $character = @html_entity_decode($_GET['char']);
       $language = @$_GET['lang']?$_GET['lang']:'english';
       echo @$_GET['format']=='html'?word::to_html(word::read_find($position,$character,$language)):word::to_json(word::read_find($position,$character,$language));      
       break;
@@ -48,7 +48,7 @@
       echo @$_GET['format']=='html'?pair::to_html(pair::read_find($id)):pair::to_json(pair::read_find($id));
       break;
     case 'split':
-      $word = @html_entity_decode(urldecode($_GET['word']));
+      $word = @html_entity_decode($_GET['word']);
       $language = @$_GET['lang'];
       $chars = (new wordProcessor($word,$language))->getLogicalChars();
       echo json_encode($chars,JSON_UNESCAPED_UNICODE);
