@@ -6,12 +6,11 @@
   include 'autoload.php';  
   
   mb_internal_encoding("UTF-8");
-  echo mb_internal_encoding();
   
   
   switch(@$_GET['type']) {
     case 'word':  
-      $word = @$_POST['word'];
+      $word = @html_entity_decode($_POST['word']);
       $language = @$_POST['language'];
       try {
         (new word($word,$language))->create();
@@ -22,8 +21,8 @@
       }
       break;
     case 'pair':
-      $word_1 = new word($_GET['word_1'],$_GET['language']);
-      $word_2 = new word($_GET['word_2'],$_GET['language']);      
+      $word_1 = new word(html_entity_decode($_GET['word_1']),$_GET['language']);
+      $word_2 = new word(html_entity_decode($_GET['word_2']),$_GET['language']);      
       try {
         (new pair($word_1,$word_2))->create();
       } catch (Exception $e) {
