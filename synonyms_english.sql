@@ -2,8 +2,6 @@
 -- noinspection SqlDialectInspectionForFile
 USE ics499fa160124;
 
-INSERT INTO languages(language_name) VALUE ('english');
-
 CALL add_pair("amazing", "incredible", "english");
 CALL add_pair("amazing", "unbelievable", "english");
 CALL add_pair("amazing", "improbable", "english");
