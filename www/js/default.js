@@ -71,7 +71,7 @@ function shuffle (array) {
               .attr("class","puzzle-line__clue col s12 m6");
             puzzle_line.append("div")
               .attr("class","puzzle-line__synonym col s12 m6");
-            var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=word&char='+c+'&pos='+(slider_column_preference.noUiSlider.get()-1);         
+            var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=word&char='+c+'&pos='+(slider_column_preference.noUiSlider.get()-1)+'&lang='+d3.select(".config__language").property("value"); 
             d3.html(url,function(data) {          
               d3.select(data);              
               tab.node().appendChild(data);  
