@@ -6,8 +6,8 @@
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
     <script>
-      //var path = 'http://localhost/msfalcons/';
-      var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
+      var path = 'http://localhost/msfalcons/';
+      //var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
       
       function post_row(row) {
         url = path+'api.php';
@@ -44,21 +44,73 @@
           let url = path+'api.php?type=pair&word='+encodeURI(this.value); 
           console.log(url);
           d3.json(url, function(data) {
-            console.log(data);
             update_row_left(row,data);
               d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
           });
         },300));
       }
+      d3.selectAll('input[type="file"]')
+        .on("change", function() {
+          let src = '';
+          if( typeof $('#config__image_radio--upload ~ .input-field input').get(0).files[0] !== "undefined" ) {
+            src = window.URL.createObjectURL($('#config__image_radio--upload ~ .input-field input').get(0).files[0]);
+          }
+          d3.select('.image').property('src',src);
+        });
+      
+      d3.select('#config__image_radio--url ~ .input-field input')
+        .on("input", debounce( function() {
+          src = this.value;
+          d3.select('.image').property('src',src);
+        },300));
+        
+      d3.selectAll('input[name="config__image"]')
+          .on("change", function() {
+          if(this.value != 0) {            
+            let src = '';
+            if(this.value == 1) {
+              d3.select('#config__image_radio--upload ~ .input-field .btn')
+                .attr('disabled', 'disabled')
+                .attr('required', null);
+              d3.select('#config__image_radio--url ~ .input-field input')
+                .attr('disabled', null)
+                .attr('required', 'required'); 
+              src = d3.select('#config__image_radio--url ~ .input-field input').property("value");
+            }
+            if(this.value == 2) {
+              d3.select('#config__image_radio--upload ~ .input-field .btn')
+                .attr('disabled', null)
+                .attr('required', 'required');
+              d3.select('#config__image_radio--url ~ .input-field input')
+                .attr('disabled', 'disabled')
+                .attr('required', null);
+              src = window.URL.createObjectURL($('#config__image_radio--upload ~ .input-field input').get(0).files[0]);
+            }
+            d3.select('.image').property('src',src);
+            d3.select('.image__wrapper').classed('hide',false);
+          } else {
+            d3.select('#config__image_radio--upload ~ .input-field .btn')
+              .attr('disabled', 'disabled')
+              .attr('required', null);
+            d3.select('#config__image_radio--url ~ .input-field input')
+              .attr('disabled', 'disabled')
+              .attr('required', null);
+            d3.select('.display__image')
+              .style("display","none");
+            d3.select('.image__wrapper').classed('hide',true);
+          }
+          });
       
       function update_row_left(row,data) {
         clear_row_left(row);
+        d3.select('#row-'+row+' .side--left .side__word').property('placeholder',data.length+' matches found');
         var rowleft = d3.select('datalist#l'+row).selectAll('option').data(data);
         rowleft.exit().remove();
         rowleft.enter().append("option").text(function(d) { return d.value_name; });    
       }
       
       function update_row_right(row,data) {
+        d3.select('#row-'+row+' .side--right .side__word').property('placeholder',data.length+' matches found');
         var rowleft = d3.select('datalist#r'+row).selectAll('option').data(data);
         rowleft.exit().remove();
         rowleft.enter().append("option").text(function(d) { return d.word_name; });    
@@ -81,7 +133,8 @@
         console.log(url);
         d3.json(url,function(data) {
           d3.selectAll('.line').classed("hide",true);        
-          data.forEach(function(data,i) {            
+          data.forEach(function(data,i) {    
+            d3.selectAll(".tooltipped").classed("hide",false);          
             let row = i+1;
             d3.select('#row-'+row).classed("hide",false);
             update_row_right(row,[]);

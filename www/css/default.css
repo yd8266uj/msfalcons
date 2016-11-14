@@ -99,6 +99,9 @@ body {
       box-shadow:none;
     }
     
+    .btn-flat {
+      display:none;
+    }
     .side-nav,header {
       display:none;
     }
