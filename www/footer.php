@@ -15,7 +15,7 @@
           type: "pair",
           word_1: d3.select("#row-"+row+" input[name='word_1']").property('value'),
           word_2: d3.select("#row-"+row+" input[name='word_2']").property('value'),
-          language: d3.select("config__language").property("value")
+          language: d3.select(".config__language").property("value")
         };    
         $.post(url,data)
         .done(function( data ) {
@@ -36,20 +36,20 @@
           init_rows(this.value);
         },300));
       
-      
-      d3.select("#row-1 .side--right .side__word")
-      .on("input", debounce( function (data) {
-        let row=1;
-        update_row_left(row,[]);
-        d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
-        let url = path+'api.php?type=pair&word='+encodeURI(this.value); 
-        console.log(url);
-        d3.json(url, function(data) {
-          console.log(data);
-          update_row_left(row,data);
-                      d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
-        });
-      },300));
+      function init_left(row) {
+        d3.select("#row-"+row+" .side--right .side__word")
+        .on("input", debounce( function (data) {
+          update_row_left(row,[]);
+          d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
+          let url = path+'api.php?type=pair&word='+encodeURI(this.value); 
+          console.log(url);
+          d3.json(url, function(data) {
+            console.log(data);
+            update_row_left(row,data);
+              d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
+          });
+        },300));
+      }
       
       function update_row_left(row,data) {
         clear_row_left(row);
@@ -81,10 +81,9 @@
         console.log(url);
         d3.json(url,function(data) {
           d3.selectAll('.line').classed("hide",true);        
-          //console.log(data);
           data.forEach(function(data,i) {            
             let row = i+1;
-            d3.select('.line:nth-of-type('+row+')').classed("hide",false);
+            d3.select('#row-'+row).classed("hide",false);
             update_row_right(row,[]);
             update_row_left(row,[]);
             d3.select('#row-'+row+' .side--right .side__progress').classed("hide",false);
@@ -98,6 +97,7 @@
             d3.json(url,function(data) {
               console.log(data);
               update_row_right(row,data);
+              init_left(row);
               d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
             });
           });
