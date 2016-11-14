@@ -159,7 +159,7 @@ BEGIN
   FROM word_char wc
   WHERE wc.char_name = in_char_name AND wc.char_index = in_char_index) AS wid
   JOIN words w on w.word_id = wid.word_id AND w.language_id = (SELECT language_id FROM languages WHERE language_name = in_language)
-  WHERE words.length <= in_max AND word.length >= in_min;
+  WHERE w.length <= in_max AND w.length >= in_min;
 END //
 
 DELIMITER ;
