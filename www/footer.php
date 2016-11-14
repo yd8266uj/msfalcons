@@ -40,7 +40,7 @@
       d3.select("#row-1 .side--right .side__word")
       .on("input", debounce( function (data) {
         let row=1;
-        update_row_left(row,[]);    
+        update_row_left(row,[]);
         d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
         let url = path+'api.php?type=pair&word='+encodeURI(this.value); 
         console.log(url);
