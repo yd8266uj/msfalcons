@@ -11,6 +11,23 @@ body {
   
 }
 
+.side__progress {
+opacity:1;
+z-index:-1;
+position:absolute;
+width:calc(100% - 100px);
+bottom:0;
+height:initial;
+height:6px;
+}
+
+.image__wrapper {
+}
+
+.image__wrapper::after {
+  display:none;
+}
+
 .display {
   width: 8.5in;
   height: calc(11in - 64px);
@@ -89,6 +106,10 @@ body {
 		padding: 16px;
 	}
   
+  .row:after {
+    display: initial;
+  }
+  
   
   @media print {
     .show-on-print {
@@ -102,6 +123,8 @@ body {
     .btn-flat {
       display:none;
     }
+    
+
     .side-nav,header {
       display:none;
     }
@@ -110,11 +133,19 @@ body {
       display:none;
     }
     
-    #solution-toggle:not(:checked) ~ .display__solution {
+    #solution-toggle:not(:checked) ~ ul .puzzle__solution {
       display:none;
     }
+    
+    #solution-toggle:not(:checked) ~ ul .puzzle__solution--print {
+      display: initial !important;
+    }
 
-    #solution-toggle:not(:checked) ~ .display__puzzle-lines .puzzle-line__synonym {
-      display:none;
+    #solution-toggle:not(:checked) ~ ul .side--right .side__word {
+      display: none;
+    }
+    
+    #solution-toggle:not(:checked) ~ ul .side--right .side__word--print {
+      display: initial !important;
     }
   }

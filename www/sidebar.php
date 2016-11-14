@@ -14,8 +14,6 @@
         <!-- __solution -->	
         <div class="collapsible-body">			
           <!-- __language -->
-          <label>Puzzle Title</label>
-          <input type='text'>
           
           <select name="language" class="config__language browser-default">
             <option value="" disabled>Choose a language</option>

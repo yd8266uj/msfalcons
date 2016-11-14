@@ -33,6 +33,8 @@
         
         d3.select(".solution")
         .on("input", debounce( function(data) {
+          clear_row_left(null);
+          clear_row_right(null);
           init_rows(this.value);
         },300));
       
@@ -46,6 +48,12 @@
           d3.json(url, function(data) {
             update_row_left(row,data);
               d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
+          });          
+          url = path+'api.php?word='+encodeURI(this.value)+'&type=split';         
+          d3.json(url, function(data) {
+            console.log(data.length);
+            let pos = slider_column_preference.noUiSlider.get();
+            d3.select('#row-'+row+' .side--right .side__word--print').property("placeholder",data.length+' characters, position '+pos);
           });
         },300));
       }
@@ -121,8 +129,7 @@
         d3.select('#row-'+row+'.line .side--left .side__word').property("value","");
       }
       
-      function clear_row_right(row) {
-        
+      function clear_row_right(row) {        
         if(row===null) d3.selectAll('.line .side--right .side__word').property("value","");
         clear_row_left(row)
         d3.select('#row-'+row+'.line .side--right .side__word').property("value","");

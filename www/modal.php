@@ -1,5 +1,22 @@
 <div id="lookup" class="modal bottom-sheet">
   <div class="modal-content container">
+    <h5>no puzzles are currently stored</h5>
+  </div>
+  <div class="modal-footer"></div>
+</div>
+
+<div id="help" class="modal">
+  <div class="modal-content container">
+    <h5>Name in Synonym Help</h5>
+    <p>Choose a puzzle solution and title. Fill in clues and choose a synonym. You can change more settings on the left hand side. </p>
+  </div>
+  <div class="modal-footer"></div>
+</div>
+
+<div id="info" class="modal">
+  <div class="modal-content container">
+    <h5>About</h5>
+    <p>This puzzle was created by team falcons for ICS499 spring 2016.</p>
   </div>
   <div class="modal-footer"></div>
 </div>

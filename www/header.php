@@ -22,8 +22,8 @@
           <ul class="right hide-on-med-and-down">
             <li><a href="#lookup" class="modal-trigger"><i class="material-icons">search</i></a></li>
             <li><a href="#!" onclick="window.print()"><i class="material-icons">print</i></a></li>
-            <li><a href="#!"><i class="material-icons">help_outline</i></a></li>
-            <li><a href="#!"><i class="material-icons">info_outline</i></a></li>
+            <li><a href="#help" class="modal-trigger"><i class="material-icons">help_outline</i></a></li>
+            <li><a href="#info" class="modal-trigger"><i class="material-icons">info_outline</i></a></li>
           </ul>
         </div>
       </nav>
