@@ -6,7 +6,7 @@
   include 'autoload.php';
   include 'header.php';
   include 'sidebar.php';
-  include 'display.php';
+  include 'layout.html';
   include 'modal.php';
   include 'footer.php';
 

@@ -1,12 +1,7 @@
 <?php  
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-  
   include 'autoload.php';  
   
   mb_internal_encoding("UTF-8");
-  
   
   switch(@$_POST['type']) {
     case 'word':  
@@ -17,6 +12,7 @@
       } catch (Exception $e) {
       
       } finally {
+        echo json_encode($out);
         die();
       }
       break;
@@ -25,10 +21,11 @@
       $word_2 = new word(html_entity_decode($_POST['word_2']),$_POST['language']);      
       try {
         (new pair($word_1,$word_2))->create();
+        $out = array("message"=>"pair added");
       } catch (Exception $e) {
-        echo $e->getMessage();
-      } finally {
-        header('Location: index.php',301);
+        $out = array("error"=> $e->getMessage());
+      } finally {   
+        echo json_encode($out);      
         die();
       }
       break;
@@ -40,12 +37,14 @@
     case 'word':
       $position = @$_GET['pos'];
       $character = @html_entity_decode($_GET['char']);
+      $min = @$_GET['min'];
+      $max = @$_GET['max'];
       $language = @$_GET['lang']?$_GET['lang']:'english';
-      echo @$_GET['format']=='html'?word::to_html(word::read_find($position,$character,$language)):word::to_json(word::read_find($position,$character,$language));      
+      echo @$_GET['format']=='html'?word::to_html(word::read_find($position,$character,$language,$min,$max)):word::to_json(word::read_find($position,$character,$language,$min,$max));      
       break;
     case 'pair':
-      $id = @$_GET['id'];
-      echo @$_GET['format']=='html'?pair::to_html(pair::read_find($id)):pair::to_json(pair::read_find($id));
+      $word = @html_entity_decode($_GET['word']);
+      echo @$_GET['format']=='html'?pair::to_html(pair::read_find($word)):pair::to_json(pair::read_find($word));
       break;
     case 'split':
       $word = @html_entity_decode($_GET['word']);

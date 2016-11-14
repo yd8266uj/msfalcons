@@ -49,11 +49,13 @@ function shuffle (array) {
         d3.selectAll(".config__tabs div").remove();
         var puzzle_lines = d3.select(".display__puzzle-lines");
         puzzle_lines.selectAll("li.puzzle-line").remove();
-        var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?word='+encodeURI(state)+'&type=split';         
+        var url = 'http://localhost/msfalcons/api.php?word='+encodeURI(state)+'&type=split';         
         console.log(url);
+        d3.select(".config__tabs .tabs").text('loading');
         d3.json(url,function(data) {
-          console.log(data);
+          console.log(data);          
           data.forEach( function(c,i) {
+          
             var li = d3.select(".config__tabs .tabs")
               .append("li")
               .attr("class","tab");
@@ -71,13 +73,15 @@ function shuffle (array) {
               .attr("class","puzzle-line__clue col s12 m6");
             puzzle_line.append("div")
               .attr("class","puzzle-line__synonym col s12 m6");
-            var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=word&char='+encodeURI(c)+'&pos='+(slider_column_preference.noUiSlider.get()-1)+'&lang='+d3.select(".config__language").property("value"); 
+            var url = 'http://localhost/msfalcons/api.php?format=html&type=word&char='+encodeURI(c)+'&pos='+(slider_column_preference.noUiSlider.get()-1)+'&lang='+d3.select(".config__language").property("value"); 
             console.log(url);
-            d3.html(url,function(data) {          
+            
+            d3.html(url,function(data) { 
+              d3.select(".config__tabs .tabs").text('');            
               d3.select(data);              
               tab.node().appendChild(data);  
               var select = d3.select("#tab-"+i+" select:nth-of-type(1)").on("change", function() {
-                var url = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/api.php?format=html&type=pair&id='+this.value;
+                var url = 'http://localhost/msfalcons/api.php?format=html&type=pair&id='+this.value;
                 d3.html(url,function(data) {
                   d3.select("#tab-"+i+" select:nth-of-type(2)").remove();
                   d3.select(data);              
@@ -200,11 +204,7 @@ function shuffle (array) {
         Materialize.fadeInImage('.display__image img');
       });
       
-			$( document ).ready(function() {
-				$('.modal-trigger').leanModal();
-				$('.collapsible').collapsible();
-        dispatch.call("load", this, this);
-			});
+
 
       var slider_number_of_characters = document.getElementById('config__number_of_characters');
       var slider_column_preference = document.getElementById('config__column_preference');
@@ -247,18 +247,5 @@ function shuffle (array) {
         });
       });
       
-      function debounce(func, wait, immediate) {
-        var timeout;
-        return function() {
-          var context = this, args = arguments;
-          var later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-          };
-          var callNow = immediate && !timeout;
-          clearTimeout(timeout);
-          timeout = setTimeout(later, wait);
-          if (callNow) func.apply(context, args);
-        };
-      };
+   
       

@@ -17,7 +17,7 @@ class pair implements i_pair {
    */
   public static function to_html( array $print_array ) {
     shuffle($print_array);
-    $out = "<select class='browser-default'>";
+    $out = sprintf("<select class='browser-default' id='%s'>",$print_array[0]['key_id']);
     foreach( $print_array as $row ) {
       $out .= sprintf("<option value='%s'>%s</option>",$row['pair_id'],$row['value_name']);
     }
@@ -32,7 +32,7 @@ class pair implements i_pair {
    */
   public static function to_json( array $print_array ) {
     shuffle($print_array);
-    return json_encode($print_array,JSON_PRETTY_PRINT);
+    return json_encode($print_array,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
   }
   
   /**
@@ -45,7 +45,6 @@ class pair implements i_pair {
    */
   public function create() {
     $query = database::get_instance()->prepare("CALL add_pair(:word_1,:word_2,:language)");
-    echo $this->word_1->get_chars();
     $query->bindValue(':word_1',$this->word_1->get_chars());
     $query->bindValue(':word_2',$this->word_2->get_chars());
     $query->bindValue(':language',$this->word_1->get_language());
@@ -80,11 +79,11 @@ class pair implements i_pair {
    * 
    * @return Pair[] array containing matched Pairs
    */
-  public static function read_find( $id ) {
+  public static function read_find( $name ) {
     $query = database::get_instance()->prepare("SELECT *
       FROM pairs AS p
-      WHERE key_id = :id");
-    $query->bindValue(':id',$id,PDO::PARAM_INT);  
+      WHERE key_name = :name");
+    $query->bindValue(':name',$name);  
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);      
   }

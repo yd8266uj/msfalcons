@@ -13,10 +13,6 @@
         </div>
         <!-- __solution -->	
         <div class="collapsible-body">			
-          <div class="input-field">
-            <input placeholder="" id="" type="text" class="validate config__solution">
-            <label for="first_name">Puzzle Solution</label>
-          </div>
           <!-- __language -->
           <select name="language" class="config__language browser-default">
             <option value="" disabled>Choose a language</option>
@@ -64,7 +60,7 @@
           
         </div>
         <div class="collapsible-body">		
-         
+          <!--
           <div>
             <h6 class="grey-text">Align Characters</h6>
           </div>
@@ -75,6 +71,7 @@
             <input name="puzzle-format" type="radio" id="config__format_radio--justify" checked />
             <label for="config__format_radio--justify">Justify</label>
           </div>
+          -->
           <!-- __difficulty -->
 
           <div>
@@ -89,15 +86,16 @@
           <div>
             <h6 class="grey-text">Column preference</h6>
           </div>
-
+          <!--
           <div class="switch config__toggle_column">
             <label>
               random
-              <input type="checkbox" checked disabled>
+              <input type="checkbox" checked>
               <span class="lever"></span>
               choose
             </label>
           </div>
+          -->
           <div class="input-field ">
             <p class="range-field">
               <div id="config__column_preference"></div>
@@ -107,19 +105,12 @@
               
         </div>
       </li>
-      <li>
-        <div class="collapsible-header">
-          <a href="#!">Choose Solutions</a>
-        </div>						
-        <div class="collapsible-body config__tabs">
-          <a href="#pair" class="modal-trigger right"><i class="material-icons">add</i></a>
-          <ul class="tabs">
-          </ul>
-        </div>
-      </li>
+      <!--
       <li>
         <a href="#!" class="btn white-text" style="width:initial">Save</a>
       </li>
+      
+      -->
     </ul>
   </li>
 </ul>

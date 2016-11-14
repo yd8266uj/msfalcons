@@ -5,36 +5,170 @@
     <script type="text/javascript" src="js/wNumb.js"></script>
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
-		<script src="js/http.js"></script>
-		<script src="js/default.js"></script>
     <script>
-      var callback = {
-        success: function(data) {
-          console.log(1, 'success', JSON.parse(data));
-        },
-        error: function(data) {
-          console.log(2, 'error', JSON.parse(data));
+      var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
+      
+      function post_row(row) {
+        url = path+'api.php';
+        data = {
+          type: "pair",
+          word_1: d3.select("#row-"+row+" input[name='word_1']").property('value'),
+          word_2: d3.select("#row-"+row+" input[name='word_2']").property('value'),
+          language: d3.select("config__language").property("value")
+        };    
+        $.post(url,data)
+        .done(function( data ) {
+          console.log($.parseJSON(data).message);
+          Materialize.toast($.parseJSON(data).message, 4000);
+        });
+      }
+      
+      d3.select(".config__language")
+        .on("change", function(data) {
+          clear_row_left(null);
+          clear_row_right(null);
+          init_rows(d3.select(".solution").property("value"));
+        });
+        
+        d3.select(".solution")
+        .on("input", debounce( function(data) {
+          init_rows(this.value);
+        },300));
+      
+      
+      d3.select("#row-1 .side--right .side__word")
+      .on("input", debounce( function (data) {
+        let row=1;
+        update_row_left(row,[]);    
+        d3.select('#r'+row+'p').classed("hide",false);
+        let url = path+'api.php?type=pair&word='+encodeURI(this.value); 
+        console.log(url);
+        d3.json(url, function(data) {
+          console.log(data);
+          update_row_left(row,data);
+          d3.select('#r'+row+'p').classed("hide",true);
+        });
+      },300));
+      
+      function update_row_left(row,data) {
+        clear_row_left(row);
+        var rowleft = d3.select('datalist#l'+row).selectAll('option').data(data);
+        rowleft.exit().remove();
+        rowleft.enter().append("option").text(function(d) { return d.value_name; });    
+      }
+      
+      function update_row_right(row,data) {
+        var rowleft = d3.select('datalist#r'+row).selectAll('option').data(data);
+        rowleft.exit().remove();
+        rowleft.enter().append("option").text(function(d) { return d.word_name; });    
+      }
+      
+      function clear_row_left(row) {
+        if(row===null) d3.selectAll('.line .side--left .side__word').property("value","");
+        d3.select('#row-'+row+'.line .side--left .side__word').property("value","");
+      }
+      
+      function clear_row_right(row) {
+        
+        if(row===null) d3.selectAll('.line .side--right .side__word').property("value","");
+        clear_row_left(row)
+        d3.select('#row-'+row+'.line .side--right .side__word').property("value","");
+      }
+      
+      function init_rows(word) {
+        var url = path+'api.php?word='+encodeURI(word)+'&type=split';         
+        console.log(url);
+        d3.json(url,function(data) {
+          d3.selectAll('.line').classed("hide",true);        
+          //console.log(data);
+          data.forEach(function(data,i) {            
+            let row = i+1;
+            d3.select('.line:nth-of-type('+row+')').classed("hide",false);
+            update_row_right(row,[]);
+            update_row_left(row,[]);
+            d3.select('#row-'+row+'.side--right .side__progress').classed("hide",false);
+            let char = encodeURI(data);
+            let pos = slider_column_preference.noUiSlider.get()-1;
+            let min = slider_number_of_characters.noUiSlider.get()[0];
+            let max = slider_number_of_characters.noUiSlider.get()[1];
+            let lang = d3.select(".config__language").property("value");
+            let url = path+'/api.php?type=word&char='+char+'&pos='+pos+'&lang='+lang+'&min='+min+'&max='+max; 
+            console.log(url);
+            d3.json(url,function(data) {
+              console.log(data);
+              update_row_right(row,data);
+              d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
+            });
+          });
+        });
+      }
+      
+      function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      };   
+      var slider_number_of_characters = document.getElementById('config__number_of_characters');
+      var slider_column_preference = document.getElementById('config__column_preference');
+      
+      noUiSlider.create(slider_number_of_characters, {
+        start: [3, 12],
+        connect: true,
+        margin: 1,
+        step: 1,
+        tooltips:true,
+        format: wNumb({
+          decimals: 0
+        }),
+        range: {
+          'min': 3,
+          'max': 12
         }
-      };
+      });	
 
-      var params = {
-        type: 'word',
-        character: 'a',
-        position: '0'
-      };
-      var url = 'http://localhost/msfalcons/api.php?format=html&type='+params.type+'&char='+params.character+'&pos='+params.position;
-      console.log(url);
-      /*
-      var params = {
-        type: 'pair',
-        id: '7'
-      };
-      var url = 'http://localhost/msfalcons/api.php?type='+params.type+'&id='+params.id+'&format='+params.format;
-      */
-      $http(url)
-        .get()
-        .then(callback.success)
-        .catch(callback.error);
+      noUiSlider.create(slider_column_preference, {
+        start: 1,
+        tooltips:true,
+        step: 1,
+        format: wNumb({
+          decimals: 0
+        }),
+        range: {
+          'min': 1,
+          'max': 12
+        }
+      });
+      
+      slider_column_preference.noUiSlider.on('update',function() {
+        clear_row_left(null);
+        clear_row_right(null);
+        init_rows(d3.select(".solution").property("value"));
+      });
+      slider_number_of_characters.noUiSlider.on('update', function(values,handle) {
+        clear_row_left(null);
+        clear_row_right(null);
+        init_rows(d3.select(".solution").property("value"));
+        slider_column_preference.noUiSlider.updateOptions({
+          range: {
+            'min': 1,
+            'max': parseInt(values[1])
+          }
+        });
+      });
+
+      $( document ).ready(function() {
+        $('.modal-trigger').leanModal();
+        $('.collapsible').collapsible();
+      });  
     </script>
 	</body>
 </html>

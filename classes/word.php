@@ -5,11 +5,8 @@ class word implements i_word {
   private $language;
 
   function __construct( $word, $language ) {
-    echo mb_detect_encoding($word);
-    echo $word;
+    if(empty($word)) throw new Exception();
     $word = iconv(mb_detect_encoding($word),'UTF-8',$word);
-    echo mb_detect_encoding($word);
-    echo $word;
     $this->word = $word;
     $this->language = $language;
   }
@@ -54,7 +51,7 @@ class word implements i_word {
     });
     */
     shuffle($print_array);
-    return json_encode($print_array,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+    return json_encode(array_slice($print_array,0,10),JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
   }
   
   /**
@@ -125,11 +122,13 @@ JOIN word w on w.word_id = wid.word_id
 GROUP BY w.word_id,w.word_language
 HAVING count(*)>:min AND count(*)<:max
    */
-  public static function read_find(  $char_index = 0, $char_name, $language = 'english' ) {
-    $query = database::get_instance()->prepare("CALL find_word(:char_name,:char_index,:language)");
+  public static function read_find(  $char_index = 0, $char_name, $language = 'english', $min = 1, $max = 20 ) {
+    $query = database::get_instance()->prepare("CALL find_word(:char_name,:char_index,:language,:min,:max)");
     $query->bindValue(':char_name',$char_name);
     $query->bindValue(':char_index',$char_index,PDO::PARAM_INT);  
     $query->bindValue(':language',$language);    
+    $query->bindValue(':min',$min);    
+    $query->bindValue(':max',$max);    
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);      
   }
