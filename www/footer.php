@@ -6,6 +6,7 @@
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
     <script>
+      //var path = 'http://localhost/msfalcons/';
       var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
       
       function post_row(row) {
@@ -86,7 +87,7 @@
             d3.select('.line:nth-of-type('+row+')').classed("hide",false);
             update_row_right(row,[]);
             update_row_left(row,[]);
-            d3.select('#row-'+row+'.side--right .side__progress').classed("hide",false);
+            d3.select('#row-'+row+' .side--right .side__progress').classed("hide",false);
             let char = encodeURI(data);
             let pos = slider_column_preference.noUiSlider.get()-1;
             let min = slider_number_of_characters.noUiSlider.get()[0];
