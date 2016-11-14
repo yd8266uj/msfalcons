@@ -6,8 +6,8 @@
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
     <script>
-      var path = 'http://localhost/msfalcons/';
-      //var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
+      //var path = 'http://localhost/msfalcons/';
+      var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
       
       function post_row(row) {
         url = path+'api.php';
