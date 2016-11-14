@@ -153,12 +153,13 @@ BEGIN
 END //
 
 DROP PROCEDURE IF EXISTS find_word//
-CREATE PROCEDURE find_word(IN in_char_name VARCHAR(5) charset utf8,IN in_char_index INT, IN in_language VARCHAR(255))
+CREATE PROCEDURE find_word(IN in_char_name VARCHAR(5) charset utf8,IN in_char_index INT, IN in_language VARCHAR(255), IN in_min INT, IN in_max INT)
 BEGIN
   SELECT w.word_id,word_name FROM (SELECT wc.word_id
   FROM word_char wc
   WHERE wc.char_name = in_char_name AND wc.char_index = in_char_index) AS wid
-  JOIN words w on w.word_id = wid.word_id AND w.language_id = (SELECT language_id FROM languages WHERE language_name = in_language);
+  JOIN words w on w.word_id = wid.word_id AND w.language_id = (SELECT language_id FROM languages WHERE language_name = in_language)
+  WHERE words.length <= in_max AND word.length >= in_min;
 END //
 
 DELIMITER ;
