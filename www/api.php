@@ -62,8 +62,9 @@
         default:
           $pattern = "/\p{Latin}/u";
       }
-      preg_match_all($pattern,$word,$matches);
+      //preg_match_all($pattern,$word,$matches);
       //echo json_encode($matches[0],JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
       break;      
   }
+  die();
 ?>
