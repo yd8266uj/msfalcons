@@ -77,24 +77,10 @@ CREATE TABLE puzzle_line (
 ) ENGINE=INNODB;
 
 
-CREATE VIEW puzzles AS SELECT
-  pz.puzzle_id,
-  pz.puzzle_solution,
-  pz.puzzle_appearance,
-  w1.word AS word_1_name,
-  l1.language_name AS word_1_language,
-  w2.word AS word_2_name,
-  l2.language_name AS word_2_language,
-  i.image_url
+CREATE VIEW puzzles AS SELECT *
   FROM puzzle_line
-  INNER JOIN pairs AS pr ON puzzle_line.pair_id = pr.pair_id
-  INNER JOIN words AS w1 ON pr.key_id = w1.word_id AND pr.flip = puzzle_line.puzzle_line_flip
-  INNER JOIN words AS w2 ON pr.value_id = w2.word_id AND pr.flip = puzzle_line.puzzle_line_flip
-  INNER JOIN puzzle AS pz ON puzzle_line.puzzle_id = pz.puzzle_id
-  INNER JOIN images AS i ON pz.image_id = i.image_id
-  INNER JOIN languages AS l1 ON w1.language_id = l1.language_id
-  INNER JOIN languages AS l2 ON w2.language_id = l2.language_id;
-
+  INNER JOIN pairs ON puzzle_line.pair_id = pairs.pair_id AND pairs.flip = puzzle_line.puzzle_line_flip
+  INNER JOIN puzzle ON puzzle_line.puzzle_id = puzzle.puzzle_id
 
 DELIMITER //
 
