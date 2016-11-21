@@ -59,18 +59,15 @@ CREATE TABLE images(
   image_url VARCHAR(255) NOT NULL,
   UNIQUE (image_type, image_url)
 ) ENGINE=INNODB;
-
+*/
 CREATE TABLE puzzle (
-	puzzle_id INT AUTO_INCREMENT PRIMARY KEY,
-	puzzle_solution VARCHAR(255) NOT NULL,
-	puzzle_appearance INT NOT NULL,
-	image_id INT,
-	UNIQUE (puzzle_id, puzzle_solution),
-	FOREIGN KEY (image_id) REFERENCES images(image_id)
+  puzzle_id INT AUTO_INCREMENT PRIMARY KEY,
+  puzzle_solution VARCHAR(255) NOT NULL,
+  puzzle_title VARCHAR(255) NOT NULL
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle_line (
-	puzzle_id INT NOT NULL,
+  puzzle_id INT NOT NULL,
 	puzzle_line_order INT UNSIGNED NOT NULL,
 	pair_id INT NOT NULL,
 	puzzle_line_column INT UNSIGNED NOT NULL,
@@ -98,7 +95,7 @@ CREATE VIEW puzzles AS
 		INNER JOIN images AS i ON pz.image_id = i.image_id
 		INNER JOIN languages AS l1 ON w1.language_id = l1.language_id
 		INNER JOIN languages AS l2 ON w2.language_id = l2.language_id;
-*/
+
 
 DELIMITER //
 
