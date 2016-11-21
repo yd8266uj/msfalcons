@@ -62,8 +62,8 @@ CREATE TABLE images(
 */
 CREATE TABLE puzzle (
   puzzle_id VARCHAR(32) PRIMARY KEY,
-  puzzle_solution VARCHAR(255) NOT NULL,
-  puzzle_title VARCHAR(255) NOT NULL
+  puzzle_solution VARCHAR(255) CHARACTER SET utf8 NOT NULL,
+  puzzle_title VARCHAR(255) CHARACTER SET utf8 NOT NULL
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle_line (
