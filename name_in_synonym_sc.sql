@@ -67,6 +67,7 @@ CREATE TABLE puzzle (
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle_line (
+  puzzle_id INT NOT NULL,
   puzzle_line_order INT UNSIGNED NOT NULL,
   pair_id INT NOT NULL,
   puzzle_line_column INT UNSIGNED NOT NULL,
