@@ -42,12 +42,12 @@ CREATE VIEW words AS
   GROUP BY w.word_id,l.language_id;
 
 CREATE VIEW pairs AS
-  SELECT p.pair_id,w1.word_name AS key_name,w1.word_id AS key_id,w2.word_name AS value_name,w2.word_id AS value_id,w1.language_id AS language_id
+  SELECT p.pair_id,w1.word_name AS key_name,w1.word_id AS key_id,w2.word_name AS value_name,w2.word_id AS value_id,w1.language_id AS language_id, 0 AS flip
   FROM pair p
   INNER JOIN words w1 ON p.word_1 = w1.word_id
   INNER JOIN words w2 ON p.word_2 = w2.word_id
     UNION
-  SELECT p.pair_id,w2.word_name,w2.word_id,w1.word_name,w1.word_id,w1.language_id
+  SELECT p.pair_id,w2.word_name,w2.word_id,w1.word_name,w1.word_id,w1.language_id,1
   FROM pair p
   INNER JOIN words w1 ON p.word_1 = w1.word_id
   INNER JOIN words w2 ON p.word_2 = w2.word_id;
