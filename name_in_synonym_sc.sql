@@ -76,11 +76,10 @@ CREATE TABLE puzzle_line (
   FOREIGN KEY (puzzle_id) REFERENCES puzzle(puzzle_id)
 ) ENGINE=INNODB;
 
-CREATE VIEW puzzles AS SELECT key_name,value_name,puzzle_solution,puzzle_title
+CREATE VIEW puzzles AS SELECT puzzle_line.puzzle_id,key_name,value_name,puzzle_solution,puzzle_title
   FROM puzzle_line
   INNER JOIN pairs ON puzzle_line.pair_id = pairs.pair_id AND pairs.flip = puzzle_line.puzzle_line_flip
   INNER JOIN puzzle ON puzzle_line.puzzle_id = puzzle.puzzle_id
-
 
 DELIMITER //
 
