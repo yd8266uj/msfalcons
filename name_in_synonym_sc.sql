@@ -67,7 +67,7 @@ CREATE TABLE puzzle (
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle_line (
-  puzzle_id VARCHAR(32) INT NOT NULL,
+  puzzle_id VARCHAR(32) NOT NULL,
   puzzle_line_order INT UNSIGNED NOT NULL,
   pair_id INT NOT NULL,
   puzzle_line_column INT UNSIGNED NOT NULL,
@@ -75,6 +75,7 @@ CREATE TABLE puzzle_line (
   PRIMARY KEY (puzzle_id, puzzle_line_order),
   FOREIGN KEY (puzzle_id) REFERENCES puzzle(puzzle_id)
 ) ENGINE=INNODB;
+
 
 CREATE VIEW puzzles AS SELECT
   pz.puzzle_id,
