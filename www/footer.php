@@ -6,9 +6,35 @@
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
     <script>
-      //var path = 'http://localhost/msfalcons/';
-      var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
+      var path = 'http://localhost/msfalcons/';
+      d3.selectAll('input').property('value','');
+      //var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
       
+      // This function is called when the plus sign next to a row is clicked. Adds a pair to the database.
+      /*
+      function post_puzzle() {
+        url = path+'view.php';
+        lines = new Array();        
+        d3.selectAll('.line').each(function(d,i) {
+          lines[i] = {
+            left: d3.select(this).select('.side--left .side__word').property('value'),
+            right: d3.select(this).select('.side--right .side__word').property('value')
+          };
+        });
+        console.log(lines);
+        data = {
+          title: d3.select(".puzzle__title").property('value'),
+          solution: d3.select(".puzzle__solution").property('value'),
+          lines: lines,
+          language: d3.select(".config__language").property("value")
+        }; 
+        $.post(url,data)
+          .done(function( data ) {
+            console.log(data)
+            Materialize.toast($.parseJSON(data).message, 4000);
+          });
+      }
+      */
       function post_row(row) {
         url = path+'api.php';
         data = {
@@ -18,10 +44,9 @@
           language: d3.select(".config__language").property("value")
         };    
         $.post(url,data)
-        .done(function( data ) {
-          console.log($.parseJSON(data).message);
-          Materialize.toast($.parseJSON(data).message, 4000);
-        });
+          .done(function( data ) {
+            Materialize.toast($.parseJSON(data).message, 4000);
+          });
       }
       
       d3.select(".config__language")
@@ -31,31 +56,34 @@
           init_rows(d3.select(".solution").property("value"));
         });
         
-        d3.select(".solution")
+      d3.select(".solution")
         .on("input", debounce( function(data) {
           clear_row_left(null);
           clear_row_right(null);
           init_rows(this.value);
         },300));
+        
+      function load_left(row,val) {
+        update_row_left(row,[],"");
+        d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
+        let url = path+'api.php?type=pair&word='+encodeURI(val); 
+        //populate clues
+        d3.json(url, function(data) {
+          if(data !== null) {
+            console.log(data);
+            update_row_left(row,data,data[0].value_name);
+            d3.select('#row-'+row+' .pair_id').property("value",data[0].pair_id);
+            d3.select('#row-'+row+' .pair_flip').property("value",data[0].flip);
+          }
+          d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
+        });
+      }
       
       function init_left(row) {
         d3.select("#row-"+row+" .side--right .side__word")
-        .on("input", debounce( function (data) {
-          update_row_left(row,[]);
-          d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
-          let url = path+'api.php?type=pair&word='+encodeURI(this.value); 
-          console.log(url);
-          d3.json(url, function(data) {
-            update_row_left(row,data);
-              d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
-          });          
-          url = path+'api.php?word='+encodeURI(this.value)+'&type=split';         
-          d3.json(url, function(data) {
-            console.log(data.length);
-            let pos = slider_column_preference.noUiSlider.get();
-            d3.select('#row-'+row+' .side--right .side__word--print').property("placeholder",data.length+' characters, position '+pos);
-          });
-        },300));
+          .on("input", debounce( function() { 
+            load_left(row,this.value);
+          },300));
       }
       d3.selectAll('input[type="file"]')
         .on("change", function() {
@@ -109,43 +137,49 @@
           }
           });
       
-      function update_row_left(row,data) {
+      function update_row_left(row,data,val) {
         clear_row_left(row);
-        d3.select('#row-'+row+' .side--left .side__word').property('placeholder',data.length+' matches found');
+        d3.select('#row-'+row+' .side--left .side__word').property('value',val).dispatch('input');
         var rowleft = d3.select('datalist#l'+row).selectAll('option').data(data);
         rowleft.exit().remove();
         rowleft.enter().append("option").text(function(d) { return d.value_name; });    
       }
       
-      function update_row_right(row,data) {
-        d3.select('#row-'+row+' .side--right .side__word').property('placeholder',data.length+' matches found');
+      function update_row_right(row,data,val) {
+        clear_row_left(row);
+        clear_row_right(row);
+        d3.select('#row-'+row+' .side--right .side__word').property('value',val).dispatch('input');
         var rowleft = d3.select('datalist#r'+row).selectAll('option').data(data);
         rowleft.exit().remove();
-        rowleft.enter().append("option").text(function(d) { return d.word_name; });    
+        rowleft.enter().append("option").text(function(d) { return d.word_name; });                
+        load_left(row,val);
       }
       
       function clear_row_left(row) {
         if(row===null) d3.selectAll('.line .side--left .side__word').property("value","");
-        d3.select('#row-'+row+'.line .side--left .side__word').property("value","");
+        d3.select('#row-'+row+'.line .side--left .side__word').property("value","").dispatch('input');
       }
       
       function clear_row_right(row) {        
         if(row===null) d3.selectAll('.line .side--right .side__word').property("value","");
         clear_row_left(row)
-        d3.select('#row-'+row+'.line .side--right .side__word').property("value","");
+        d3.select('#row-'+row+'.line .side--right .side__word').property("value","").dispatch('input');
       }
       
       function init_rows(word) {
+        if(word==="") return;
         var url = path+'api.php?word='+encodeURI(word)+'&type=split';         
-        console.log(url);
         d3.json(url,function(data) {
+          d3.selectAll(".pair_id").property('value','');          
+          d3.selectAll(".pair_flip").property('value','');          
+          d3.selectAll(".pair_column").property('value','');          
           d3.selectAll('.line').classed("hide",true);        
           data.forEach(function(data,i) {    
-            d3.selectAll(".tooltipped").classed("hide",false);          
+            d3.selectAll(".tooltipped").classed("hide",false);            
             let row = i+1;
             d3.select('#row-'+row).classed("hide",false);
             update_row_right(row,[]);
-            update_row_left(row,[]);
+            update_row_left(row,[],"");
             d3.select('#row-'+row+' .side--right .side__progress').classed("hide",false);
             let char = encodeURI(data);
             let pos = slider_column_preference.noUiSlider.get()-1;
@@ -153,11 +187,10 @@
             let max = slider_number_of_characters.noUiSlider.get()[1];
             let lang = d3.select(".config__language").property("value");
             let url = path+'/api.php?type=word&char='+char+'&pos='+pos+'&lang='+lang+'&min='+min+'&max='+max; 
-            console.log(url);
             d3.json(url,function(data) {
-              console.log(data);
-              update_row_right(row,data);
+              if(data !== undefined) update_row_right(row,data,data[0].word_name);
               init_left(row);
+              d3.select('#row-'+row+' .pair_column').property('value',pos);
               d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
             });
           });
@@ -191,8 +224,8 @@
           decimals: 0
         }),
         range: {
-          'min': 3,
-          'max': 12
+          'min': 1,
+          'max': 20
         }
       });	
 
@@ -205,7 +238,7 @@
         }),
         range: {
           'min': 1,
-          'max': 12
+          'max': 20
         }
       });
       
