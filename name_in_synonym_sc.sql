@@ -61,13 +61,13 @@ CREATE TABLE images(
 ) ENGINE=INNODB;
 */
 CREATE TABLE puzzle (
-  puzzle_id INTPRIMARY KEY,
+  puzzle_id VARCHAR(32) PRIMARY KEY,
   puzzle_solution VARCHAR(255) NOT NULL,
   puzzle_title VARCHAR(255) NOT NULL
 ) ENGINE=INNODB;
 
 CREATE TABLE puzzle_line (
-  puzzle_id INT NOT NULL,
+  puzzle_id VARCHAR(32) INT NOT NULL,
   puzzle_line_order INT UNSIGNED NOT NULL,
   pair_id INT NOT NULL,
   puzzle_line_column INT UNSIGNED NOT NULL,
