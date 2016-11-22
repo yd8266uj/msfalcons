@@ -6,8 +6,8 @@
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
     <script>
-      //var path = 'http://localhost/msfalcons/';      
-      var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
+      var path = 'http://localhost/msfalcons/';      
+      //var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
       d3.selectAll('input:not(.puzzle__title)').property('value','');
       // This function is called when the plus sign next to a row is clicked. Adds a pair to the database.
       /*

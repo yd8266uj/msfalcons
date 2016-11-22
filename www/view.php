@@ -72,12 +72,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       .letter-box--highlight {
         border: solid black 2px;
       }
+      #show-solution:not(:checked) ~ ul .show-solution {
+        color: rgba(0,0,0,0);
+      }
+      
+      @media print {
+        #show-solution + label {
+          display:none;
+        }
+      }
     </style>
   </head>
 	<body class="">
-  <main>
-  <ul class='container flow-text show-on-print section'>
-    <li>    
+  <main class='container'>
+  <input type="checkbox" id="show-solution" checked="checked" />
+  <label for="show-solution">Show solutions</label>
+  <ul class='flow-text show-on-print section'>
+    <li>
       <div class='row'>
         <h5 class='col s4 grey-text'>puzzle title</h5>
         <h5 class='col s8'><?php echo @$lines[0]['puzzle_title'] ?></h5>
@@ -86,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <li>
       <div class='row'>
         <h5 class='col s4 grey-text'>puzzle solution</h5>
-        <h5 class='col s8'><?php echo @$lines[0]['puzzle_solution'] ?></h5>      
+        <h5 class='col s8 show-solution'><?php echo @$lines[0]['puzzle_solution'] ?></h5>      
       </div>
     </li>
     <li>
@@ -111,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class='col s8 side--right' style='position:relative;display:flex'>
           <h5>
           <?php foreach( (new wordProcessor($line['key_name'],$line['language_name']))->getLogicalChars() as $i => $char ) : ?>
-            <span class='letter-box<?php echo $line['puzzle_line_column']==$i?' letter-box--highlight':'' ?>'><?php echo $char ?></span>
+            <span class='show-solution letter-box<?php echo $line['puzzle_line_column']==$i?' letter-box--highlight':'' ?>'><?php echo $char ?></span>
           <?php endforeach ?>
           </h5>
         </div>
