@@ -8,7 +8,7 @@
     <script>
       //var path = 'http://localhost/msfalcons/';      
       var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
-      d3.selectAll('input').property('value','');
+      d3.selectAll('input:not(.puzzle__title)').property('value','');
       // This function is called when the plus sign next to a row is clicked. Adds a pair to the database.
       /*
       function post_puzzle() {
@@ -67,7 +67,7 @@
         d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
         let url = path+'api.php?type=pair&word='+encodeURI(val); 
         //populate clues
-        d3.json(url, function(data) {
+        let load = d3.json(url, function(data) {
           if(data !== null) {
             console.log(data);
             update_row_left(row,data,data[0].value_name);
@@ -241,12 +241,12 @@
         }
       });
       
-      slider_column_preference.noUiSlider.on('update',function() {
+      slider_column_preference.noUiSlider.on('update', debounce(function() {
         clear_row_left(null);
         clear_row_right(null);
         init_rows(d3.select(".solution").property("value"));
-      });
-      slider_number_of_characters.noUiSlider.on('update', function(values,handle) {
+      },1000));
+      slider_number_of_characters.noUiSlider.on('update', debounce(function(values,handle) {
         clear_row_left(null);
         clear_row_right(null);
         init_rows(d3.select(".solution").property("value"));
@@ -256,7 +256,7 @@
             'max': parseInt(values[1])
           }
         });
-      });
+      },1000));
 
       $( document ).ready(function() {
         $('.modal-trigger').leanModal();

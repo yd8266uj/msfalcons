@@ -1,14 +1,11 @@
   <?php $row_count = 20; ?>
   <main>
-  
-  <input type='checkbox' id='solution-toggle' class="filled-in display__solution-toggle" checked>
-  <label class='container' for='solution-toggle' style="position:relative;padding-left: 30px; left:75%; top 20px">show solutions</label>
   <form method='post' action="view.php" enctype="multipart/form-data">
   <ul class='container flow-text show-on-print section'>
     <li>    
       <div class='row'>
         <h5 class='col s4 grey-text'>puzzle title</h5>
-        <input type='text' class='puzzle__title col s8' name='title' maxlength="20">
+        <input type='text' class='puzzle__title col s8' name='title' value='Name in Synonym' maxlength="20">
       </div>
     </li>
     <li>
@@ -28,7 +25,7 @@
     <li>
       <div class='row'>
         <h5 class='col s5 grey-text'>synonyms</h5>
-        <h5 class='col s5 grey-text'>clues</h5>
+        <h5 class='col s7 grey-text'>clues</h5>
       </div>
     </li>
     <?php for($i=1;$i<=$row_count;$i++): ?>
@@ -56,16 +53,18 @@
           <datalist id='r<?php echo $i ?>'>
           </datalist>
         </div>
-        <div class='col s1'><a class='line__add btn-flat' onclick="post_row(<?php echo $i ?>)"><i class="material-icons medium">add</i></a></div>
+        <div class='col s2'><a class='line__add btn-flat' onclick="post_row(<?php echo $i ?>)"><i class="material-icons medium">add</i></a></div>
       </div>
     </li>
     <?php endfor ?>
     <li>    
       <div class='row'>
+        <div class='col s12'>
         <label class='btn'>
-          save
+          Show Puzzle
           <input class='hide' type="submit" value='submit'>
         </label>
+        </div>
       </div>
     </li>
   </ul>

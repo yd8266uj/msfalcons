@@ -80,13 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <li>    
       <div class='row'>
         <h5 class='col s4 grey-text'>puzzle title</h5>
-        <h5 class='col s8'><?php echo $lines[0]['puzzle_title'] ?></h5>
+        <h5 class='col s8'><?php echo @$lines[0]['puzzle_title'] ?></h5>
       </div>
     </li>
     <li>
       <div class='row'>
         <h5 class='col s4 grey-text'>puzzle solution</h5>
-        <h5 class='col s8'><?php echo $lines[0]['puzzle_solution'] ?></h5>      
+        <h5 class='col s8'><?php echo @$lines[0]['puzzle_solution'] ?></h5>      
       </div>
     </li>
     <li>
@@ -121,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </ul>
   </main>
 <?php endif ?>
+  <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   <script src="js/materialize.min.js"></script>
   </body>
 </html>

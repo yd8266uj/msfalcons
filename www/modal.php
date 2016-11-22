@@ -1,8 +1,27 @@
+<?php
+$query = database::get_instance()->prepare("SELECT * FROM puzzle ORDER BY puzzle_id DESC LIMIT 5");
+$query->execute();
+$lines = $query->fetchAll(PDO::FETCH_ASSOC); 
+?>
 <div id="lookup" class="modal bottom-sheet">
   <div class="modal-content container">
-    <h5>no puzzles are currently stored</h5>
+    <h5>Recent Puzzles</h5>
+    <ul>
+    <?php ?>
+    <li class='row'>
+      <h5 class='col s3 grey-text'>puzzle title</h5>
+      <h5 class='col s3 grey-text'>puzzle solution</h5>
+      <h5 class='col s6 grey-text'>puzzle link</h5>
+    </li>
+    <?php foreach( $lines as $line ) : ?>
+    <li class='row'>
+      <h6 class='col s3'><?php echo $line['puzzle_title'] ?></h6>
+      <h6 class='col s3'><?php echo $line['puzzle_solution'] ?></h6>
+      <h6 class='col s6'><a href='view.php?id=<?php echo $line['puzzle_id'] ?>'><?php echo $line['puzzle_id'] ?></a></h6>
+    </li>
+    <?php endforeach ?>
+    </ul>
   </div>
-  <div class="modal-footer"></div>
 </div>
 
 <div id="help" class="modal">
