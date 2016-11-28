@@ -13,8 +13,8 @@
         url = path+'api.php';
         data = {
           type: "pair",
-          word_1: d3.select("#row-"+row+" input[name='word_1']").property('value'),
-          word_2: d3.select("#row-"+row+" input[name='word_2']").property('value'),
+          word_1: d3.select("#row-"+row+" .side--left .side__word").property('value'),
+          word_2: d3.select("#row-"+row+" .side--right .side__word").property('value'),
           language: d3.select(".config__language").property("value")
         };    
         $.post(url,data)
