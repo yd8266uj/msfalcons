@@ -59,7 +59,18 @@
         d3.select("#row-"+row+" .side--right .side__word")
           .on("input", debounce( function() { 
             load_left(row,this.value);
+            d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
+            if (typeof req[row*2-1] !== 'undefined') {
+              req[row*2-1].abort();
+            }
           },1000));
+        d3.select("#row-"+row+" .side--left .side__word")
+          .on("input", function() { 
+            d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
+            if (typeof req[row*2] !== 'undefined') {
+              req[row*2].abort();
+            }
+          });
       }
       
 
@@ -164,7 +175,7 @@
             d3.selectAll(".tooltipped").classed("hide",false);            
             let row = i+1;
             d3.select('#row-'+row).classed("hide",false);
-            update_row_right(row,[]);
+            update_row_right(row,[],"");
             update_row_left(row,[],"");
             d3.select('#row-'+row+' .side--right .side__progress').classed("hide",false);
             let char = encodeURI(data);
@@ -175,7 +186,7 @@
             let url = path+'/api.php?type=word&char='+char+'&pos='+pos+'&lang='+lang+'&min='+min+'&max='+max; 
             if (typeof req[row*2-1] !== 'undefined') req[row*2-1].abort();
             req[row*2-1] = d3.json(url,function(data) {
-              if(data !== undefined) update_row_right(row,data,data[0].word_name);
+              if(data !== 'undefined') update_row_right(row,data,data[0].word_name);
               init_left(row);
               d3.select('#row-'+row+' .pair_column').property('value',pos);
               d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
