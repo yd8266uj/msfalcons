@@ -1,5 +1,5 @@
 <?php
-$query = database::get_instance()->prepare("SELECT * FROM puzzle ORDER BY puzzle_id DESC LIMIT 5");
+$query = database::get_instance()->prepare("SELECT * FROM puzzle ORDER BY puzzle_id DESC LIMIT 50");
 $query->execute();
 $lines = $query->fetchAll(PDO::FETCH_ASSOC); 
 ?>
@@ -17,7 +17,7 @@ $lines = $query->fetchAll(PDO::FETCH_ASSOC);
     <li class='row'>
       <h6 class='col s3'><?php echo $line['puzzle_title'] ?></h6>
       <h6 class='col s3'><?php echo $line['puzzle_solution'] ?></h6>
-      <h6 class='col s6'><a href='view.php?id=<?php echo $line['puzzle_id'] ?>'><?php echo $line['puzzle_id'] ?></a></h6>
+      <h6 class='col s6'><a target="_blank" href='view.php?id=<?php echo $line['puzzle_id'] ?>'><?php echo $line['puzzle_id'] ?></a></h6>
     </li>
     <?php endforeach ?>
     </ul>

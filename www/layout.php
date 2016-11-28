@@ -1,6 +1,6 @@
   <?php $row_count = 20; ?>
   <main>
-  <form method='post' action="view.php" enctype="multipart/form-data">
+  
   <ul class='container flow-text show-on-print section'>
     <li>    
       <div class='row'>
@@ -35,10 +35,10 @@
         <input type='hidden' name='flip[]' class='pair_flip'>
         <input type='hidden' name='column[]' class='pair_column'>
         <div class='col s5 side--left' style='position:relative;display:flex'>
+          <input class='side__word' list='l<?php echo $i ?>' autocomplete="off">
           <div class="progress side__progress hide">
             <div class="indeterminate"></div>
           </div>
-          <input class='side__word' list='l<?php echo $i ?>' autocomplete="off">
           <a class='side__clear btn-flat' onclick="clear_row_left(<?php echo $i ?>)"><i class="material-icons">clear</i></a>
           <datalist id='l<?php echo $i ?>'>
           </datalist>

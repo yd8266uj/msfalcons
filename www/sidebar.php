@@ -35,7 +35,7 @@
           <input name="config__image" type="radio" id="config__image_radio--url" value="1"/>
           <label for="config__image_radio--url">Url</label>
           <div class="input-field">
-            <input placeholder="" type="url" class="validate" disabled>
+            <input name="url" placeholder="" type="url" class="validate" disabled>
           </div>
           <input name="config__image" type="radio" id="config__image_radio--upload" value="2"/>
           <label for="config__image_radio--upload">Upload</label>
@@ -43,7 +43,7 @@
           <div class="file-field input-field">
             <div class="btn" style="float:none" disabled>
               <span>File</span>
-              <input type="file">
+              <input name='file' type="file">
             </div>
             <div class="file-path-wrapper hide">
               <input class="file-path validate" type="text" >

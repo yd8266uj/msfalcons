@@ -1,39 +1,14 @@
 <footer></footer>
-    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="js/d3.v4.min.js"></script>
     <script type="text/javascript" src="js/nouislider.min.js"></script>
-    <script type="text/javascript" src="js/http.js"></script>
     <script type="text/javascript" src="js/wNumb.js"></script>
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/materialize.min.js"></script>
     <script>
-      //var path = 'http://localhost/msfalcons/';      
-      var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
-      d3.selectAll('input:not(.puzzle__title)').property('value','');
+      var path = 'http://localhost/msfalcons/';      
+      //var path = 'http://sp-cfsics.metrostate.edu/~ics499fa160124/msfalcons/www/';
+      d3.selectAll('input.side__word,input.puzzle__solution').property('value','');
       // This function is called when the plus sign next to a row is clicked. Adds a pair to the database.
-      /*
-      function post_puzzle() {
-        url = path+'view.php';
-        lines = new Array();        
-        d3.selectAll('.line').each(function(d,i) {
-          lines[i] = {
-            left: d3.select(this).select('.side--left .side__word').property('value'),
-            right: d3.select(this).select('.side--right .side__word').property('value')
-          };
-        });
-        console.log(lines);
-        data = {
-          title: d3.select(".puzzle__title").property('value'),
-          solution: d3.select(".puzzle__solution").property('value'),
-          lines: lines,
-          language: d3.select(".config__language").property("value")
-        }; 
-        $.post(url,data)
-          .done(function( data ) {
-            console.log(data)
-            Materialize.toast($.parseJSON(data).message, 4000);
-          });
-      }
-      */
       function post_row(row) {
         url = path+'api.php';
         data = {
@@ -60,21 +35,23 @@
           clear_row_left(null);
           clear_row_right(null);
           init_rows(this.value);
-        },300));
+        },1000));
         
       function load_left(row,val) {
         update_row_left(row,[],"");
         d3.select('#row-'+row+' .side--left .side__progress').classed("hide",false);
         let url = path+'api.php?type=pair&word='+encodeURI(val); 
         //populate clues
-        let load = d3.json(url, function(data) {
+        if (typeof req[row*2] !== 'undefined') {
+          req[row*2].abort();
+        }
+        req[row*2] = d3.json(url, function(data) {
           if(data !== null) {
             console.log(data);
             update_row_left(row,data,data[0].value_name);
             d3.select('#row-'+row+' .pair_id').property("value",data[0].pair_id);
             d3.select('#row-'+row+' .pair_flip').property("value",data[0].flip);
           }
-          d3.select('#row-'+row+' .side--left .side__progress').classed("hide",true);
         });
       }
       
@@ -82,8 +59,11 @@
         d3.select("#row-"+row+" .side--right .side__word")
           .on("input", debounce( function() { 
             load_left(row,this.value);
-          },300));
+          },1000));
       }
+      
+
+      
       d3.selectAll('input[type="file"]')
         .on("change", function() {
           let src = '';
@@ -97,7 +77,7 @@
         .on("input", debounce( function() {
           src = this.value;
           d3.select('.image').property('src',src);
-        },300));
+        },1000));
         
       d3.selectAll('input[name="config__image"]')
           .on("change", function() {
@@ -165,10 +145,17 @@
         d3.select('#row-'+row+'.line .side--right .side__word').property("value","").dispatch('input');
       }
       
+      var words = {
+        left: d3.selectAll('.line .side--left .side__word'),
+        right: d3.selectAll('.line .side--right .side__word')
+      }
+      var req = [];
+      
       function init_rows(word) {
         if(word==="") return;
         var url = path+'api.php?word='+encodeURI(word)+'&type=split';         
-        d3.json(url,function(data) {
+        if (typeof req[0] !== 'undefined') req[0].abort();
+        req[0] = d3.json(url,function(data) {
           d3.selectAll(".pair_id").property('value','');          
           d3.selectAll(".pair_flip").property('value','');          
           d3.selectAll(".pair_column").property('value','');          
@@ -186,7 +173,8 @@
             let max = slider_number_of_characters.noUiSlider.get()[1];
             let lang = d3.select(".config__language").property("value");
             let url = path+'/api.php?type=word&char='+char+'&pos='+pos+'&lang='+lang+'&min='+min+'&max='+max; 
-            d3.json(url,function(data) {
+            if (typeof req[row*2-1] !== 'undefined') req[row*2-1].abort();
+            req[row*2-1] = d3.json(url,function(data) {
               if(data !== undefined) update_row_right(row,data,data[0].word_name);
               init_left(row);
               d3.select('#row-'+row+' .pair_column').property('value',pos);

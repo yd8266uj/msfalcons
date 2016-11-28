@@ -27,3 +27,4 @@
         </div>
       </nav>
     </header>
+    <form method='post' action="view.php" target="_blank" enctype="multipart/form-data">

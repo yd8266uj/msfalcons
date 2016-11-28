@@ -5,6 +5,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $puzzle_title = $_POST['title'];
   $puzzle_solution = $_POST['solution'];
 
+  if( @$_POST['config__image'] === '2' ) {
+    $file_name = uniqid().'_'.@basename($_FILES["file"]["name"]);
+    $target = 'img/'.$file_name;
+    $type = pathinfo($target,PATHINFO_EXTENSION);
+    if(!@getimagesize($_FILES["file"]["tmp_name"])) {
+      die("could not get image size");
+    }
+    if (file_exists($target)) {
+      die("target arleady exists");
+    }
+    if ($_FILES["file"]["size"] > 64000000) {
+      die("file too large");
+    }
+    switch($type) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        break;
+      default:
+        die("file type not supported");
+    }    
+    if (!move_uploaded_file($_FILES["file"]["tmp_name"], $target)) {
+      die("could not move file");
+    }
+    $puzzle_image = @$target;
+  } elseif( @$_POST['config__image'] === '1' ) {
+    $puzzle_image = @$_POST['url'];
+  } else {
+    $puzzle_image = '';
+  }
+  if ( strlen($puzzle_image) > 1023 ) {
+    die("file name too long");
+  }
+  
   $puzzle_id = uniqid();
   $pair_id = $_POST['pair'];
   $pair_flip = $_POST['flip'];
@@ -17,15 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       "pair_column" => $pair_column[$i],
     );   
   }  
-  $query = database::get_instance()->prepare("INSERT INTO puzzle VALUES(:puzzle_id,:puzzle_solution,:puzzle_title)");
+  
+  
+  $query = database::get_instance()->prepare("INSERT INTO puzzle VALUES(:puzzle_id,:puzzle_solution,:puzzle_title,:puzzle_image)");
   $query->bindValue(':puzzle_id',$puzzle_id);  
   $query->bindValue(':puzzle_solution',$puzzle_solution);  
+  $query->bindValue(':puzzle_image',$puzzle_image);
   $query->bindValue(':puzzle_title',$puzzle_title);  
   $query->execute();
   foreach($pairs as $i => $line) {
     $query = database::get_instance()->prepare("INSERT INTO puzzle_line
       VALUES(:puzzle_id,:puzzle_line_order,:pair_id,:puzzle_line_column,:puzzle_line_flip)");
-    $query->bindValue(':puzzle_id',$puzzle_id);    
+    $query->bindValue(':puzzle_id',$puzzle_id);
     $query->bindValue(':puzzle_line_order',$i,PDO::PARAM_INT); 
     $query->bindValue(':pair_id',$line['pair_id'],PDO::PARAM_INT);  
     $query->bindValue(':puzzle_line_column',$line['pair_column'],PDO::PARAM_INT);  
@@ -72,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       .letter-box--highlight {
         border: solid black 2px;
       }
-      #show-solution:not(:checked) ~ ul .show-solution {
+      #show-solution:not(:checked) ~ table .show-solution {
         color: rgba(0,0,0,0);
       }
       
@@ -85,51 +123,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </head>
 	<body class="">
   <main class='container'>
-  <input type="checkbox" id="show-solution" checked="checked" />
-  <label for="show-solution">Show solutions</label>
-  <ul class='flow-text show-on-print section'>
-    <li>
-      <div class='row'>
-        <h5 class='col s4 grey-text'>puzzle title</h5>
-        <h5 class='col s8'><?php echo @$lines[0]['puzzle_title'] ?></h5>
-      </div>
-    </li>
-    <li>
-      <div class='row'>
-        <h5 class='col s4 grey-text'>puzzle solution</h5>
-        <h5 class='col s8 show-solution'><?php echo @$lines[0]['puzzle_solution'] ?></h5>      
-      </div>
-    </li>
-    <li>
-     <div class='row image__wrapper'>
-      <div class='col s12'>
-        <img class='center image responsive-img' style='max-height:200px;'>
-      </div>
-     </div>
-    </li>
-    <li>
-      <div class='row'>
-        <h5 class='col s4 grey-text'>synonyms</h5>
-        <h5 class='col s8 grey-text'>clues</h5>
-      </div>
-    </li>
+    <input type="checkbox" id="show-solution" checked="checked" />
+    <label for="show-solution">Show solutions</label>
+    <table class='flow-text section'>
+      <tr class='row'>
+        <td class="col s4"><h5 class='grey-text'>puzzle title</h5></td>
+        <td class="col s8"><h5><?php echo @$lines[0]['puzzle_title'] ?></h5></td>
+      </tr>
+      <tr class='row'>
+        <td class="col s4"><h5 class='grey-text'>puzzle solution</h5></td>
+        <td class="col s8"><h5 class='show-solution'><?php echo @$lines[0]['puzzle_solution'] ?></h5></td>
+      </tr>
+
+      <tr class='row image__wrapper'>
+        <td class='col s12' colspan='2'>
+          <img src="<?php echo @$lines[0]['puzzle_image'] ?>" class='center image responsive-img' style='max-height:200px;'>
+        </td>
+      </tr>
+
+      <tr class='row'>
+        <td class="col s4"><h5 class='grey-text'>synonyms</h5></td>
+        <td class="col s8"><h5 class='grey-text'>clues</h5></td>
+      </tr>
     <?php foreach($lines as $line): ?>
-    <li>
-      <div class='row line'>
-        <div class='col s4 side--left' style='position:relative;display:flex'>
+      <tr class='row line'>
+        <td class='col s4 side--left' style='position:relative;display:flex'>
           <h5><?php echo $line['value_name'] ?></h5>
-        </div>
-        <div class='col s8 side--right' style='position:relative;display:flex'>
+        </td>
+        <td class='col s8 side--right' style='position:relative;display:flex'>
           <h5>
           <?php foreach( (new wordProcessor($line['key_name'],$line['language_name']))->getLogicalChars() as $i => $char ) : ?>
             <span class='show-solution letter-box<?php echo $line['puzzle_line_column']==$i?' letter-box--highlight':'' ?>'><?php echo $char ?></span>
           <?php endforeach ?>
           </h5>
-        </div>
-      </div>
-    </li>
+        </td>
+      </tr>
     <?php endforeach ?>
-  </ul>
+    </table>
   </main>
 <?php endif ?>
   <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
