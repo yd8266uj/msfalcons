@@ -32,7 +32,7 @@ class pair implements i_pair {
    */
   public static function to_json( array $print_array ) {
     shuffle($print_array);
-    return json_encode($print_array,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+    return json_encode($print_array,JSON_UNESCAPED_UNICODE);
   }
   
   /**
@@ -82,7 +82,7 @@ class pair implements i_pair {
   public static function read_find( $name ) {
     $query = database::get_instance()->prepare("SELECT *
       FROM pairs AS p
-      WHERE key_name = :name");
+      WHERE key_name = :name LIMIT 10");
     $query->bindValue(':name',$name);  
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);      
