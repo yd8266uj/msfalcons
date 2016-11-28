@@ -183,8 +183,8 @@
             let url = path+'/api.php?type=word&char='+char+'&pos='+pos+'&lang='+lang+'&min='+min+'&max='+max; 
             if (typeof req[row*2-1] !== 'undefined') req[row*2-1].abort();
             req[row*2-1] = d3.json(url,function(data) {
-              if(data !== 'undefined') update_row_right(row,data,data[0].word_name);
               init_left(row);
+              if(data !== 'undefined') update_row_right(row,data,data[0].word_name);              
               d3.select('#row-'+row+' .pair_column').property('value',pos);
               d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
             });
