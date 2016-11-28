@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="config__image_img hide">
-            <img class="responsive-img" src="cool_pic.jpg">			
+            <img class="responsive-img">			
           </div>
         </div>
       </li>

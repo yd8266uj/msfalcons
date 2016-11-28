@@ -57,7 +57,7 @@
       function init_left(row) {
         d3.select("#row-"+row+" .side--right .side__word")
           .on("input", debounce( function() { 
-            load_left(row,this.value);
+            if(this.value!=='') load_left(row,this.value);
             d3.select('#row-'+row+' .side--right .side__progress').classed("hide",true);
             if (typeof req[row*2-1] !== 'undefined') {
               req[row*2-1].abort();
@@ -160,12 +160,12 @@
       }
       var req = [];
       
-      function init_rows(word) {
-        count = 0;
+      function init_rows(word) {        
         var url = path+'api.php?word='+encodeURI(word)+'&type=split';         
         if (typeof req[0] !== 'undefined') req[0].abort();
         req[0] = d3.json(url,function(data) {
           d3.selectAll(".pair_id").property('value','');          
+          d3.selectAll(".side__word").property('value','');          
           d3.selectAll(".pair_flip").property('value','');          
           d3.selectAll(".pair_column").property('value','');          
           d3.selectAll('.line').classed("hide",true);        

@@ -35,7 +35,7 @@
         <input type='hidden' name='flip[]' class='pair_flip'>
         <input type='hidden' name='column[]' class='pair_column'>
         <div class='col s5 side--left' style='position:relative;display:flex'>
-          <input class='side__word' list='l<?php echo $i ?>' autocomplete="off">
+          <input class='side__word' list='l<?php echo $i ?>' autocomplete="off" value=''>
           <div class="progress side__progress hide">
             <div class="indeterminate"></div>
           </div>
@@ -47,7 +47,7 @@
           <div class="progress side__progress hide">
             <div class="indeterminate"></div>
           </div>
-          <input class='side__word' list='r<?php echo $i ?>' autocomplete="off">
+          <input class='side__word' list='r<?php echo $i ?>' autocomplete="off" value=''>
           <input class='side__word--print hide'>
           <a class='side__clear btn-flat' onclick="clear_row_right(<?php echo $i ?>)"><i class="material-icons">clear</i></a>
           <datalist id='r<?php echo $i ?>'>
