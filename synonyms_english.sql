@@ -1,6 +1,6 @@
--- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlDialectInspectionForFile
-USE ics499fa160124;
+USE thisitz6_name;
+
+INSERT INTO languages(language_name) VALUE ('english');
 
 CALL add_pair("a;m;a;z;i;n;g", "i;n;c;r;e;d;i;b;l;e", "english");
 CALL add_pair("a;m;a;z;i;n;g", "u;n;b;e;l;i;e;v;a;b;l;e", "english");

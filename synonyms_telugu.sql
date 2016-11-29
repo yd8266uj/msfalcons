@@ -1,6 +1,6 @@
--- noinspection SqlDialectInspectionForFile
--- noinspection SqlNoDataSourceInspectionForFile
-USE ics499fa160124;
+USE thisitz6_name;
+
+INSERT INTO languages(language_name) VALUE ('telugu');
 
 CALL add_pair("అ;ద్భు;త;మైన", "న;మ్మ;శ;క్యం", "telugu");
 CALL add_pair("అ;ద్భు;త;మైన", "అ;సం;భ;వ;మైన", "telugu");

@@ -1,9 +1,4 @@
--- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlDialectInspectionForFile
-/*
-DROP DATABASE IF EXISTS ics499fa160124;
-CREATE DATABASE ics499fa160124;
-*/
+USE thisitz6_name;
 
 CREATE TABLE languages(
   language_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,15 +44,16 @@ CREATE VIEW pairs AS
   FROM pair p
   INNER JOIN words w1 ON p.word_1 = w1.word_id
   INNER JOIN words w2 ON p.word_2 = w2.word_id;
-/*
+
+
 CREATE TABLE images(
-  #FIXME need to varify image is unique to avoid multiple entries but TEXT cannot be in primary key spec.
+  /*FIXME need to varify image is unique to avoid multiple entries but TEXT cannot be in primary key spec.*/
   image_id INT AUTO_INCREMENT PRIMARY KEY,
   image_type INT NOT NULL,
   image_url VARCHAR(255) NOT NULL,
   UNIQUE (image_type, image_url)
 ) ENGINE=INNODB;
-*/
+
 CREATE TABLE puzzle (
   puzzle_id VARCHAR(32) PRIMARY KEY,
   puzzle_solution VARCHAR(255) CHARACTER SET utf8 NOT NULL,
