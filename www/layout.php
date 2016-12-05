@@ -14,6 +14,9 @@
         <input type='text' name='solution' class='solution col s8  puzzle__solution' maxlength="20">
         <input type='text' class='col hide s8 puzzle__solution--print'>
       </div>
+      <div class="row">
+        <div id="validate-message" class="col s8 offset-s4 hide red-text lighten-1">spaces, numbers and special characters will be ignored</div>
+      </div>
     </li>
     <li>
      <div class='row image__wrapper'>

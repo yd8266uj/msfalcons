@@ -2,6 +2,8 @@ USE thisitz6_name;
 
 INSERT INTO languages(language_name) VALUE ('telugu');
 
+SET NAMES UTF8;
+
 CALL add_pair("అ;ద్భు;త;మైన", "న;మ్మ;శ;క్యం", "telugu");
 CALL add_pair("అ;ద్భు;త;మైన", "అ;సం;భ;వ;మైన", "telugu");
 CALL add_pair("అ;ద్భు;త;మైన", "అ;ద్భు;త;మైన", "telugu");

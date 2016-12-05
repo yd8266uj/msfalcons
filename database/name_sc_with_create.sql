@@ -1,15 +1,21 @@
+-- DROP DATABASE IF EXISTS thisitz6_name;
+
+CREATE DATABASE thisitz6_name
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+
 USE thisitz6_name;
 
 CREATE TABLE languages(
   language_id INT AUTO_INCREMENT PRIMARY KEY,
   language_name VARCHAR(255) UNIQUE
-) ENGINE = INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE table word(
   word_id INT AUTO_INCREMENT PRIMARY KEY,
   language_id INT NOT NULL,
   FOREIGN KEY (language_id) REFERENCES languages(language_id)
-) ENGINE = INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE TABLE word_char(
   word_id INT,
@@ -17,7 +23,7 @@ CREATE TABLE word_char(
   char_name VARCHAR(5),
   PRIMARY KEY (word_id,char_index),
   FOREIGN KEY (word_id) REFERENCES word(word_id)
-) ENGINE = INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE TABLE pair (
   pair_id int AUTO_INCREMENT PRIMARY KEY,
@@ -26,7 +32,7 @@ CREATE TABLE pair (
   UNIQUE (word_1, word_2),
   FOREIGN KEY (word_1) REFERENCES word(word_id),
   FOREIGN KEY (word_2) REFERENCES word(word_id)	
-) ENGINE = INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE VIEW words AS
   SELECT w.word_id,GROUP_CONCAT(wc.char_name ORDER BY wc.char_index ASC SEPARATOR '') AS word_name,w.language_id,count(*) AS length FROM word w
@@ -52,14 +58,14 @@ CREATE TABLE images(
   image_type INT NOT NULL,
   image_url VARCHAR(255) NOT NULL,
   UNIQUE (image_type, image_url)
-) ENGINE=INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE TABLE puzzle (
   puzzle_id VARCHAR(32) PRIMARY KEY,
   puzzle_solution VARCHAR(255) CHARACTER SET utf8 NOT NULL,
   puzzle_title VARCHAR(255) CHARACTER SET utf8 NOT NULL,
   puzzle_image VARCHAR(1024) NOT NULL	
-) ENGINE=INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE TABLE puzzle_line (
   puzzle_id VARCHAR(32) NOT NULL,
@@ -69,7 +75,7 @@ CREATE TABLE puzzle_line (
   puzzle_line_flip INT NOT NULL,
   PRIMARY KEY (puzzle_id, puzzle_line_order),
   FOREIGN KEY (puzzle_id) REFERENCES puzzle(puzzle_id)
-) ENGINE=INNODB;
+) DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci ENGINE = INNODB;
 
 CREATE VIEW puzzles AS SELECT puzzle_line.*,key_name,value_name,puzzle_solution,puzzle_title,language_name
   FROM puzzle_line

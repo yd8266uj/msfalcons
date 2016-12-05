@@ -3,10 +3,13 @@
  */
 
 module.exports = {
-    entry: './src/js',
+    entry: {
+        app: ['./src/js/main.js']
+        // app: ['./src/js/main.js', './src/js/wNumb.js']
+    },
     output: {
-        filename: '[name].js',
-        path: __dirname + './www/js'
+        filename: 'app.bundle.js',
+        path: './www/js'
     },
     module: {
         loaders: [

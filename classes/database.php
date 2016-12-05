@@ -10,6 +10,7 @@ class database implements i_database {
 	private function __construct() {
 		self::$instance = new PDO( strings::DATABASE_CLASS__DATABASE_INFO, strings::DATABASE_CLASS__DATABASE_USER, strings::DATABASE_CLASS__DATABASE_PASSWORD );
 		self::$instance->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+    self::$instance->exec("set names utf8");
 	}
   
   /**

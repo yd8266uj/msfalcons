@@ -110,4 +110,8 @@ height:6px;
     display: initial;
   }
   
-  
+  #validate-message {
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+  }
